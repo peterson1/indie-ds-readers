@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CondorReader", "CondorReader", "{DA7B7EE8-CB71-42AA-B31A-AD63E379F73B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDSR.CondorReader.Core.ns11", "IDSR.CondorReader.Core.ns11\IDSR.CondorReader.Core.ns11.csproj", "{53C22B4F-F219-45F3-BD78-F2735308FA8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDSR.CondorReader.Lib.WPF", "IDSR.CondorReader.Lib.WPF\IDSR.CondorReader.Lib.WPF.csproj", "{004DFA58-FBB4-4486-84EB-839696E08ED1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53C22B4F-F219-45F3-BD78-F2735308FA8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C22B4F-F219-45F3-BD78-F2735308FA8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C22B4F-F219-45F3-BD78-F2735308FA8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C22B4F-F219-45F3-BD78-F2735308FA8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{004DFA58-FBB4-4486-84EB-839696E08ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{004DFA58-FBB4-4486-84EB-839696E08ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{004DFA58-FBB4-4486-84EB-839696E08ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{004DFA58-FBB4-4486-84EB-839696E08ED1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{53C22B4F-F219-45F3-BD78-F2735308FA8B} = {DA7B7EE8-CB71-42AA-B31A-AD63E379F73B}
+		{004DFA58-FBB4-4486-84EB-839696E08ED1} = {DA7B7EE8-CB71-42AA-B31A-AD63E379F73B}
+	EndGlobalSection
+EndGlobal
