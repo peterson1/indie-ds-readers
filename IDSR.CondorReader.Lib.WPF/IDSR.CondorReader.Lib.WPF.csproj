@@ -32,6 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Repo2.SDK.WPF45">
+      <HintPath>..\..\Repo2\Repo2.SDK.WPF45\bin\Release\Repo2.SDK.WPF45.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -48,14 +55,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControl1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ComponentRegistry\CondorReaderIoC.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -75,6 +75,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -82,6 +84,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IDSR.Common.Core.ns11\IDSR.Common.Core.ns11.csproj">
+      <Project>{B0E2917B-9DBD-4F27-B11C-5896874DE913}</Project>
+      <Name>IDSR.Common.Core.ns11</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IDSR.Common.Lib.WPF\IDSR.Common.Lib.WPF.csproj">
+      <Project>{2853B993-9D2A-4659-99C7-A9A14338124A}</Project>
+      <Name>IDSR.Common.Lib.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IDSR.CondorReader.Core.ns11\IDSR.CondorReader.Core.ns11.csproj">
       <Project>{53c22b4f-f219-45f3-bd78-f2735308fa8b}</Project>
       <Name>IDSR.CondorReader.Core.ns11</Name>
