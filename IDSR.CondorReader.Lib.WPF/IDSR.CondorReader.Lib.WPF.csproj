@@ -36,6 +36,10 @@
       <HintPath>..\packages\Autofac.4.3.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Repo2.Core.ns11, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Repo2\Repo2.Core.ns11\bin\Release\Repo2.Core.ns11.dll</HintPath>
+    </Reference>
     <Reference Include="Repo2.SDK.WPF45">
       <HintPath>..\..\Repo2\Repo2.SDK.WPF45\bin\Release\Repo2.SDK.WPF45.dll</HintPath>
     </Reference>
@@ -56,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentRegistry\CondorReaderIoC.cs" />
+    <Compile Include="Viewer\DbLoaderVM.cs" />
+    <Compile Include="Viewer\ViewerMainWindowVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -96,6 +102,9 @@
       <Project>{53c22b4f-f219-45f3-bd78-f2735308fa8b}</Project>
       <Name>IDSR.CondorReader.Core.ns11</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Viewer\MainTabs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
