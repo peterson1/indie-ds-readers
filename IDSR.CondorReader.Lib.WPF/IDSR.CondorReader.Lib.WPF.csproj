@@ -60,7 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentRegistry\CondorReaderIoC.cs" />
-    <Compile Include="Viewer\DbLoaderVM.cs" />
+    <Compile Include="SalesReaders\MonthlySalesReader1.cs" />
+    <Compile Include="Viewer\MainTabs\MonthlySalesTab1.xaml.cs">
+      <DependentUpon>MonthlySalesTab1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\MainTabs\MonthlySalesTabVM1.cs" />
     <Compile Include="Viewer\ViewerMainWindowVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,8 +107,12 @@
       <Name>IDSR.CondorReader.Core.ns11</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Viewer\MainTabs\" />
+    <Page Include="Viewer\MainTabs\MonthlySalesTab1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

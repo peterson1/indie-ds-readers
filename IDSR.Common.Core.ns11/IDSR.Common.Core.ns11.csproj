@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationEnums.cs" />
     <Compile Include="Authentication\DatabaseCredentials.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="Configuration\DsrConfiguration1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlTools\ConnectionString.cs" />
     <Compile Include="SqlTools\ISqlDbReader.cs" />

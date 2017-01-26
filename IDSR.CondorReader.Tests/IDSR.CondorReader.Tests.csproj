@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InventoryTests\Reader1Facts.cs" />
+    <Compile Include="MonthlySalesTests\MonthlySalesReader1Facts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleCredentials\TestCfgs.cs" />
   </ItemGroup>
@@ -87,6 +88,10 @@
     <ProjectReference Include="..\IDSR.Common.Core.ns11\IDSR.Common.Core.ns11.csproj">
       <Project>{B0E2917B-9DBD-4F27-B11C-5896874DE913}</Project>
       <Name>IDSR.Common.Core.ns11</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IDSR.Common.Lib.WPF\IDSR.Common.Lib.WPF.csproj">
+      <Project>{2853B993-9D2A-4659-99C7-A9A14338124A}</Project>
+      <Name>IDSR.Common.Lib.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\IDSR.CondorReader.Core.ns11\IDSR.CondorReader.Core.ns11.csproj">
       <Project>{53C22B4F-F219-45F3-BD78-F2735308FA8B}</Project>
@@ -100,6 +105,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

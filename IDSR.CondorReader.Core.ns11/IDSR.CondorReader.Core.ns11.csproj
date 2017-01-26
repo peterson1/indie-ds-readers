@@ -40,9 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DomainModels\FinishedSale.cs" />
+    <Compile Include="DomainModels\Product.cs" />
     <Compile Include="InventoryReaders\IInventoryReader.cs" />
     <Compile Include="InventoryReaders\InventoryReader1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SalesReaders\IMonthlySalesReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IDSR.Common.Core.ns11\IDSR.Common.Core.ns11.csproj">

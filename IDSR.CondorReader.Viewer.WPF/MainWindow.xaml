@@ -5,14 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:wbhv="clr-namespace:Repo2.SDK.WPF45.ControlBehaviors.WindowBehaviors;assembly=Repo2.SDK.WPF45"
+        xmlns:cuc="clr-namespace:IDSR.Common.Lib.WPF.MVVM;assembly=IDSR.Common.Lib.WPF"
+        xmlns:sdk="clr-namespace:Repo2.SDK.WPF45.UserControls;assembly=Repo2.SDK.WPF45"
         xmlns:local="clr-namespace:IDSR.CondorReader.Viewer.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="{Binding Title}" Height="350" Width="525"
         >
     <int:Interaction.Behaviors>
         <wbhv:DraggableBehavior />
     </int:Interaction.Behaviors>
     <Grid>
+        <sdk:NonReloadingTabControl ItemsSource="{Binding Tabs}"
+                                    Margin="0,10,0,0"
+                                    >
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </sdk:NonReloadingTabControl>
         
+        <cuc:DbLoaderPanel1 DataContext="{Binding DbLoader}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="0,0,10,0"
+                            />
     </Grid>
 </Window>

@@ -3,8 +3,10 @@ using Autofac;
 using Autofac.Core;
 using IDSR.CondorReader.Lib.WPF.ComponentRegistry;
 using IDSR.CondorReader.Lib.WPF.Viewer;
+using IDSR.CondorReader.Lib.WPF.Viewer.MainTabs;
 using Repo2.SDK.WPF45.Exceptions;
 using Repo2.SDK.WPF45.Extensions.IOCExtensions;
+using Repo2.SDK.WPF45.Extensions.ViewModelExtensions;
 
 namespace IDSR.CondorReader.Viewer.WPF
 {
@@ -13,6 +15,7 @@ namespace IDSR.CondorReader.Viewer.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            SetDataTemplates();
 
             var win = new MainWindow();
             try
@@ -29,6 +32,11 @@ namespace IDSR.CondorReader.Viewer.WPF
                 Alerter.ShowError("Resolver Error", ex.GetMessage());
                 win.Close();
             }
+        }
+
+        private void SetDataTemplates()
+        {
+            this.SetTemplate<MonthlySalesTabVM1, MonthlySalesTab1>();
         }
     }
 }
