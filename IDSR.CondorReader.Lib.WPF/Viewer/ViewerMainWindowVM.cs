@@ -1,6 +1,4 @@
-﻿using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.MVVM;
-using IDSR.CondorReader.Lib.WPF.Viewer.MainTabs;
+﻿using IDSR.CondorReader.Lib.WPF.Viewer.MainTabs;
 using Repo2.Core.ns11.DataStructures;
 
 namespace IDSR.CondorReader.Lib.WPF.Viewer
@@ -14,9 +12,11 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer
             DbLoader = dbLoaderVM;
             Tabs     = new Observables<object>
             {
-                yearEndInventoryTabVM,
                 monthlySalesTabVM,
+                yearEndInventoryTabVM,
             };
+            DbLoader.MasterDataLoaded += (a, b) 
+                => monthlySalesTabVM.QueryCmd.ExecuteIfItCan();
         }
 
 

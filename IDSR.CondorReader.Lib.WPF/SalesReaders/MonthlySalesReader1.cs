@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.LocalDbReaders;
@@ -28,18 +29,12 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
             @"SELECT CAST(ProductID AS INTEGER),
                      TotalQty,
                      TerminalNo,
-                     TimeScanned
+                     TimeScanned,
+                     Price,
+                     DiscountedPrice,
+                     ReturnRemarks
               FROM FinishedSales
               WHERE TimeScanned >= '{0}' AND TimeScanned < '{1}';";
-
-
-        //public DbCommand FinishedSalesQuery(int year, int month)
-        //{
-        //    var conn        = ConnectToDB();
-        //    var cmd         = conn.CreateCommand();
-        //    cmd.CommandText = ComposeSqlQuery(year, month);
-        //    return cmd;
-        //}
 
 
         private static string ComposeSqlQuery(int year, int month)
@@ -50,17 +45,20 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
         }
 
 
-        public DbDataReader ReadFinishedSales(int year, int month)
-            => ConnectAndRead(ComposeSqlQuery(year, month));
+        public Task<DbDataReader> ReadFinishedSales(int year, int month, CancellationToken cancelTkn)
+            => ConnectAndReadAsync(ComposeSqlQuery(year, month), cancelTkn);
 
 
         public FinishedSale ToFinishedSale(IDataRecord rec)
             => new FinishedSale
             {
-                Product     = FindProduct(rec, 0),
-                TotalQty    = rec.GetDecimal  (1),
-                TerminalNo  = rec.GetString   (2),
-                TimeScanned = rec.GetDateTime (3)
+                Product         = FindProduct(rec, 0),
+                TotalQty        = rec.GetDecimal  (1),
+                TerminalNo      = rec.GetString   (2),
+                TimeScanned     = rec.GetDateTime (3),
+                ScannedSRP      = rec.GetDecimal  (4),
+                DiscountedPrice = rec.GetDecimal  (5),
+                ReturnRemarks   = rec["ReturnRemarks"].ToString()
             };
 
 

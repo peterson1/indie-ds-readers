@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using IDSR.Common.Core.ns11.Configuration;
 using Repo2.Core.ns11.FileSystems;
 
@@ -10,6 +9,7 @@ namespace IDSR.Common.Lib.WPF.DiskAccess
         const string SETTINGS_CFG = "settings.cfg";
 
         private IFileSystemAccesor _fs;
+        private DsrConfiguration1  _lastLoaded;
 
         public ConfigFileLoader(IFileSystemAccesor fileSystemAccesor)
         {
@@ -17,7 +17,11 @@ namespace IDSR.Common.Lib.WPF.DiskAccess
         }
 
 
-        public DsrConfiguration1 ReadBesideExe()
+        public DsrConfiguration1 GetLastLoaded()
+            => _lastLoaded ?? (_lastLoaded = ReadBesideExe());
+
+
+        private DsrConfiguration1 ReadBesideExe()
         {
             try
             {

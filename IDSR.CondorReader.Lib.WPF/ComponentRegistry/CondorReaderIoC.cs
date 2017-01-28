@@ -13,6 +13,7 @@ using IDSR.CondorReader.Core.ns11.SalesReaders;
 using IDSR.CondorReader.Lib.WPF.SalesReaders;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
 using IDSR.CondorReader.Lib.WPF.MasterDataReaders;
+using IDSR.Common.Core.ns11.Configuration;
 
 namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
 {
@@ -31,6 +32,8 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
             b.Solo<MonthlySalesTabVM1>();
             b.Solo<ProductsCache>();
             b.Solo<ProductsReader1>();
+
+            b.Register(c => c.Resolve<ConfigFileLoader>().GetLastLoaded());
 
             b.Multi<LocalDbFinder>();
             b.Multi<IFileSystemAccesor, FileSystemAccesor1>();

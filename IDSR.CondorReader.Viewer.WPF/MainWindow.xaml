@@ -10,7 +10,7 @@
         xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:IDSR.CondorReader.Viewer.WPF"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="350" Width="525"
+        Title="{Binding Title}" Height="350" Width="1000"
         >
     <int:Interaction.Behaviors>
         <wbhv:DraggableBehavior />

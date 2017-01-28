@@ -35,14 +35,14 @@ namespace IDSR.Common.Lib.WPF.LocalDbReaders
         }
 
 
-        protected DbDataReader ConnectAndRead(string sqlQuery)
-        {
-            var conn        = CreateConnection();
-            var cmd         = conn.CreateCommand();
-            cmd.CommandText = sqlQuery;
-            conn.Open();
-            return cmd.ExecuteReader(CommandBehavior.CloseConnection);
-        }
+        //protected DbDataReader ConnectAndRead(string sqlQuery)
+        //{
+        //    var conn        = CreateConnection();
+        //    var cmd         = conn.CreateCommand();
+        //    cmd.CommandText = sqlQuery;
+        //    conn.Open();
+        //    return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //}
 
 
         protected async Task<DbDataReader> ConnectAndReadAsync(string sqlQuery, CancellationToken cancelTkn)

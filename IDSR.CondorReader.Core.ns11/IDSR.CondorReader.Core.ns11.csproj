@@ -46,6 +46,7 @@
     <Compile Include="InventoryReaders\InventoryReader1.cs" />
     <Compile Include="MasterDataReaders\ProductsCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportRows\YearEndInventoryRow.cs" />
     <Compile Include="SalesReaders\IMonthlySalesReader.cs" />
   </ItemGroup>
   <ItemGroup>

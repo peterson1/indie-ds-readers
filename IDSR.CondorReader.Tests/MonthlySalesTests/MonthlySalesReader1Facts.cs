@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Threading;
+using Autofac;
 using FluentAssertions;
 using IDSR.CondorReader.Core.ns11.SalesReaders;
 using IDSR.CondorReader.Lib.WPF.ComponentRegistry;
@@ -23,10 +24,10 @@ namespace IDSR.CondorReader.Tests.MonthlySalesTests
         [Theory(DisplayName = "using DataReader")]
         [InlineData(2016, 11, 196880)]
         [InlineData(2016, 12, 230593)]
-        public void UsingDataReader(int year, int month, int expectedCount)
+        public async void UsingDataReader(int year, int month, int expectedCount)
         {
             var count = 0;
-            using (var readr = _sut.ReadFinishedSales(year, month))
+            using (var readr = await _sut.ReadFinishedSales(year, month, new CancellationToken()))
             {
                 foreach (var record in readr)
                 {

@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.SalesReaders;
+using PropertyChanged;
 using Repo2.Core.ns11.DataStructures;
 using Repo2.Core.ns11.DateTimeTools;
 using Repo2.Core.ns11.InputCommands;
@@ -12,20 +16,21 @@ using Repo2.SDK.WPF45.InputCommands;
 
 namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
 {
+    [ImplementPropertyChanged]
     public class MonthlySalesTabVM1
     {
         private DsrConfiguration1   _cfg;
         private IMonthlySalesReader _readr;
         private DbLoaderVM1         _loadr;
 
-        public MonthlySalesTabVM1(ConfigFileLoader configFileLoader, IMonthlySalesReader monthlySalesReader, DbLoaderVM1 dbLoaderVM)
+        public MonthlySalesTabVM1(DsrConfiguration1 dsrConfiguration, IMonthlySalesReader monthlySalesReader, DbLoaderVM1 dbLoaderVM)
         {
-            _cfg     = configFileLoader.ReadBesideExe();
+            _cfg     = dsrConfiguration;
             _readr   = monthlySalesReader;
             _loadr   = dbLoaderVM;
             Dates    = FillDatesList();
             Date     = Dates?.FirstOrDefault();
-            QueryCmd = R2Command.Relay(RunQuery);
+            QueryCmd = R2Command.Async(RunQuery);
 
             //_loadr.MasterDataLoaded += (a, b)
             //    => QueryCmd.ExecuteIfItCan();
@@ -36,7 +41,7 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
         public DateTime?                  Date      { get; set; }
         public Observables<DateTime>      Dates     { get; }
         public IR2Command                 QueryCmd  { get; private set; }
-
+        public bool                       IsBusy    { get; private set; }
 
         private Observables<DateTime> FillDatesList()
         {
@@ -52,36 +57,26 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
         }
 
 
-        private void RunQuery(object arg)
+        private async Task RunQuery()
         {
             if (!Date.HasValue) return;
             var d8   = Date.Value;
             _readr.DatabaseName = _loadr.Database.Name;
-            //var rows = _readr.Query(d8.Year, d8.Month, new CancellationToken());
-            ShowLoading();
 
-            using (var results = _readr.ReadFinishedSales(d8.Year, d8.Month))
+            IsBusy = true;
+            //var list = new List<FinishedSale>();
+            Sales.Clear();
+
+            using (var results = await _readr.ReadFinishedSales(d8.Year, d8.Month, new CancellationToken()))
             {
-                Sales.Clear();
                 foreach (IDataRecord rec in results)
                 {
                     Sales.Add(_readr.ToFinishedSale(rec));
                 }
             }
+
+            //Sales.Swap(list);
+            IsBusy = false;
         }
-
-
-        private void ShowLoading()
-        {
-            Sales.Clear();
-            Sales.Add(GetLoadingItemRow());
-        }
-
-
-        private FinishedSale GetLoadingItemRow()
-            => new FinishedSale
-            {
-                Product = new Product { Description = "Loading ..." }
-            };
     }
 }
