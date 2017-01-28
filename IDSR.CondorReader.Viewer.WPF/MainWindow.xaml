@@ -7,6 +7,7 @@
         xmlns:wbhv="clr-namespace:Repo2.SDK.WPF45.ControlBehaviors.WindowBehaviors;assembly=Repo2.SDK.WPF45"
         xmlns:cuc="clr-namespace:IDSR.Common.Lib.WPF.MVVM;assembly=IDSR.Common.Lib.WPF"
         xmlns:sdk="clr-namespace:Repo2.SDK.WPF45.UserControls;assembly=Repo2.SDK.WPF45"
+        xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:IDSR.CondorReader.Viewer.WPF"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="350" Width="525"
@@ -30,5 +31,8 @@
                             VerticalAlignment="Top"
                             Margin="0,0,10,0"
                             />
+
+        <xtk:BusyIndicator IsBusy="{Binding DbLoader.IsBusy}"
+                           />
     </Grid>
 </Window>

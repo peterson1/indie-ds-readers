@@ -1,16 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using Autofac;
+﻿using Autofac;
 using FluentAssertions;
-using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.CondorReader.Core.ns11.SalesReaders;
 using IDSR.CondorReader.Lib.WPF.ComponentRegistry;
 using Xunit;
 
 namespace IDSR.CondorReader.Tests.MonthlySalesTests
 {
-    public class MonthlySalesReader1Facts : IDisposable
+    public class MonthlySalesReader1Facts
     {
         private IMonthlySalesReader _sut;
 
@@ -19,26 +15,25 @@ namespace IDSR.CondorReader.Tests.MonthlySalesTests
             using (var scope = CondorReaderIoC.BeginScope())
             {
                 _sut = scope.Resolve<IMonthlySalesReader>();
-                //var findr = scope.Resolve<LocalDbFinder>();
-                //findr.AssemblyDir = AppDomain.CurrentDomain.BaseDirectory;
+                _sut.DatabaseName = "2017-01-24_BK";
             }
         }
 
 
-        [Theory(DisplayName = "Monthly Sales record counts")]
+        [Theory(DisplayName = "using DataReader")]
         [InlineData(2016, 11, 196880)]
         [InlineData(2016, 12, 230593)]
-        public async void MonthlySalesrecordcounts(int year, int month, int expectedCount)
+        public void UsingDataReader(int year, int month, int expectedCount)
         {
-            var tkn = new CancellationToken();
-            var ok  = await _sut.Connect("2017-01-24_BK", tkn);
-            ok.Should().BeTrue("should be able to connect");
-            var list = _sut.Query(year, month, tkn);
-            list.Count().Should().Be(expectedCount);
-            _sut.Disconnect();
+            var count = 0;
+            using (var readr = _sut.ReadFinishedSales(year, month))
+            {
+                foreach (var record in readr)
+                {
+                    count++;
+                }
+            }
+            count.Should().Be(expectedCount);
         }
-
-
-        public void Dispose() =>_sut?.Disconnect();
     }
 }

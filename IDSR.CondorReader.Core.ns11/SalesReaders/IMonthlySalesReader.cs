@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data;
+using System.Data.Common;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 
 namespace IDSR.CondorReader.Core.ns11.SalesReaders
 {
     public interface IMonthlySalesReader
     {
-        IEnumerable<FinishedSale>  Query
-            (int year, int month, CancellationToken cancelTkn);
+        string DatabaseName { get; set; }
 
-        Task<bool>  Connect     (string databasePath, CancellationToken cancelTkn);
-        void        Disconnect  ();
+        DbDataReader ReadFinishedSales  (int year, int month);
+        FinishedSale ToFinishedSale     (IDataRecord dataRecord);
     }
 }

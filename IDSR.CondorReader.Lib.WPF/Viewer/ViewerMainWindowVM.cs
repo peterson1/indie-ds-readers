@@ -8,10 +8,15 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer
     public class ViewerMainWindowVM
     {
         public ViewerMainWindowVM(DbLoaderVM1 dbLoaderVM,
-                                  MonthlySalesTabVM1 monthlySalesTabVM1)
+                                  YearEndInventoryTabVM1 yearEndInventoryTabVM,
+                                  MonthlySalesTabVM1 monthlySalesTabVM)
         {
             DbLoader = dbLoaderVM;
-            Tabs     = new Observables<object> { monthlySalesTabVM1 };
+            Tabs     = new Observables<object>
+            {
+                yearEndInventoryTabVM,
+                monthlySalesTabVM,
+            };
         }
 
 

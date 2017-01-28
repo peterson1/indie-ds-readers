@@ -11,6 +11,8 @@ using Repo2.Core.ns11.FileSystems;
 using Repo2.SDK.WPF45.FileSystems;
 using IDSR.CondorReader.Core.ns11.SalesReaders;
 using IDSR.CondorReader.Lib.WPF.SalesReaders;
+using IDSR.CondorReader.Core.ns11.MasterDataReaders;
+using IDSR.CondorReader.Lib.WPF.MasterDataReaders;
 
 namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
 {
@@ -25,7 +27,10 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
             b.Solo<ViewerMainWindowVM>();
             b.Solo<ConfigFileLoader>();
             b.Solo<DbLoaderVM1>();
+            b.Solo<YearEndInventoryTabVM1>();
             b.Solo<MonthlySalesTabVM1>();
+            b.Solo<ProductsCache>();
+            b.Solo<ProductsReader1>();
 
             b.Multi<LocalDbFinder>();
             b.Multi<IFileSystemAccesor, FileSystemAccesor1>();

@@ -3,16 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:IDSR.Common.Lib.WPF.MVVM"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
     <StackPanel Orientation="Horizontal"
                 VerticalAlignment="Center"
                 >
         <ComboBox ItemsSource="{Binding Databases}"
                   SelectedItem="{Binding Database}"
-                  />
-        <Button Content="Connect"
+                  >
+            <int:Interaction.Triggers>
+                <int:EventTrigger EventName="SelectionChanged">
+                    <int:InvokeCommandAction Command="{Binding LoadMasterDataCmd}" />
+                </int:EventTrigger>
+            </int:Interaction.Triggers>
+        </ComboBox>
+        <Button Content="Load Master Data"
+                Command="{Binding LoadMasterDataCmd}"
                 />
     </StackPanel>
 </UserControl>

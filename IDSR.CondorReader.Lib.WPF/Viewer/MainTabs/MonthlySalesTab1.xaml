@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:IDSR.CondorReader.Lib.WPF.Viewer.MainTabs"
+             xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -19,7 +20,16 @@
             <ComboBox ItemsSource="{Binding Dates}"
                       SelectedValue="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
                       ItemStringFormat="MMMM yyyy"
-                      />
+                      >
+                <int:Interaction.Triggers>
+                    <int:EventTrigger EventName="SelectionChanged">
+                        <int:InvokeCommandAction Command="{Binding QueryCmd}" />
+                    </int:EventTrigger>
+                </int:Interaction.Triggers>
+            </ComboBox>
+            <Button Content="Query"
+                    Command="{Binding QueryCmd}"
+                    />
         </StackPanel>
 
         <DataGrid Grid.Row="1"
@@ -28,8 +38,20 @@
                   Style="{StaticResource dgBase1}"
                   >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="product"
+                <DataGridTextColumn Header="product ID"
                                     Binding="{Binding Product.Id}"
+                                    />
+                <DataGridTextColumn Header="product description"
+                                    Binding="{Binding Product.Description}"
+                                    />
+                <DataGridTextColumn Header="qty"
+                                    Binding="{Binding TotalQty}"
+                                    />
+                <DataGridTextColumn Header="POS"
+                                    Binding="{Binding TerminalNo}"
+                                    />
+                <DataGridTextColumn Header="scanned"
+                                    Binding="{Binding TimeScanned, StringFormat=d MMM yyyy\, h:mm tt}"
                                     />
             </DataGrid.Columns>
         </DataGrid>

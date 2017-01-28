@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Threading.Tasks;
+using System.Windows.Controls;
 using Repo2.SDK.WPF45.Extensions.DataGridExtensions;
 
 namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
@@ -10,8 +11,11 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
             InitializeComponent();
             Loaded += (a, b) =>
             {
-                dg.EnableToggledColumns();
+                dg.EnableToggledColumns(DataGridLengthUnitType.Auto);
             };
         }
+
+
+        //MonthlySalesTabVM1 VM => DataContext as MonthlySalesTabVM1;
     }
 }

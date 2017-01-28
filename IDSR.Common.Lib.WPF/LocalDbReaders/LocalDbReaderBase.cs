@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
+using Repo2.Core.ns11.Exceptions;
+using Repo2.Core.ns11.Extensions.StringExtensions;
 
 namespace IDSR.Common.Lib.WPF.LocalDbReaders
 {
-    public class LocalDbReaderBase
+    public abstract class LocalDbReaderBase
     {
-        private LocalDbFinder    _findr;
-        private SQLiteConnection _conn;
+        private LocalDbFinder _findr;
 
         public LocalDbReaderBase(LocalDbFinder localDbFinder)
         {
@@ -23,47 +21,41 @@ namespace IDSR.Common.Lib.WPF.LocalDbReaders
         }
 
 
-        public async Task<bool> Connect(string dbFileName, CancellationToken cancelTkn)
-        {
-            Disconnect();
+        public string DatabaseName { get; set; }
 
-            var path   = _findr.FindDatabaseFile(dbFileName);
+
+        private DbConnection CreateConnection()
+        {
+            if (DatabaseName.IsBlank())
+                throw Fault.BlankText("Database name");
+
+            var path   = _findr.FindDatabaseFile(DatabaseName);
             var conStr = ConnectionString.SQLite3(path);
-            _conn      = new SQLiteConnection(conStr);
-
-            await _conn.OpenAsync(cancelTkn);
-            return true;
+            return  new SQLiteConnection(conStr);
         }
 
 
-        public IEnumerable<IDataRecord> RunQuery(string sqlStatement, CancellationToken cancelTkn)
+        protected DbDataReader ConnectAndRead(string sqlQuery)
         {
-            using (var cmd = _conn.CreateCommand())
-            {
-                cmd.CommandText = sqlStatement;
-                using (var readr = cmd.ExecuteReader())
-                {
-                    foreach (IDataRecord record in readr)
-                    {
-                        yield return record;
-                    }
-                }
-            }
+            var conn        = CreateConnection();
+            var cmd         = conn.CreateCommand();
+            cmd.CommandText = sqlQuery;
+            conn.Open();
+            return cmd.ExecuteReader(CommandBehavior.CloseConnection);
         }
 
 
-        protected string Param(DateTime date) => date.ToString("yyyy-MM-dd");
-
-
-        public void Disconnect()
+        protected async Task<DbDataReader> ConnectAndReadAsync(string sqlQuery, CancellationToken cancelTkn)
         {
-            if (_conn == null) return;
+            var conn        = CreateConnection();
+            var cmd         = conn.CreateCommand();
+            cmd.CommandText = sqlQuery;
 
-            if (_conn.State != ConnectionState.Closed)
-                _conn.Close();
-
-            _conn.Dispose();
-            _conn = null;
+            await conn.OpenAsync(cancelTkn);
+            return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
         }
+
+
+        protected static string Param(DateTime date) => date.ToString("yyyy-MM-dd");
     }
 }
