@@ -45,7 +45,7 @@ namespace IDSR.Common.Lib.WPF.MVVM
         }
 
 
-        private async Task LoadMasterData()
+        public async Task LoadMasterData()
         {
             IsBusy = true;
             await LoadMasterData(new CancellationToken());

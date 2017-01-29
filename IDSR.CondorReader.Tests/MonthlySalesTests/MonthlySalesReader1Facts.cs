@@ -7,6 +7,7 @@ using Xunit;
 
 namespace IDSR.CondorReader.Tests.MonthlySalesTests
 {
+    [Trait("LocalDB Read", "2017-01-24_BK")]
     public class MonthlySalesReader1Facts
     {
         private IMonthlySalesReader _sut;
@@ -21,20 +22,13 @@ namespace IDSR.CondorReader.Tests.MonthlySalesTests
         }
 
 
-        [Theory(DisplayName = "using DataReader")]
+        [Theory(DisplayName = "record counts")]
         [InlineData(2016, 11, 196880)]
         [InlineData(2016, 12, 230593)]
-        public async void UsingDataReader(int year, int month, int expectedCount)
+        public async void RecordCounts(int year, int month, int expectedCount)
         {
-            var count = 0;
-            using (var readr = await _sut.ReadFinishedSales(year, month, new CancellationToken()))
-            {
-                foreach (var record in readr)
-                {
-                    count++;
-                }
-            }
-            count.Should().Be(expectedCount);
+            var list = await _sut.GetFinishedSales(year, month, new CancellationToken());
+            list.Should().HaveCount(expectedCount);
         }
     }
 }

@@ -45,6 +45,7 @@
       <HintPath>..\packages\FluentAssertions.4.18.0\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Repo2.Core.ns11, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -75,8 +76,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InventoryTests\Reader1Facts.cs" />
     <Compile Include="MonthlySalesTests\MonthlySalesReader1Facts.cs" />
+    <Compile Include="MonthlySalesTests\MonthlySalesTabVM1Facts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleCredentials\TestCfgs.cs" />
   </ItemGroup>

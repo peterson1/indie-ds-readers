@@ -23,6 +23,8 @@ namespace IDSR.Common.Lib.WPF.DiskAccess
 
         private DsrConfiguration1 ReadBesideExe()
         {
+            var p = _fs.GetBesideExeFilePath(SETTINGS_CFG);
+
             try
             {
                 return _fs.ReadJsonFileBesideExe<DsrConfiguration1>(SETTINGS_CFG);

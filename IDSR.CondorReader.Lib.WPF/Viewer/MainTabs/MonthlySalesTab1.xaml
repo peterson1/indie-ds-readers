@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:IDSR.CondorReader.Lib.WPF.Viewer.MainTabs"
              xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:sdk="clr-namespace:Repo2.SDK.WPF45.UserControls;assembly=Repo2.SDK.WPF45"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -18,6 +19,11 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     >
+
+            <sdk:DualText Text1="vatable sales"
+                          Text2="{Binding VatableSales, StringFormat=N2}"
+                          />
+
             <ComboBox ItemsSource="{Binding Dates}"
                       SelectedValue="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
                       ItemStringFormat="MMMM yyyy"
@@ -28,43 +34,148 @@
                     </int:EventTrigger>
                 </int:Interaction.Triggers>
             </ComboBox>
-            <Button Content="Query"
+            <!--<Button Content="Query"
                     Command="{Binding QueryCmd}"
-                    />
+                    />-->
         </StackPanel>
 
-        <DataGrid Grid.Row="1"
-                  x:Name="dg"
-                  ItemsSource="{Binding Sales}"
-                  Style="{StaticResource dgBase1}"
-                  >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="product ID"
-                                    Binding="{Binding Product.Id}"
-                                    />
-                <DataGridTextColumn Header="product description"
-                                    Binding="{Binding Product.Description}"
-                                    />
-                <DataGridTextColumn Header="qty"
-                                    Binding="{Binding TotalQty}"
-                                    />
-                <DataGridTextColumn Header="POS"
-                                    Binding="{Binding TerminalNo}"
-                                    />
-                <DataGridTextColumn Header="scanned"
-                                    Binding="{Binding TimeScanned, StringFormat=d MMM yyyy\, h:mm tt}"
-                                    />
-                <DataGridTextColumn Header="SRP"
-                                    Binding="{Binding ScannedSRP, StringFormat=N2}"
-                                    />
-                <DataGridTextColumn Header="DiscountedPrice"
-                                    Binding="{Binding DiscountedPrice, StringFormat=N2}"
-                                    />
-                <DataGridTextColumn Header="ReturnRemarks"
-                                    Binding="{Binding ReturnRemarks}"
-                                    />
-            </DataGrid.Columns>
-        </DataGrid>
+        
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            
+            <DataGrid ItemsSource="{Binding DailyRows}"
+                      Style="{StaticResource dgBase1}"
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="date"
+                                        Binding="{Binding Date, StringFormat=MMM d}"
+                                        ElementStyle="{StaticResource dgColRight}"
+                                        />
+                    <DataGridTextColumn Header="daily total"
+                                        Binding="{Binding DailyTotal, StringFormat=N2}"
+                                        ElementStyle="{StaticResource dgColRight}"
+                                        />
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DataGrid ItemsSource="{Binding Terminals}"
+                                          Style="{StaticResource dgBase1}"
+                                          >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="POS"
+                                                            Binding="{Binding Terminal}"
+                                                            ElementStyle="{StaticResource dgColCenter}"
+                                                            />
+                                        <DataGridTextColumn Header="terminal total"
+                                                            Binding="{Binding TerminalTotal, StringFormat=N2}"
+                                                            ElementStyle="{StaticResource dgColRight}"
+                                                            />
+                                        <DataGridTemplateColumn>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Expander IsExpanded="False">
+                                                        <DataGrid ItemsSource="{Binding Transactions}"
+                                                                  Style="{StaticResource dgBase1}"
+                                                                  >
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Header="transaction"
+                                                                                    Binding="{Binding TransactionNo, StringFormat=N0}"
+                                                                                    ElementStyle="{StaticResource dgColCenter}"
+                                                                                    />
+                                                                <DataGridTextColumn Header="transaction total"
+                                                                                    Binding="{Binding TransactionTotal, StringFormat=N2}"
+                                                                                    ElementStyle="{StaticResource dgColRight}"
+                                                                                    />
+                                                                <DataGridTemplateColumn>
+                                                                    <DataGridTemplateColumn.CellTemplate>
+                                                                        <DataTemplate>
+                                                                            <Expander IsExpanded="False">
+                                                                                <DataGrid ItemsSource="{Binding Lines}"
+                                                                                          Style="{StaticResource dgBase1}"
+                                                                                          >
+                                                                                    <DataGrid.Columns>
+                                                                                        <DataGridTextColumn Header="product"
+                                                                                                            Binding="{Binding Product.Description}"
+                                                                                                            ElementStyle="{StaticResource dgColLabel}"
+                                                                                                            />
+                                                                                        <DataGridTextColumn Header="qty"
+                                                                                                            Binding="{Binding Qty, StringFormat=N2}"
+                                                                                                            ElementStyle="{StaticResource dgColRight}"
+                                                                                                            />
+                                                                                        <DataGridTextColumn Header="SRP"
+                                                                                                            Binding="{Binding ScannedSRP, StringFormat=N2}"
+                                                                                                            ElementStyle="{StaticResource dgColRight}"
+                                                                                                            />
+                                                                                        <DataGridTextColumn Header="discounted"
+                                                                                                            Binding="{Binding DiscountedPrice, StringFormat=N2}"
+                                                                                                            ElementStyle="{StaticResource dgColRight}"
+                                                                                                            />
+                                                                                        <DataGridTextColumn Header="line total"
+                                                                                                            Binding="{Binding LineTotal, StringFormat=N2}"
+                                                                                                            ElementStyle="{StaticResource dgColRight}"
+                                                                                                            />
+                                                                                    </DataGrid.Columns>
+                                                                                </DataGrid>
+                                                                            </Expander>
+                                                                        </DataTemplate>
+                                                                    </DataGridTemplateColumn.CellTemplate>
+                                                                </DataGridTemplateColumn>
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </Expander>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            
+            <Expander Header="details"
+                      Grid.Row="1"
+                      >
+                <DataGrid x:Name="dg"
+                          ItemsSource="{Binding Details}"
+                          Style="{StaticResource dgBase1}"
+                          >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="product ID"
+                                            Binding="{Binding Product.Id}"
+                                            />
+                        <DataGridTextColumn Header="product description"
+                                            Binding="{Binding Product.Description}"
+                                            />
+                        <DataGridTextColumn Header="qty"
+                                            Binding="{Binding Qty}"
+                                            />
+                        <DataGridTextColumn Header="POS"
+                                            Binding="{Binding TerminalNo}"
+                                            />
+                        <DataGridTextColumn Header="scanned"
+                                            Binding="{Binding TimeScanned, StringFormat=d MMM yyyy\, h:mm tt}"
+                                            />
+                        <DataGridTextColumn Header="SRP"
+                                            Binding="{Binding ScannedSRP, StringFormat=N2}"
+                                            />
+                        <DataGridTextColumn Header="DiscountedPrice"
+                                            Binding="{Binding DiscountedPrice, StringFormat=N2}"
+                                            />
+                        <DataGridTextColumn Header="ReturnRemarks"
+                                            Binding="{Binding ReturnRemarks}"
+                                            />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+        </Grid>
+        
 
         <xtk:BusyIndicator Grid.RowSpan="2"
                            IsBusy="{Binding IsBusy}"

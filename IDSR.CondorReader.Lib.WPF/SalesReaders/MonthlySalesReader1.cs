@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Lib.WPF.DiskAccess;
@@ -27,14 +24,17 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
 
         const string SQL_QUERY =
             @"SELECT CAST(ProductID AS INTEGER),
-                     TotalQty,
+                     Qty,
                      TerminalNo,
                      TimeScanned,
                      Price,
                      DiscountedPrice,
-                     ReturnRemarks
+                     ReturnRemarks,
+                     pVatPercent,
+                     TransactionNo,
+                     Return
               FROM FinishedSales
-              WHERE TimeScanned >= '{0}' AND TimeScanned < '{1}';";
+              WHERE LogDate >= '{0}' AND LogDate < '{1}'";
 
 
         private static string ComposeSqlQuery(int year, int month)
@@ -45,20 +45,23 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
         }
 
 
-        public Task<DbDataReader> ReadFinishedSales(int year, int month, CancellationToken cancelTkn)
-            => ConnectAndReadAsync(ComposeSqlQuery(year, month), cancelTkn);
+        //private Task<DbDataReader> FinishedSalesReader(int year, int month, CancellationToken cancelTkn)
+        //    => ConnectAndReadAsync(ComposeSqlQuery(year, month), cancelTkn);
 
 
-        public FinishedSale ToFinishedSale(IDataRecord rec)
+        private FinishedSale ToFinishedSale(IDataRecord rec)
             => new FinishedSale
             {
                 Product         = FindProduct(rec, 0),
-                TotalQty        = rec.GetDecimal  (1),
+                Qty             = rec.GetDecimal  (1),
                 TerminalNo      = rec.GetString   (2),
                 TimeScanned     = rec.GetDateTime (3),
                 ScannedSRP      = rec.GetDecimal  (4),
                 DiscountedPrice = rec.GetDecimal  (5),
-                ReturnRemarks   = rec["ReturnRemarks"].ToString()
+                ReturnRemarks   = rec             [6].ToString(),
+                VatPercent      = rec.GetInt64    (7),
+                TransactionNo   = rec.GetInt64    (8),
+                Return          = rec.GetBoolean  (9),
             };
 
 
@@ -66,6 +69,26 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
         {
             var id = rec.GetInt64(fieldIndx);
             return _products[id, "< unrecognized Product ID >"];
+        }
+
+
+        public async Task<List<FinishedSale>> GetFinishedSales(int year, int month, CancellationToken cancelTkn)
+        {
+            var qry = ComposeSqlQuery(year, month);
+            var list = new List<FinishedSale>();
+
+            await Task.Run(async () =>
+            {
+                using (var results = await ConnectAndReadAsync(qry, cancelTkn))
+                {
+                    foreach (IDataRecord rec in results)
+                    {
+                        list.Add(ToFinishedSale(rec));
+                    }
+                }
+            }).ConfigureAwait(false);
+
+            return list;
         }
     }
 }

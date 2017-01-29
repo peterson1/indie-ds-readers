@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +11,6 @@ namespace IDSR.CondorReader.Core.ns11.SalesReaders
     {
         string DatabaseName { get; set; }
 
-        Task<DbDataReader>  ReadFinishedSales (int year, int month, CancellationToken cancelTkn);
-        FinishedSale        ToFinishedSale    (IDataRecord dataRecord);
+        Task<List<FinishedSale>> GetFinishedSales(int year, int month, CancellationToken cancelTkn);
     }
 }

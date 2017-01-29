@@ -6,6 +6,7 @@ using IDSR.Common.Core.ns11.Configuration;
 using IDSR.CondorReader.Core.ns11.ReportRows;
 using PropertyChanged;
 using Repo2.Core.ns11.DataStructures;
+using Repo2.Core.ns11.DateTimeTools;
 using Repo2.Core.ns11.InputCommands;
 using Repo2.SDK.WPF45.InputCommands;
 
@@ -42,14 +43,8 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
         private Observables<int> FillYearsList(DsrConfiguration1 cfg)
         {
             if (cfg?.GrandOpeningDate == null) return null;
-            var yr1 = cfg.GrandOpeningDate.Value.Year;
-            var yrs = new List<int>();
-            var now = DateTime.Now.Year;
-            for (int i = yr1; i < now; i++)
-            {
-                yrs.Add(i);
-            }
-            return new Observables<int>(yrs);
+            var d8 = cfg.GrandOpeningDate.Value;
+            return new Observables<int>(d8.EachYearUpToLastYear());
         }
     }
 }

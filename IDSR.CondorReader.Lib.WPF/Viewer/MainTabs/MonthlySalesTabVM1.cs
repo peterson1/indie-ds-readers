@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
-using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.CondorReader.Core.ns11.DomainModels;
+using IDSR.CondorReader.Core.ns11.ReportRows;
 using IDSR.CondorReader.Core.ns11.SalesReaders;
 using PropertyChanged;
 using Repo2.Core.ns11.DataStructures;
@@ -31,52 +30,56 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
             Dates    = FillDatesList();
             Date     = Dates?.FirstOrDefault();
             QueryCmd = R2Command.Async(RunQuery);
-
-            //_loadr.MasterDataLoaded += (a, b)
-            //    => QueryCmd.ExecuteIfItCan();
         }
 
         public string                     Title     { get; } = "Monthly Sales";
-        public Observables<FinishedSale>  Sales     { get; } = new Observables<FinishedSale>();
         public DateTime?                  Date      { get; set; }
         public Observables<DateTime>      Dates     { get; }
         public IR2Command                 QueryCmd  { get; private set; }
         public bool                       IsBusy    { get; private set; }
 
+        public Observables<FinishedSale>          Details   { get; } = new Observables<FinishedSale>();
+        public Observables<MonthlySalesDailyRow>  DailyRows { get; } = new Observables<MonthlySalesDailyRow>();
+
+        public double  VatableSales  { get; private set; }
+
+
         private Observables<DateTime> FillDatesList()
         {
             if (_cfg?.GrandOpeningDate == null) return null;
-
-            var day1  = _cfg.GrandOpeningDate.Value;
-            var dates = day1.EachDayUpTo(DateTime.Now)
-                            .Select(x => new DateTime(x.Year, x.Month, 1))
-                            .GroupBy(x => x).Select(x => x.First())
-                            .OrderByDescending(x => x).ToList();
-
-            return new Observables<DateTime>(dates);
+            var day1 = _cfg.GrandOpeningDate.Value;
+            var list = day1.EachMonthUpToNow();
+            return new Observables<DateTime>(list);
         }
 
 
-        private async Task RunQuery()
+        public async Task RunQuery()
         {
             if (!Date.HasValue) return;
-            var d8   = Date.Value;
-            _readr.DatabaseName = _loadr.Database.Name;
+            if (_loadr.Database == null) return;
 
             IsBusy = true;
-            //var list = new List<FinishedSale>();
-            Sales.Clear();
+            _readr.DatabaseName = _loadr.Database.Name;
+            var yr   = Date.Value.Year;
+            var mo   = Date.Value.Month;
+            var tkn  = new CancellationToken();
+            var list = await _readr.GetFinishedSales(yr, mo, tkn);
 
-            using (var results = await _readr.ReadFinishedSales(d8.Year, d8.Month, new CancellationToken()))
-            {
-                foreach (IDataRecord rec in results)
-                {
-                    Sales.Add(_readr.ToFinishedSale(rec));
-                }
-            }
+            PopulateRows(list);
 
-            //Sales.Swap(list);
             IsBusy = false;
+        }
+
+
+        private void PopulateRows(List<FinishedSale> list)
+        {
+            DailyRows.Swap(list.GroupBy (x => x.TimeScanned.Value.Date)
+                               .Select  (x => new MonthlySalesDailyRow(x))
+                               .OrderBy (x => x.Date)
+                               .ToList  ());
+            Details.Swap(list);
+
+            VatableSales = Details.Sum(x => x.VatableSales);
         }
     }
 }
