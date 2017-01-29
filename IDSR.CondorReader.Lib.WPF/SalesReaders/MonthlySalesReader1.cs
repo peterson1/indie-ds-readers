@@ -34,7 +34,8 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
                      TransactionNo,
                      Return
               FROM FinishedSales
-              WHERE LogDate >= '{0}' AND LogDate < '{1}'";
+              WHERE LogDate >= '{0}' AND LogDate < '{1}'
+              AND Voided = 0";
 
 
         private static string ComposeSqlQuery(int year, int month)

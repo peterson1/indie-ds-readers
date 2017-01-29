@@ -28,7 +28,7 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
             _readr   = monthlySalesReader;
             _loadr   = dbLoaderVM;
             Dates    = FillDatesList();
-            Date     = Dates?.FirstOrDefault();
+            Date     = Dates[2];//?.FirstOrDefault();
             QueryCmd = R2Command.Async(RunQuery);
         }
 
@@ -38,10 +38,12 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
         public IR2Command                 QueryCmd  { get; private set; }
         public bool                       IsBusy    { get; private set; }
 
-        public Observables<FinishedSale>          Details   { get; } = new Observables<FinishedSale>();
+        //public Observables<FinishedSale>          Details   { get; } = new Observables<FinishedSale>();
         public Observables<MonthlySalesDailyRow>  DailyRows { get; } = new Observables<MonthlySalesDailyRow>();
 
         public double  VatableSales  { get; private set; }
+        public double  OutputVat     { get; private set; }
+        public double  MonthlyTotal  { get; private set; }
 
 
         private Observables<DateTime> FillDatesList()
@@ -77,9 +79,11 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
                                .Select  (x => new MonthlySalesDailyRow(x))
                                .OrderBy (x => x.Date)
                                .ToList  ());
-            Details.Swap(list);
+            //Details.Swap(list);
 
-            VatableSales = Details.Sum(x => x.VatableSales);
+            VatableSales = DailyRows.Sum(x => x.VatableSales);
+            OutputVat    = DailyRows.Sum(x => x.OutputVat);
+            MonthlyTotal = DailyRows.Sum(x => x.DailyTotal);
         }
     }
 }

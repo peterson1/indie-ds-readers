@@ -16,8 +16,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public bool       Return          { get; set; }
 
         public double  LineTotal    => GetLineTotal();
-        public double  VatAmount    => LineTotal * (VatPercent / 100.0);
-        public double  VatableSales => LineTotal - VatAmount;
+        public double  OutputVat    => LineTotal - VatableSales;
+        public double  VatableSales => LineTotal / (1 + (VatPercent / 100.0));
 
         private double GetLineTotal()
             => Convert.ToDouble(Return ? DiscountedPrice

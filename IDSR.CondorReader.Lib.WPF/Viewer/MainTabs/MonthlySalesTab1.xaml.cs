@@ -9,10 +9,11 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
         public MonthlySalesTab1()
         {
             InitializeComponent();
-            Loaded += (a, b) =>
-            {
-                dg.EnableToggledColumns(DataGridLengthUnitType.Auto);
-            };
+            //Loaded += (a, b) =>
+            //{
+            //    dg.EnableToggledColumns(DataGridLengthUnitType.Auto);
+                
+            //};
         }
 
 

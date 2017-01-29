@@ -8,25 +8,24 @@
              xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:sdk="clr-namespace:Repo2.SDK.WPF45.UserControls;assembly=Repo2.SDK.WPF45"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
+    <UserControl.Resources>
+        <Style TargetType="sdk:DualText">
+            <Setter Property="Margin" Value="10,0,0,0" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <StackPanel Orientation="Horizontal"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Right"
-                    >
 
-            <sdk:DualText Text1="vatable sales"
-                          Text2="{Binding VatableSales, StringFormat=N2}"
-                          />
-
+        <DockPanel>
             <ComboBox ItemsSource="{Binding Dates}"
                       SelectedValue="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
                       ItemStringFormat="MMMM yyyy"
+                      DockPanel.Dock="Left"
                       >
                 <int:Interaction.Triggers>
                     <int:EventTrigger EventName="SelectionChanged">
@@ -34,24 +33,42 @@
                     </int:EventTrigger>
                 </int:Interaction.Triggers>
             </ComboBox>
-            <!--<Button Content="Query"
-                    Command="{Binding QueryCmd}"
-                    />-->
-        </StackPanel>
+            
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        >
+                <sdk:DualText Text1="vatable sales"
+                              Text2="{Binding VatableSales, StringFormat=N2}"
+                              />
+                <sdk:DualText Text1="output VAT"
+                              Text2="{Binding OutputVat, StringFormat=N2}"
+                              />
+                <sdk:DualText Text1="month total"
+                              Text2="{Binding MonthlyTotal, StringFormat=N2}"
+                              />
+            </StackPanel>
+        </DockPanel>
+        
 
         
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
             
             <DataGrid ItemsSource="{Binding DailyRows}"
                       Style="{StaticResource dgBase1}"
+                      x:Name="dgDays"
                       >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="date"
                                         Binding="{Binding Date, StringFormat=MMM d}"
+                                        ElementStyle="{StaticResource dgColRight}"
+                                        />
+                    <DataGridTextColumn Header="vatable sales"
+                                        Binding="{Binding VatableSales, StringFormat=N2}"
+                                        ElementStyle="{StaticResource dgColRight}"
+                                        />
+                    <DataGridTextColumn Header="output VAT"
+                                        Binding="{Binding OutputVat, StringFormat=N2}"
                                         ElementStyle="{StaticResource dgColRight}"
                                         />
                     <DataGridTextColumn Header="daily total"
@@ -63,15 +80,21 @@
                             <DataTemplate>
                                 <DataGrid ItemsSource="{Binding Terminals}"
                                           Style="{StaticResource dgBase1}"
+                                          x:Name="dgTerms"
                                           >
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="POS"
                                                             Binding="{Binding Terminal}"
                                                             ElementStyle="{StaticResource dgColCenter}"
                                                             />
+                                        <DataGridTextColumn Header="vatable sales"
+                                                            Binding="{Binding VatableSales, StringFormat=N2}"
+                                                            ElementStyle="{StaticResource dgColRight}"
+                                                            />
                                         <DataGridTextColumn Header="terminal total"
                                                             Binding="{Binding TerminalTotal, StringFormat=N2}"
                                                             ElementStyle="{StaticResource dgColRight}"
+                                                            Visibility="Collapsed"
                                                             />
                                         <DataGridTemplateColumn>
                                             <DataGridTemplateColumn.CellTemplate>
@@ -139,41 +162,6 @@
             </DataGrid>
 
             
-            <Expander Header="details"
-                      Grid.Row="1"
-                      >
-                <DataGrid x:Name="dg"
-                          ItemsSource="{Binding Details}"
-                          Style="{StaticResource dgBase1}"
-                          >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="product ID"
-                                            Binding="{Binding Product.Id}"
-                                            />
-                        <DataGridTextColumn Header="product description"
-                                            Binding="{Binding Product.Description}"
-                                            />
-                        <DataGridTextColumn Header="qty"
-                                            Binding="{Binding Qty}"
-                                            />
-                        <DataGridTextColumn Header="POS"
-                                            Binding="{Binding TerminalNo}"
-                                            />
-                        <DataGridTextColumn Header="scanned"
-                                            Binding="{Binding TimeScanned, StringFormat=d MMM yyyy\, h:mm tt}"
-                                            />
-                        <DataGridTextColumn Header="SRP"
-                                            Binding="{Binding ScannedSRP, StringFormat=N2}"
-                                            />
-                        <DataGridTextColumn Header="DiscountedPrice"
-                                            Binding="{Binding DiscountedPrice, StringFormat=N2}"
-                                            />
-                        <DataGridTextColumn Header="ReturnRemarks"
-                                            Binding="{Binding ReturnRemarks}"
-                                            />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Expander>
         </Grid>
         
 

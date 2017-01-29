@@ -22,7 +22,7 @@ namespace IDSR.CondorReader.Tests.MonthlySalesTests
         }
 
 
-        [Theory(DisplayName = "record counts")]
+        [Theory(DisplayName = "record counts", Skip = "outdated")]
         [InlineData(2016, 11, 196880)]
         [InlineData(2016, 12, 230593)]
         public async void RecordCounts(int year, int month, int expectedCount)
