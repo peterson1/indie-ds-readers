@@ -35,16 +35,6 @@ namespace IDSR.Common.Lib.WPF.LocalDbReaders
         }
 
 
-        //protected DbDataReader ConnectAndRead(string sqlQuery)
-        //{
-        //    var conn        = CreateConnection();
-        //    var cmd         = conn.CreateCommand();
-        //    cmd.CommandText = sqlQuery;
-        //    conn.Open();
-        //    return cmd.ExecuteReader(CommandBehavior.CloseConnection);
-        //}
-
-
         protected async Task<DbDataReader> ConnectAndReadAsync(string sqlQuery, CancellationToken cancelTkn)
         {
             var conn        = CreateConnection();
@@ -56,6 +46,14 @@ namespace IDSR.Common.Lib.WPF.LocalDbReaders
         }
 
 
-        protected static string Param(DateTime date) => date.ToString("yyyy-MM-dd");
+        private static string Param(DateTime date) => date.ToString("yyyy-MM-dd");
+
+
+        protected static string AddParamsToMonthlySQL(string sqlQuery, int year, int month)
+        {
+            var start = new DateTime(year, month, 1);
+            var end = start.AddMonths(1);
+            return string.Format(sqlQuery, Param(start), Param(end));
+        }
     }
 }

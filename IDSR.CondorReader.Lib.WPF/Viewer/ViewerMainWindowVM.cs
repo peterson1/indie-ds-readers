@@ -7,16 +7,18 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer
     {
         public ViewerMainWindowVM(DbLoaderVM1 dbLoaderVM,
                                   YearEndInventoryTabVM1 yearEndInventoryTabVM,
-                                  MonthlySalesTabVM1 monthlySalesTabVM)
+                                  MonthlySalesTabVM1 monthlySalesTabVM,
+                                  MonthlyPurchasesTabVM1 monthlyPurchasesTabVM)
         {
             DbLoader = dbLoaderVM;
             Tabs     = new Observables<object>
             {
+                monthlyPurchasesTabVM,
                 monthlySalesTabVM,
                 yearEndInventoryTabVM,
             };
-            DbLoader.MasterDataLoaded += (a, b) 
-                => monthlySalesTabVM.QueryCmd.ExecuteIfItCan();
+            DbLoader.MasterDataLoaded += (a, b)
+                => monthlyPurchasesTabVM.QueryCmd.ExecuteIfItCan();
         }
 
 

@@ -99,12 +99,20 @@
   <ItemGroup>
     <Compile Include="ComponentRegistry\CondorReaderIoC.cs" />
     <Compile Include="MasterDataReaders\ProductsReader1.cs" />
-    <Compile Include="SalesReaders\MonthlySalesReader1.cs" />
+    <Compile Include="MasterDataReaders\VendorsReader1.cs" />
+    <Compile Include="TransactionReaders\PurchaseOrdersReader1.cs" />
+    <Compile Include="TransactionReaders\FinishedSalesReader1.cs" />
+    <Compile Include="TransactionReaders\ReceivingReader1.cs" />
     <Compile Include="Viewer\DbLoaderVM1.cs" />
+    <Compile Include="Viewer\MainTabs\MonthlyPurchasesTab1.xaml.cs">
+      <DependentUpon>MonthlyPurchasesTab1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\MainTabs\MonthlyPurchasesTabVM1.cs" />
     <Compile Include="Viewer\MainTabs\MonthlySalesTab1.xaml.cs">
       <DependentUpon>MonthlySalesTab1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Viewer\MainTabs\MonthlySalesTabVM1.cs" />
+    <Compile Include="Viewer\MainTabs\MonthlyTabVmBase.cs" />
     <Compile Include="Viewer\MainTabs\YearEndInventoryTab1.xaml.cs">
       <DependentUpon>YearEndInventoryTab1.xaml</DependentUpon>
     </Compile>
@@ -155,6 +163,10 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Viewer\MainTabs\MonthlyPurchasesTab1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Viewer\MainTabs\MonthlySalesTab1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -163,6 +175,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PurchasesReaders\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />

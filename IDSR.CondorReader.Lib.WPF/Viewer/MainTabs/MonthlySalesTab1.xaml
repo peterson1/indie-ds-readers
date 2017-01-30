@@ -22,17 +22,24 @@
         </Grid.RowDefinitions>
 
         <DockPanel>
-            <ComboBox ItemsSource="{Binding Dates}"
-                      SelectedValue="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
-                      ItemStringFormat="MMMM yyyy"
-                      DockPanel.Dock="Left"
-                      >
-                <int:Interaction.Triggers>
-                    <int:EventTrigger EventName="SelectionChanged">
-                        <int:InvokeCommandAction Command="{Binding QueryCmd}" />
-                    </int:EventTrigger>
-                </int:Interaction.Triggers>
-            </ComboBox>
+            <StackPanel DockPanel.Dock="Left"
+                        Orientation="Horizontal"
+                        >
+                <ComboBox ItemsSource="{Binding Months}"
+                          SelectedValue="{Binding Month, UpdateSourceTrigger=PropertyChanged}"
+                          ItemStringFormat="MMMM yyyy"
+                          >
+                    <int:Interaction.Triggers>
+                        <int:EventTrigger EventName="SelectionChanged">
+                            <int:InvokeCommandAction Command="{Binding QueryCmd}" />
+                        </int:EventTrigger>
+                    </int:Interaction.Triggers>
+                </ComboBox>
+
+                <Button Content="Query"
+                        Command="{Binding QueryCmd}"
+                        />
+            </StackPanel>
             
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
@@ -40,6 +47,9 @@
                         >
                 <sdk:DualText Text1="vatable sales"
                               Text2="{Binding VatableSales, StringFormat=N2}"
+                              />
+                <sdk:DualText Text1="VAT exempt"
+                              Text2="{Binding VatExempt, StringFormat=N2}"
                               />
                 <sdk:DualText Text1="output VAT"
                               Text2="{Binding OutputVat, StringFormat=N2}"
@@ -65,6 +75,10 @@
                                         />
                     <DataGridTextColumn Header="vatable sales"
                                         Binding="{Binding VatableSales, StringFormat=N2}"
+                                        ElementStyle="{StaticResource dgColRight}"
+                                        />
+                    <DataGridTextColumn Header="VAT exempt"
+                                        Binding="{Binding VatExempt, StringFormat=N2}"
                                         ElementStyle="{StaticResource dgColRight}"
                                         />
                     <DataGridTextColumn Header="output VAT"

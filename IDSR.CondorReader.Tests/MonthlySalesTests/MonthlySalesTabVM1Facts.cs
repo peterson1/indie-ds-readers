@@ -31,9 +31,9 @@ namespace IDSR.CondorReader.Tests.MonthlySalesTests
         public async void DailyTerminalTotals(int yr, int mo, int day,
             double t1Total, double t2Total, double t3Total, double t4Total, double t5Total)
         {
-            _sut.Date = new DateTime(yr, mo, day);
+            _sut.Month = new DateTime(yr, mo, day);
             await _sut.RunQuery();
-            var row = _sut.DailyRows.Single(x => x.Date == _sut.Date);
+            var row = _sut.DailyRows.Single(x => x.Date == _sut.Month);
             var slack = 0.019;
 
             var term = row.Terminals.Single(x => x.Terminal == "001");

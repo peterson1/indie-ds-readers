@@ -20,6 +20,7 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
         public double VatableSales  => Transactions.Sum(x => x.VatableSales);
         public double OutputVat     => Transactions.Sum(x => x.OutputVat);
         public double TerminalTotal => Transactions.Sum(x => x.TransactionTotal);
+        public double VatExempt     => Transactions.Sum(x => x.VatExempt);
 
 
         private List<MonthlySalesTransactionRow> GroupByTransaction(IGrouping<string, FinishedSale> items)

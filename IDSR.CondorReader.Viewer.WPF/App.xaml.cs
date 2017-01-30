@@ -38,6 +38,7 @@ namespace IDSR.CondorReader.Viewer.WPF
         {
             this.SetTemplate<YearEndInventoryTabVM1, YearEndInventoryTab1>();
             this.SetTemplate<MonthlySalesTabVM1, MonthlySalesTab1>();
+            this.SetTemplate<MonthlyPurchasesTabVM1, MonthlyPurchasesTab1>();
         }
     }
 }

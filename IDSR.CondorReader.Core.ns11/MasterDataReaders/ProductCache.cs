@@ -4,7 +4,7 @@ using IDSR.CondorReader.Core.ns11.DomainModels;
 
 namespace IDSR.CondorReader.Core.ns11.MasterDataReaders
 {
-    public class ProductsCache
+    public class ProductCache
     {
         private SortedDictionary<long, Product> _dict = new SortedDictionary<long, Product>();
 

@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.LocalDbReaders;
+using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
-using IDSR.CondorReader.Core.ns11.SalesReaders;
 
-namespace IDSR.CondorReader.Lib.WPF.SalesReaders
+namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
-    public class MonthlySalesReader1 : LocalDbReaderBase, IMonthlySalesReader
+    public class FinishedSalesReader1 : LocalDbReaderBase, IDsrDbReader<FinishedSale>
     {
-        private ProductsCache _products;
+        private ProductCache _products;
 
 
-        public MonthlySalesReader1(LocalDbFinder localDbFinder, ProductsCache productsDictionary) : base(localDbFinder)
+        public FinishedSalesReader1(LocalDbFinder localDbFinder, ProductCache productsDictionary) : base(localDbFinder)
         {
             _products = productsDictionary;
         }
@@ -38,18 +37,6 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
               AND Voided = 0";
 
 
-        private static string ComposeSqlQuery(int year, int month)
-        {
-            var start = new DateTime(year, month, 1);
-            var end = start.AddMonths(1);
-            return string.Format(SQL_QUERY, Param(start), Param(end));
-        }
-
-
-        //private Task<DbDataReader> FinishedSalesReader(int year, int month, CancellationToken cancelTkn)
-        //    => ConnectAndReadAsync(ComposeSqlQuery(year, month), cancelTkn);
-
-
         private FinishedSale ToFinishedSale(IDataRecord rec)
             => new FinishedSale
             {
@@ -66,6 +53,14 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
             };
 
 
+        //private static string ComposeSqlQuery(int year, int month)
+        //{
+        //    var start = new DateTime(year, month, 1);
+        //    var end = start.AddMonths(1);
+        //    return string.Format(SQL_QUERY, Param(start), Param(end));
+        //}
+
+
         private Product FindProduct(IDataRecord rec, int fieldIndx)
         {
             var id = rec.GetInt64(fieldIndx);
@@ -73,9 +68,9 @@ namespace IDSR.CondorReader.Lib.WPF.SalesReaders
         }
 
 
-        public async Task<List<FinishedSale>> GetFinishedSales(int year, int month, CancellationToken cancelTkn)
+        public async Task<List<FinishedSale>> GetMonthly(int year, int month, CancellationToken cancelTkn)
         {
-            var qry = ComposeSqlQuery(year, month);
+            var qry  = AddParamsToMonthlySQL(SQL_QUERY, year, month);
             var list = new List<FinishedSale>();
 
             await Task.Run(async () =>

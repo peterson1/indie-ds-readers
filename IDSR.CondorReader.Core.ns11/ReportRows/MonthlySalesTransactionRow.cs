@@ -20,5 +20,6 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
         public double VatableSales     => Lines.Sum(x => x.VatableSales);
         public double OutputVat        => Lines.Sum(x => x.OutputVat);
         public double TransactionTotal => Lines.Sum(x => x.LineTotal);
+        public double VatExempt        => Lines.Sum(x => x.VatExempt);
     }
 }

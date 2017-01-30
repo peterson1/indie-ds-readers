@@ -17,11 +17,16 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
 
         public double  LineTotal    => GetLineTotal();
         public double  OutputVat    => LineTotal - VatableSales;
-        public double  VatableSales => LineTotal / (1 + (VatPercent / 100.0));
+        public double  VatableSales => GetVatableSales();
+        public double  VatExempt    => Product.IsVatable ? 0 : LineTotal;
+
 
         private double GetLineTotal()
             => Convert.ToDouble(Return ? DiscountedPrice
                                        : Qty * DiscountedPrice);
 
+        private double GetVatableSales()
+            => Product.IsVatable ? LineTotal / (1 + (VatPercent / 100.0))
+                                 : 0;
     }
 }

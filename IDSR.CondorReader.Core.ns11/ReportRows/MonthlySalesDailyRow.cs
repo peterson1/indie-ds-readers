@@ -21,6 +21,7 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
         public double VatableSales => Terminals.Sum(x => x.VatableSales);
         public double OutputVat    => Terminals.Sum(x => x.OutputVat);
         public double DailyTotal   => Terminals.Sum(x => x.TerminalTotal);
+        public double VatExempt    => Terminals.Sum(x => x.VatExempt);
 
 
         private List<MonthlySalesTerminalRow> GroupByTerminal(IGrouping<DateTime, FinishedSale> items)
