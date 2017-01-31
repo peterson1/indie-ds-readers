@@ -40,6 +40,7 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
             b.Multi<IFileSystemAccesor, FileSystemAccesor1>();
             b.Multi<IDsrDbReader<FinishedSale>, FinishedSalesReader1>();
             b.Multi<IDsrDbReader<PurchaseOrderLine>, PurchaseOrdersReader1>();
+            b.Multi<IDsrDbReader<ReceivingLine>, ReceivingReader1>();
 
             var containr = b.Build();
             return containr.BeginLifetimeScope();

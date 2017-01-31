@@ -7,23 +7,23 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
 {
     public class MonthlyPurchasesDailyRow
     {
-        public MonthlyPurchasesDailyRow(IGrouping<DateTime, PurchaseOrderLine> grp)
+        public MonthlyPurchasesDailyRow(IGrouping<DateTime, ReceivingLine> grp)
         {
-            Date   = grp.Key;
-            Orders = GroupByOrder(grp);
+            Date       = grp.Key;
+            Receivings = GroupByReceiving(grp);
         }
 
         public DateTime Date { get; }
-        public List<MonthlyPurchasesOrderRow> Orders { get; }
+        public List<MonthlyPurchasesReceivingRow> Receivings { get; }
 
 
-        public double? DailyTotal => Orders?.Sum(x => x.Order?.NetTotal);
+        public double? DailyTotal => Receivings?.Sum(x => x.Receiving?.NetTotal);
 
 
-        private List<MonthlyPurchasesOrderRow> GroupByOrder(IEnumerable<PurchaseOrderLine> lines)
-            => lines.GroupBy (x => x.OrderId)
-                    .Select  (x => new MonthlyPurchasesOrderRow(x))
-                    .OrderBy (x => x.Order.Id)
+        private List<MonthlyPurchasesReceivingRow> GroupByReceiving(IEnumerable<ReceivingLine> lines)
+            => lines.GroupBy (x => x.ReceivingID)
+                    .Select  (x => new MonthlyPurchasesReceivingRow(x))
+                    .OrderBy (x => x.Receiving.Id)
                     .ToList  ();
     }
 }

@@ -103,6 +103,9 @@
     <Compile Include="TransactionReaders\PurchaseOrdersReader1.cs" />
     <Compile Include="TransactionReaders\FinishedSalesReader1.cs" />
     <Compile Include="TransactionReaders\ReceivingReader1.cs" />
+    <Compile Include="Viewer\DataGrids\ReceivingLinesTable1.xaml.cs">
+      <DependentUpon>ReceivingLinesTable1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Viewer\DbLoaderVM1.cs" />
     <Compile Include="Viewer\MainTabs\MonthlyPurchasesTab1.xaml.cs">
       <DependentUpon>MonthlyPurchasesTab1.xaml</DependentUpon>
@@ -163,6 +166,10 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Viewer\DataGrids\ReceivingLinesTable1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Viewer\MainTabs\MonthlyPurchasesTab1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

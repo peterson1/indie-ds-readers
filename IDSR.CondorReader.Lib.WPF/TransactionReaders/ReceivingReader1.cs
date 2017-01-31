@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +26,8 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                 FROM ReceivingLine ln
            LEFT JOIN Receiving re
                   ON re.ReceivingID = ln.ReceivingID
-               WHERE re.DateReceived >= '{0}' AND re.DateReceived < '{1}';";
+               WHERE re.DateReceived >= '{0}' AND re.DateReceived < '{1}'
+                 AND ln.qty > 0;";
 
 
         public async Task<List<ReceivingLine>> GetMonthly(int year, int month, CancellationToken cancelTkn)
@@ -47,7 +47,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             ).ConfigureAwait(false);
 
             foreach (var line in lines)
-                line.Parent = parnt[line.LineId];
+                line.Parent = parnt[line.ReceivingID];
 
             return lines;
         }
@@ -70,9 +70,17 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        private Task<List<ReceivingLine>> QueryLines(int year, int month, CancellationToken cancelTkn)
+        private async Task<List<ReceivingLine>> QueryLines(int year, int month, CancellationToken cancelTkn)
         {
-            throw new NotImplementedException();
+            var qry  = AddParamsToMonthlySQL(LINE_QUERY, year, month);
+            var list = new List<ReceivingLine>();
+
+            using (var results = await ConnectAndReadAsync(qry, cancelTkn))
+            {
+                foreach (IDataRecord rec in results)
+                    list.Add(new ReceivingLine(rec));
+            }
+            return list;
         }
     }
 }

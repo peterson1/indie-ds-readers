@@ -7,6 +7,7 @@
              xmlns:int="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:sdk="clr-namespace:Repo2.SDK.WPF45.UserControls;assembly=Repo2.SDK.WPF45"
+             xmlns:dg="clr-namespace:IDSR.CondorReader.Lib.WPF.Viewer.DataGrids"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              >
@@ -77,17 +78,26 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <DataGrid ItemsSource="{Binding Orders}"
+                            <DataGrid ItemsSource="{Binding Receivings}"
                                       Style="{StaticResource dgBase1}"
                                       >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="supplier"
-                                                        Binding="{Binding Order.Description}"
+                                                        Binding="{Binding Receiving.Description}"
                                                         />
-                                    <DataGridTextColumn Header="order total"
-                                                        Binding="{Binding Order.NetTotal, StringFormat=N2}"
+                                    <DataGridTextColumn Header="net total"
+                                                        Binding="{Binding Receiving.NetTotal, StringFormat=N2}"
                                                         ElementStyle="{StaticResource dgColRight}"
                                                         />
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Expander IsExpanded="False">
+                                                    <dg:ReceivingLinesTable1 DataContext="{Binding Lines}" />
+                                                </Expander>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DataTemplate>

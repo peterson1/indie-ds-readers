@@ -45,13 +45,14 @@
     <Compile Include="DomainModels\PurchaseOrderLine.cs" />
     <Compile Include="DomainModels\Receiving.cs" />
     <Compile Include="DomainModels\ReceivingLine.cs" />
+    <Compile Include="DomainModels\Transaction.cs" />
     <Compile Include="DomainModels\Vendor.cs" />
     <Compile Include="IDsrDbReader.cs" />
     <Compile Include="MasterDataReaders\ProductCache.cs" />
     <Compile Include="MasterDataReaders\VendorCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportRows\MonthlyPurchasesDailyRow.cs" />
-    <Compile Include="ReportRows\MonthlyPurchasesOrderRow.cs" />
+    <Compile Include="ReportRows\MonthlyPurchasesReceivingRow.cs" />
     <Compile Include="ReportRows\MonthlySalesDailyRow.cs" />
     <Compile Include="ReportRows\MonthlySalesTerminalRow.cs" />
     <Compile Include="ReportRows\MonthlySalesTransactionRow.cs" />
