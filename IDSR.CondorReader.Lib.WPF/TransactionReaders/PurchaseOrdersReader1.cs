@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.LocalDbReaders;
+using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
-    public class PurchaseOrdersReader1 : LocalDbReaderBase, IDsrDbReader<PurchaseOrderLine>
+    public class PurchaseOrdersReader1 : SqlDbReaderBase, IDsrDbReader<PurchaseOrderLine>
     {
-        public PurchaseOrdersReader1(LocalDbFinder localDbFinder) : base(localDbFinder)
+        public PurchaseOrdersReader1(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
         }
 

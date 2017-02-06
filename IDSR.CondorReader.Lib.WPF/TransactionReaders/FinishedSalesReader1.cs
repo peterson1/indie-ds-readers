@@ -2,20 +2,21 @@
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.LocalDbReaders;
+using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
-    public class FinishedSalesReader1 : LocalDbReaderBase, IDsrDbReader<FinishedSale>
+    public class FinishedSalesReader1 : SqlDbReaderBase, IDsrDbReader<FinishedSale>
     {
         private ProductCache _products;
 
 
-        public FinishedSalesReader1(LocalDbFinder localDbFinder, ProductCache productsDictionary) : base(localDbFinder)
+        public FinishedSalesReader1(LocalDbFinder localDbFinder, ProductCache productsDictionary, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
             _products = productsDictionary;
         }

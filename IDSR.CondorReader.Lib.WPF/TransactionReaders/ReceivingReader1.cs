@@ -2,16 +2,17 @@
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.LocalDbReaders;
+using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
-    public class ReceivingReader1 : LocalDbReaderBase, IDsrDbReader<ReceivingLine>
+    public class ReceivingReader1 : SqlDbReaderBase, IDsrDbReader<ReceivingLine>
     {
-        public ReceivingReader1(LocalDbFinder localDbFinder) : base(localDbFinder)
+        public ReceivingReader1(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
         }
 

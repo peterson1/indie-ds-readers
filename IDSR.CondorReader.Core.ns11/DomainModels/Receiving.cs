@@ -8,7 +8,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
     {
         public Receiving(IDataRecord r)
         {
-            Id                      = r.GetInt64  ( 0);//[ReceivingID]	integer NOT NULL,
+            Id                      = r.ToLong    ( 0);//[ReceivingID]	integer NOT NULL,
             ReceivingNo             = r.GetString ( 1);//[ReceivingNo]	varchar(10) NOT NULL COLLATE NOCASE,
             PurchaseOrderID         = r.ToDecimal_( 2);//[PurchaseOrderID]	numeric,
             PurchaseOrderNo         = r.ToText    ( 3);//[PurchaseOrderNo]	varchar(10) COLLATE NOCASE,
@@ -22,7 +22,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             Remarks                 = r.ToText    (11);//[Remarks]	varchar(100) COLLATE NOCASE,
             EDA                     = r.ToDate_   (12);//[EDA]	datetime,
             CancellationDate        = r.ToDate_   (13);//[CancellationDate]	datetime,
-            Terms                   = r.GetInt64  (14);//[Terms]	integer NOT NULL DEFAULT 0,
+            Terms                   = r.ToLong    (14);//[Terms]	integer NOT NULL DEFAULT 0,
             DeliverTo               = r.GetInt16  (15);//[DeliverTo]	smallint NOT NULL DEFAULT 2,
             DeliveryDescription     = r.GetString (16);//[DeliveryDescription]	varchar(100) NOT NULL COLLATE NOCASE,
             DeliveryAddress         = r.GetString (17);//[DeliveryAddress]	varchar(100) NOT NULL COLLATE NOCASE,

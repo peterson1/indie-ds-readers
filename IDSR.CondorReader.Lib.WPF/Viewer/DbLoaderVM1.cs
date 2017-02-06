@@ -26,12 +26,14 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer
             if (_productReadr != null)
             {
                 _productReadr.DatabaseName = Database.Name;
+                _productReadr.UseServer    = UseServer;
                 await _productReadr.CacheInMemory(cancelTkn);
             }
 
             if (_vendorReadr != null)
             {
                 _vendorReadr.DatabaseName = Database.Name;
+                _vendorReadr.UseServer    = UseServer;
                 await _vendorReadr.CacheInMemory(cancelTkn);
             }
         }

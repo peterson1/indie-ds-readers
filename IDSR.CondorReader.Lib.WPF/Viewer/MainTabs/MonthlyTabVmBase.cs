@@ -59,6 +59,7 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
             var tkn = new CancellationToken();
 
             Reader.DatabaseName = _loadr.Database.Name;
+            Reader.UseServer    = _loadr.UseServer;
 
             var list = await Reader.GetMonthly(yr, mo, tkn);
             Visualize(list);

@@ -1,20 +1,21 @@
 ﻿using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.LocalDbReaders;
+using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
 using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
 {
-    public class ProductsReader1 : LocalDbReaderBase
+    public class ProductsReader1 : SqlDbReaderBase
     {
         private ProductCache _cache;
 
 
-        public ProductsReader1(LocalDbFinder localDbFinder, ProductCache productsCache) : base(localDbFinder)
+        public ProductsReader1(LocalDbFinder localDbFinder, ProductCache productsCache, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
             _cache = productsCache;
         }
@@ -38,7 +39,7 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         private Product ToProduct(IDataRecord rec)
             => new Product
             {
-                Id                      = rec.GetInt64   ( 0),// [ProductID]	integer NOT NULL,
+                Id                      = rec.ToLong     ( 0),// [ProductID]	integer NOT NULL,
                 Code                    = rec.GetString  ( 1),// [ProductCode]	varchar(20) NOT NULL COLLATE NOCASE,
                 Description             = rec.GetString  ( 2),// [Description]	varchar(100) NOT NULL COLLATE NOCASE,
                 FieldA                  = rec.GetString  ( 3),// [FieldACode]	varchar(5) COLLATE NOCASE,
@@ -89,7 +90,7 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
                 ItemDetailsCode         = rec.GetString  (48),// [ItemDetailsCode]	varchar(5) NOT NULL COLLATE NOCASE DEFAULT '',
                 OpenDepartment          = rec.GetBoolean (49),// [OpenDepartment]	bit NOT NULL DEFAULT 0,
                 IngredientAsDefaultCost = rec.GetBoolean (50),// [IngredientAsDefaultCost]	bit NOT NULL DEFAULT 0,
-                ProductType             = rec.GetInt64   (51),// [ProductType]	integer NOT NULL DEFAULT 0,
+                ProductType             = rec.ToLong     (51),// [ProductType]	integer NOT NULL DEFAULT 0,
                 TimeBased               = rec.GetBoolean (52),// [TimeBased]	bit NOT NULL DEFAULT 0,
                 Combo                   = rec.GetBoolean (53),// [Combo]	bit NOT NULL DEFAULT 0,
                 ComputedAverageCost     = rec.GetDecimal (54),// [ComputedAverageCost]	numeric NOT NULL DEFAULT 0

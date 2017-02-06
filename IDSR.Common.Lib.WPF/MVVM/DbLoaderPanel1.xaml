@@ -11,6 +11,11 @@
     <StackPanel Orientation="Horizontal"
                 VerticalAlignment="Center"
                 >
+
+        <CheckBox Content="use server"
+                  IsChecked="{Binding UseServer, UpdateSourceTrigger=PropertyChanged}"
+                  />
+
         <ComboBox ItemsSource="{Binding Databases}"
                   SelectedItem="{Binding Database}"
                   >

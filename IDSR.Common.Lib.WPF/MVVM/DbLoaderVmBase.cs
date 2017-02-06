@@ -34,6 +34,7 @@ namespace IDSR.Common.Lib.WPF.MVVM
         public Observables<DatabaseItem>  Databases          { get; }
         public DatabaseItem               Database           { get; set; }
         public IR2Command                 LoadMasterDataCmd  { get; private set; }
+        public bool                       UseServer          { get; set; }
         public bool                       IsBusy             { get; private set; }
 
 

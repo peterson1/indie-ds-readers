@@ -1,39 +1,52 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Threading;
 using System.Threading.Tasks;
+using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using Repo2.Core.ns11.Exceptions;
 using Repo2.Core.ns11.Extensions.StringExtensions;
 
-namespace IDSR.Common.Lib.WPF.LocalDbReaders
+namespace IDSR.Common.Lib.WPF.SqlDbReaders
 {
-    public abstract class LocalDbReaderBase
+    public abstract class SqlDbReaderBase
     {
-        private LocalDbFinder _findr;
+        private LocalDbFinder     _findr;
+        private DsrConfiguration1 _cfg;
 
-        public LocalDbReaderBase(LocalDbFinder localDbFinder)
+        public SqlDbReaderBase(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1)
         {
             _findr = localDbFinder;
+            _cfg   = dsrConfiguration1;
         }
 
 
-        public string DatabaseName { get; set; }
+        public string  DatabaseName  { get; set; }
+        public bool    UseServer     { get; set; }
 
 
         private DbConnection CreateConnection()
+            => UseServer ? GetSqlServerConnection() 
+                         : GetSqliteConnection();
+
+
+        private DbConnection GetSqlServerConnection()
+            => new SqlConnection(_cfg.ServerConnection);
+
+
+        private DbConnection GetSqliteConnection()
         {
             if (DatabaseName.IsBlank())
                 throw Fault.BlankText("Database name");
 
-            var path   = _findr.FindDatabaseFile(DatabaseName);
+            var path = _findr.FindDatabaseFile(DatabaseName);
             var conStr = ConnectionString.SQLite3(path);
-            return  new SQLiteConnection(conStr);
+            return new SQLiteConnection(conStr);
         }
-
 
         protected async Task<DbDataReader> ConnectAndReadAsync(string sqlQuery, CancellationToken cancelTkn)
         {

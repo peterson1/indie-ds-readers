@@ -9,7 +9,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public ReceivingLine(IDataRecord r)
         {
             ReceivingID = Convert.ToInt64(r.GetDecimal(0)); //[ReceivingID]	numeric NOT NULL,
-            LineId            = r.GetInt64   ( 1);//[LineID]	integer NOT NULL,
+            LineId            = r.ToLong     ( 1);//[LineID]	integer NOT NULL,
             ProductID         = r.ToLong_    ( 2);//[ProductID]	integer,
             ProductCode       = r.ToText     ( 3); //[PRODUCTCODE]	varchar(20) COLLATE NOCASE,
             VendorProductCode = r.GetString  ( 4);//[VendorProductCode]	varchar(20) NOT NULL COLLATE NOCASE,

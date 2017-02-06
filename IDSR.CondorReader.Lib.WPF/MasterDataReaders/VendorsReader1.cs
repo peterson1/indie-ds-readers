@@ -3,18 +3,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Repo2.Core.ns11.Extensions;
 using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.LocalDbReaders;
+using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
+using IDSR.Common.Core.ns11.Configuration;
 
 namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
 {
-    public class VendorsReader1 : LocalDbReaderBase
+    public class VendorsReader1 : SqlDbReaderBase
     {
         private VendorCache _cache;
 
 
-        public VendorsReader1(VendorCache vendorCache, LocalDbFinder localDbFinder) : base(localDbFinder)
+        public VendorsReader1(VendorCache vendorCache, LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
             _cache = vendorCache;
         }
@@ -50,10 +51,10 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
                 Phone                = r.ToText(      8),//[phone]	varchar(20) COLLATE NOCASE,
                 Contactperson        = r.ToText(      9),//[contactperson]	varchar(30) COLLATE NOCASE,
                 TermId               = r.GetDecimal (10),//[termid]	numeric NOT NULL DEFAULT 0,
-                DaysToDeliver        = r.GetInt64   (11),//[daystodeliver]	integer NOT NULL DEFAULT 0,
+                DaysToDeliver        = r.ToLong_    (11),//[daystodeliver]	integer NOT NULL DEFAULT 0,
                 TradeDiscount        = r.ToText(     12),//[tradediscount]	varchar(20) COLLATE NOCASE,
                 CashDiscount         = r.ToText(     13),//[cashdiscount]	varchar(20) COLLATE NOCASE,
-                Terms                = r.GetInt64   (14),//[terms]	integer NOT NULL DEFAULT 0,
+                Terms                = r.ToLong_    (14),//[terms]	integer NOT NULL DEFAULT 0,
                 IncludeLineDiscounts = r.GetBoolean (15),//[IncludeLineDiscounts]	bit NOT NULL DEFAULT 0,
                 DiscountCode1        = r.ToText(     16),//[discountcode1]	varchar(4) NOT NULL COLLATE NOCASE DEFAULT '',
                 DiscountCode2        = r.ToText(     17),//[discountcode2]	varchar(4) NOT NULL COLLATE NOCASE DEFAULT '',
@@ -61,8 +62,8 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
                 Discount1            = r.GetDecimal (19),//[discount1]	numeric NOT NULL DEFAULT 0,
                 Discount2            = r.GetDecimal (20),//[discount2]	numeric NOT NULL DEFAULT 0,
                 Discount3            = r.GetDecimal (21),//[discount3]	numeric NOT NULL DEFAULT 0,
-                DaysToSum            = r.GetInt64   (22),//[daystosum]	integer NOT NULL DEFAULT 0,
-                ReorderMultiplier    = r.GetInt64   (23),//[reordermultiplier]	integer NOT NULL DEFAULT 0,
+                DaysToSum            = r.ToLong_    (22),//[daystosum]	integer NOT NULL DEFAULT 0,
+                ReorderMultiplier    = r.ToLong_    (23),//[reordermultiplier]	integer NOT NULL DEFAULT 0,
                 Remarks              = r.ToText(     24),//[remarks]	varchar(20) COLLATE NOCASE,
                 ShareWithBranch      = r.GetBoolean (25),//[SHAREWITHBRANCH]	bit NOT NULL DEFAULT 0,
                 Consignor            = r.GetBoolean (26),//[Consignor]	bit NOT NULL DEFAULT 0,
