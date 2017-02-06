@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
+using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.CondorReader.Core.ns11;
 using PropertyChanged;
 using Repo2.Core.ns11.DataStructures;

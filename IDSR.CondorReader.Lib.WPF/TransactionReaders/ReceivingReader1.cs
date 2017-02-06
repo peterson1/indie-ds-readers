@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
+using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11;
@@ -31,13 +33,35 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                  AND ln.qty > 0;";
 
 
-        public async Task<List<ReceivingLine>> GetMonthly(int year, int month, CancellationToken cancelTkn)
+
+        public Task<List<ReceivingLine>> GetDateRange(DateTime startDate, DateTime endDate, CancellationToken cancelTkn)
+            => RunJobs(QueryParent(startDate, endDate, cancelTkn),
+                        QueryLines(startDate, endDate, cancelTkn));
+
+        private Task<Dictionary<long, Receiving>> QueryParent(DateTime startDate, DateTime endDate, CancellationToken cancelTkn)
+            => QueryParent(AddParamsToDateRangeSQL(PARENT_QUERY, startDate, endDate), cancelTkn);
+
+        private Task<List<ReceivingLine>> QueryLines(DateTime startDate, DateTime endDate, CancellationToken cancelTkn)
+            => QueryLines(AddParamsToDateRangeSQL(LINE_QUERY, startDate, endDate), cancelTkn);
+
+
+
+        public Task<List<ReceivingLine>> GetMonthly(int year, int month, CancellationToken cancelTkn)
+            => RunJobs(QueryParent(year, month, cancelTkn), 
+                        QueryLines(year, month, cancelTkn));
+
+        private Task<Dictionary<long, Receiving>> QueryParent(int year, int month, CancellationToken cancelTkn)
+            => QueryParent(AddParamsToMonthlySQL(PARENT_QUERY, year, month), cancelTkn);
+
+        private Task<List<ReceivingLine>> QueryLines(int year, int month, CancellationToken cancelTkn)
+            => QueryLines(AddParamsToMonthlySQL(LINE_QUERY, year, month), cancelTkn);
+
+
+
+        private static async Task<List<ReceivingLine>> RunJobs(Task<Dictionary<long, Receiving>> parntJob, Task<List<ReceivingLine>> linesJob)
         {
             Dictionary<long, Receiving> parnt = null;
             List<ReceivingLine>         lines = null;
-
-            var parntJob = QueryParent(year, month, cancelTkn);
-            var linesJob = QueryLines (year, month, cancelTkn);
 
             await Task.Run(async () =>
             {
@@ -54,9 +78,8 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        private async Task<Dictionary<long, Receiving>> QueryParent(int year, int month, CancellationToken cancelTkn)
+        private async Task<Dictionary<long, Receiving>> QueryParent(string qry, CancellationToken cancelTkn)
         {
-            var qry  = AddParamsToMonthlySQL(PARENT_QUERY, year, month);
             var dict = new Dictionary<long, Receiving>();
 
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))
@@ -71,9 +94,8 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        private async Task<List<ReceivingLine>> QueryLines(int year, int month, CancellationToken cancelTkn)
+        private async Task<List<ReceivingLine>> QueryLines(string qry, CancellationToken cancelTkn)
         {
-            var qry  = AddParamsToMonthlySQL(LINE_QUERY, year, month);
             var list = new List<ReceivingLine>();
 
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))

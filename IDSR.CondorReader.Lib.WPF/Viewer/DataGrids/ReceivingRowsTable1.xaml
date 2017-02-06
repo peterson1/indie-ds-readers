@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="IDSR.CondorReader.Lib.WPF.Viewer.DataGrids.ReceivingRowsTable1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IDSR.CondorReader.Lib.WPF.Viewer.DataGrids"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DataGrid ItemsSource="{Binding }"
+              Style="{StaticResource dgBase1}"
+              x:Name="dg"
+              >
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="date"
+                                    Binding="{Binding Date, StringFormat=MMM d}"
+                                    ElementStyle="{StaticResource dgColRight}"
+                                    />
+            <DataGridTextColumn Header="daily total"
+                                    Binding="{Binding DailyTotal, StringFormat=N2}"
+                                    ElementStyle="{StaticResource dgColRight}"
+                                    />
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <DataGrid ItemsSource="{Binding Receivings}"
+                                      Style="{StaticResource dgBase1}"
+                                      >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="supplier"
+                                                        Binding="{Binding Receiving.Description}"
+                                                        />
+                                <DataGridTextColumn Header="net total"
+                                                        Binding="{Binding Receiving.NetTotal, StringFormat=N2}"
+                                                        ElementStyle="{StaticResource dgColRight}"
+                                                        />
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Expander IsExpanded="False">
+                                                <local:ReceivingLinesTable1 DataContext="{Binding Lines}" />
+                                            </Expander>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>

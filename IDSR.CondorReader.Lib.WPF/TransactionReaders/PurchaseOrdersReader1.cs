@@ -4,6 +4,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
+using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11;
@@ -72,7 +73,10 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             return list;
         }
 
-
+        public Task<List<PurchaseOrderLine>> GetDateRange(DateTime startDate, DateTime endDate, CancellationToken cancelTkn)
+        {
+            throw new NotImplementedException();
+        }
 
         const string ORDER_QUERY = @"SELECT * FROM [PurchaseOrder]
                                       WHERE PostedDate >= '{0}' AND PostedDate < '{1}'";

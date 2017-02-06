@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
+using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
-using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
 
@@ -86,6 +87,11 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             }).ConfigureAwait(false);
 
             return list;
+        }
+
+        public Task<List<FinishedSale>> GetDateRange(DateTime startDate, DateTime endDate, CancellationToken cancelTkn)
+        {
+            throw new NotImplementedException();
         }
     }
 }

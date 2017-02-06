@@ -2,8 +2,6 @@
 using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.SqlTools;
-using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
 using IDSR.CondorReader.Lib.WPF.MasterDataReaders;
@@ -25,6 +23,9 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
 
             RegisterComponentsTo(ref b);
 
+            b.Register(c => c.Resolve<BesideExeCfgLoader<DsrConfiguration1>>()
+                                .Load(DsrConfiguration1.CreateDefault()));
+
             var containr = b.Build();
             return containr.BeginLifetimeScope();
         }
@@ -32,7 +33,7 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
 
         public static void RegisterComponentsTo(ref ContainerBuilder b)
         {
-            b.Solo<ISqlDbReader, SqlDbReader1>();
+            //b.Solo<ISqlDbReader, SqlDbReader1>();
             b.Solo<ViewerMainWindowVM>();
             b.Solo<BesideExeCfgLoader<DsrConfiguration1>>();
             b.Solo<DbLoaderVM1>();
@@ -43,9 +44,6 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
             b.Solo<ProductsReader1>();
             b.Solo<VendorCache>();
             b.Solo<VendorsReader1>();
-
-            b.Register(c => c.Resolve<BesideExeCfgLoader<DsrConfiguration1>>()
-                                .Load(DsrConfiguration1.CreateDefault()));
 
             b.Multi<LocalDbFinder>();
             b.Multi<IFileSystemAccesor, FileSystemAccesor1>();

@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Autofac;
 using FluentAssertions;
+using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Lib.WPF.ComponentRegistry;

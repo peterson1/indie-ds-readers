@@ -47,7 +47,6 @@
     <Compile Include="DomainModels\ReceivingLine.cs" />
     <Compile Include="DomainModels\Transaction.cs" />
     <Compile Include="DomainModels\Vendor.cs" />
-    <Compile Include="IDsrDbReader.cs" />
     <Compile Include="MasterDataReaders\ProductCache.cs" />
     <Compile Include="MasterDataReaders\VendorCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

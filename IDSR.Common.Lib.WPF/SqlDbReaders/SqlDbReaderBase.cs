@@ -68,5 +68,9 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             var end = start.AddMonths(1);
             return string.Format(sqlQuery, Param(start), Param(end));
         }
+
+
+        protected static string AddParamsToDateRangeSQL(string sqlQuery, DateTime startDate, DateTime endDate)
+            => string.Format(sqlQuery, Param(startDate.Date), Param(endDate.Date.AddDays(1)));
     }
 }

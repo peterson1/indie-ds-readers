@@ -106,6 +106,9 @@
     <Compile Include="Viewer\DataGrids\ReceivingLinesTable1.xaml.cs">
       <DependentUpon>ReceivingLinesTable1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Viewer\DataGrids\ReceivingRowsTable1.xaml.cs">
+      <DependentUpon>ReceivingRowsTable1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Viewer\DbLoaderVM1.cs" />
     <Compile Include="Viewer\MainTabs\MonthlyPurchasesTab1.xaml.cs">
       <DependentUpon>MonthlyPurchasesTab1.xaml</DependentUpon>
@@ -167,6 +170,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Viewer\DataGrids\ReceivingLinesTable1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewer\DataGrids\ReceivingRowsTable1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

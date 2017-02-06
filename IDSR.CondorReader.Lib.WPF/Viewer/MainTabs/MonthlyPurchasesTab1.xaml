@@ -47,64 +47,12 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         >
-                <!--<sdk:DualText Text1="vatable sales"
-                              Text2="{Binding VatableSales, StringFormat=N2}"
-                              />
-                <sdk:DualText Text1="VAT exempt"
-                              Text2="{Binding VatExempt, StringFormat=N2}"
-                              />
-                <sdk:DualText Text1="output VAT"
-                              Text2="{Binding OutputVat, StringFormat=N2}"
-                              />
-                <sdk:DualText Text1="month total"
-                              Text2="{Binding MonthlyTotal, StringFormat=N2}"
-                              />-->
             </StackPanel>
         </DockPanel>
 
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding DailyRows}"
-                  Style="{StaticResource dgBase1}"
-                  >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="date"
-                                    Binding="{Binding Date, StringFormat=MMM d}"
-                                    ElementStyle="{StaticResource dgColRight}"
-                                    />
-                <DataGridTextColumn Header="daily total"
-                                    Binding="{Binding DailyTotal, StringFormat=N2}"
-                                    ElementStyle="{StaticResource dgColRight}"
-                                    />
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <DataGrid ItemsSource="{Binding Receivings}"
-                                      Style="{StaticResource dgBase1}"
-                                      >
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="supplier"
-                                                        Binding="{Binding Receiving.Description}"
-                                                        />
-                                    <DataGridTextColumn Header="net total"
-                                                        Binding="{Binding Receiving.NetTotal, StringFormat=N2}"
-                                                        ElementStyle="{StaticResource dgColRight}"
-                                                        />
-                                    <DataGridTemplateColumn>
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Expander IsExpanded="False">
-                                                    <dg:ReceivingLinesTable1 DataContext="{Binding Lines}" />
-                                                </Expander>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <dg:ReceivingRowsTable1 DataContext="{Binding DailyRows}"
+                                Grid.Row="1"
+                                />
 
 
         <xtk:BusyIndicator Grid.RowSpan="2"
