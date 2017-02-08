@@ -4,9 +4,9 @@ using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
 {
-    public class ReceivingLine
+    public class CdrReceivingLine
     {
-        public ReceivingLine(IDataRecord r)
+        public CdrReceivingLine(IDataRecord r)
         {
             ReceivingID = Convert.ToInt64(r.GetDecimal(0)); //[ReceivingID]	numeric NOT NULL,
             LineId            = r.ToLong     ( 1);//[LineID]	integer NOT NULL,
@@ -96,6 +96,6 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public string     RemarksReason      { get; }
 
 
-        public Receiving Parent { get; set; }
+        public CdrReceiving Parent { get; set; }
     }
 }

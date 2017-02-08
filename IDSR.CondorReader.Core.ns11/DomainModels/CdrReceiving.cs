@@ -4,9 +4,9 @@ using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
 {
-    public class Receiving
+    public class CdrReceiving
     {
-        public Receiving(IDataRecord r)
+        public CdrReceiving(IDataRecord r)
         {
             Id                      = r.ToLong    ( 0);//[ReceivingID]	integer NOT NULL,
             ReceivingNo             = r.GetString ( 1);//[ReceivingNo]	varchar(10) NOT NULL COLLATE NOCASE,

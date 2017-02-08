@@ -14,11 +14,11 @@ using Repo2.Core.ns11.DataStructures;
 namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
 {
     [ImplementPropertyChanged]
-    public class MonthlyPurchasesTabVM1 : MonthlyTabVmBase<ReceivingLine>
+    public class MonthlyPurchasesTabVM1 : MonthlyTabVmBase<CdrReceivingLine>
     {
-        private IDsrDbReader<ReceivingLine> _readr;
+        private IDsrDbReader<CdrReceivingLine> _readr;
 
-        public MonthlyPurchasesTabVM1(IDsrDbReader<ReceivingLine> monthlyPurchasesReader, DsrConfiguration1 dsrConfiguration, DbLoaderVM1 dbLoaderVM) : base(dsrConfiguration, dbLoaderVM)
+        public MonthlyPurchasesTabVM1(IDsrDbReader<CdrReceivingLine> monthlyPurchasesReader, DsrConfiguration1 dsrConfiguration, DbLoaderVM1 dbLoaderVM) : base(dsrConfiguration, dbLoaderVM)
         {
             Title  = "Monthly Purchases";
             _readr = monthlyPurchasesReader;
@@ -27,10 +27,10 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer.MainTabs
 
         public Observables<MonthlyPurchasesDailyRow>  DailyRows { get; } = new Observables<MonthlyPurchasesDailyRow>();
 
-        protected override IDsrDbReader<ReceivingLine> Reader => _readr;
+        protected override IDsrDbReader<CdrReceivingLine> Reader => _readr;
 
 
-        protected override void Visualize(List<ReceivingLine> list)
+        protected override void Visualize(List<CdrReceivingLine> list)
         {
             DailyRows.Swap(list.GroupBy (x => x.Parent.DateReceived.Value.Date)
                                .Select  (x => new MonthlyPurchasesDailyRow(x))

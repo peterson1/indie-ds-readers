@@ -7,7 +7,7 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
 {
     public class MonthlyPurchasesDailyRow
     {
-        public MonthlyPurchasesDailyRow(IGrouping<DateTime, ReceivingLine> grp)
+        public MonthlyPurchasesDailyRow(IGrouping<DateTime, CdrReceivingLine> grp)
         {
             Date       = grp.Key;
             Receivings = GroupByReceiving(grp);
@@ -20,7 +20,7 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
         public double? DailyTotal => Receivings?.Sum(x => x.Receiving?.NetTotal);
 
 
-        private List<MonthlyPurchasesReceivingRow> GroupByReceiving(IEnumerable<ReceivingLine> lines)
+        private List<MonthlyPurchasesReceivingRow> GroupByReceiving(IEnumerable<CdrReceivingLine> lines)
             => lines.GroupBy (x => x.ReceivingID)
                     .Select  (x => new MonthlyPurchasesReceivingRow(x))
                     .OrderBy (x => x.Receiving.Id)

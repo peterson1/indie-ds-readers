@@ -6,14 +6,14 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
 {
     public class MonthlyPurchasesReceivingRow
     {
-        public MonthlyPurchasesReceivingRow(IGrouping<long, ReceivingLine> grp)
+        public MonthlyPurchasesReceivingRow(IGrouping<long, CdrReceivingLine> grp)
         {
             Receiving = grp.FirstOrDefault()?.Parent;
             Lines     = grp.ToList();
         }
 
-        public Receiving            Receiving { get; }
-        public List<ReceivingLine>  Lines     { get; }
+        public CdrReceiving            Receiving { get; }
+        public List<CdrReceivingLine>  Lines     { get; }
 
         //public string  Label => Order?.Description;
         //public double? Total => Order?.NetTotal;
