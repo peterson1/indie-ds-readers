@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainModels\FinishedSale.cs" />
-    <Compile Include="DomainModels\Product.cs" />
+    <Compile Include="DomainModels\CdrProduct.cs" />
     <Compile Include="DomainModels\PurchaseOrder.cs" />
     <Compile Include="DomainModels\PurchaseOrderLine.cs" />
     <Compile Include="DomainModels\CdrReceiving.cs" />

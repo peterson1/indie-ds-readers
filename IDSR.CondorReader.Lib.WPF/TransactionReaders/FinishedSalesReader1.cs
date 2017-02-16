@@ -63,9 +63,9 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         //}
 
 
-        private Product FindProduct(IDataRecord rec, int fieldIndx)
+        private CdrProduct FindProduct(IDataRecord rec, int fieldIndx)
         {
-            var id = rec.GetInt64(fieldIndx);
+            var id = rec.GetInt32(fieldIndx);
             return _products[id, "< unrecognized Product ID >"];
         }
 

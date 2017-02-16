@@ -6,30 +6,31 @@ namespace IDSR.CondorReader.Core.ns11.MasterDataReaders
 {
     public class ProductCache
     {
-        private SortedDictionary<long, Product> _dict = new SortedDictionary<long, Product>();
+        private SortedDictionary<int, CdrProduct> _dict = new SortedDictionary<int, CdrProduct>();
 
 
 
-        public Product this[long productID, string missingDescription]
+        public CdrProduct this[int productID, string missingDescription]
         {
             get
             {
-                Product prod = null;
+                CdrProduct prod = null;
 
                 if (_dict.TryGetValue(productID, out prod))
                     return prod;
                 else
-                    return new Product
-                    {
-                        Id          = productID,
-                        Description = missingDescription
-                    };
+                    //return new CdrProduct
+                    //{
+                    //    ProductID          = productID,
+                    //    Description = missingDescription
+                    //};
+                    return null;
             }
         }
 
 
-        public void Add(Product product)
-            => _dict.Add(product.Id, product);
+        public void Add(CdrProduct product)
+            => _dict.Add(product.ProductID, product);
 
 
         public void Clear() => _dict.Clear();

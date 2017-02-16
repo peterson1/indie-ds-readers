@@ -4,7 +4,7 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
 {
     public class YearEndInventoryRow
     {
-        public Product  Product     { get; set; }
+        public CdrProduct  Product     { get; set; }
         public decimal  LastPCount  { get; set; }
         public decimal  YearEndSRP  { get; set; }
         public decimal  LandedCost  { get; set; }

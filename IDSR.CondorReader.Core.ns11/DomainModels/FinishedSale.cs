@@ -4,7 +4,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
 {
     public class FinishedSale
     {
-        public Product    Product         { get; set; }
+        public CdrProduct    Product         { get; set; }
         public decimal    Qty             { get; set; }
         public string     TerminalNo      { get; set; }
         public DateTime?  TimeScanned     { get; set; }
