@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SQLite;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
@@ -72,5 +74,12 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
 
         protected static string AddParamsToDateRangeSQL(string sqlQuery, DateTime startDate, DateTime endDate)
             => string.Format(sqlQuery, Param(startDate.Date), Param(endDate.Date.AddDays(1)));
+
+
+        protected static string AddParamsToSubQuerySQL(string sqlQuery, IEnumerable<string> itemsList)
+        {
+            var joind = string.Join(",", itemsList.Select(x => $"'{x}'"));
+            return string.Format(sqlQuery, joind);
+        }
     }
 }

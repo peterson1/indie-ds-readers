@@ -4,6 +4,7 @@ using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.MasterDataReaders;
+using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.MasterDataReaders;
 using IDSR.CondorReader.Lib.WPF.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.Viewer;
@@ -50,6 +51,7 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
             b.Multi<IDsrDbReader<FinishedSale>, FinishedSalesReader1>();
             b.Multi<IDsrDbReader<PurchaseOrderLine>, PurchaseOrdersReader1>();
             b.Multi<IDsrDbReader<CdrReceivingLine>, ReceivingReader1>();
+            b.Multi<IMovementsReader, MovementsReader1>();
         }
     }
 }

@@ -100,6 +100,7 @@
     <Compile Include="ComponentRegistry\CondorReaderIoC.cs" />
     <Compile Include="MasterDataReaders\ProductsReader1.cs" />
     <Compile Include="MasterDataReaders\VendorsReader1.cs" />
+    <Compile Include="TransactionReaders\MovementsReader1.cs" />
     <Compile Include="TransactionReaders\PurchaseOrdersReader1.cs" />
     <Compile Include="TransactionReaders\FinishedSalesReader1.cs" />
     <Compile Include="TransactionReaders\ReceivingReader1.cs" />
