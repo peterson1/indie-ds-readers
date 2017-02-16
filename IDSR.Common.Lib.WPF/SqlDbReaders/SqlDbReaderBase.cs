@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
@@ -32,8 +33,16 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
 
 
         private DbConnection CreateConnection()
-            => UseServer ? GetSqlServerConnection() 
-                         : GetSqliteConnection();
+        {
+            if (!_cfg.SQLiteDbName.IsBlank())
+            {
+                UseServer    = false;
+                DatabaseName = _cfg.SQLiteDbName;
+            }
+
+            return UseServer ? GetSqlServerConnection() 
+                             : GetSqliteConnection();
+        }
 
 
         private DbConnection GetSqlServerConnection()

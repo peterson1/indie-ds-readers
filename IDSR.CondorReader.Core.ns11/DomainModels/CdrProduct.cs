@@ -59,7 +59,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             ItemDetailsCode         = rec.GetString  (48);// [ItemDetailsCode]	varchar(5) NOT NULL COLLATE NOCASE DEFAULT '',
             OpenDepartment          = rec.GetBoolean (49);// [OpenDepartment]	bit NOT NULL DEFAULT 0,
             IngredientAsDefaultCost = rec.GetBoolean (50);// [IngredientAsDefaultCost]	bit NOT NULL DEFAULT 0,
-            ProductType             = rec.GetInt32   (51);// [ProductType]	integer NOT NULL DEFAULT 0,
+            ProductType             = rec.ToInt      (51);// [ProductType]	integer NOT NULL DEFAULT 0,
             TimeBased               = rec.GetBoolean (52);// [TimeBased]	bit NOT NULL DEFAULT 0,
             Combo                   = rec.GetBoolean (53);// [Combo]	bit NOT NULL DEFAULT 0,
             ComputedAverageCost     = rec.GetDecimal (54);// [ComputedAverageCost]	numeric NOT NULL DEFAULT 0

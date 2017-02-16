@@ -8,8 +8,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
     {
         public CdrMovementLine(IDataRecord r)
         {
-            MovementID     = r.GetDecimal ( 0);// numeric(18, 0) NOT NULL, 
-            LineID         = r.GetDecimal ( 1);// decimal(18, 0) NOT NULL IDENTITY(1,1),
+            MovementID     = r.ToDecimal  ( 0);// numeric(18, 0) NOT NULL, 
+            LineID         = r.ToDecimal  ( 1);// decimal(18, 0) NOT NULL IDENTITY(1,1),
             ProductID      = r.ToInt_     ( 2);// int, 
             ProductCode    = r.ToText     ( 3);// varchar(20) NOT NULL, 
             Description    = r.ToText     ( 4);// varchar(100), 

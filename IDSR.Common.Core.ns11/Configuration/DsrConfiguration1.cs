@@ -6,6 +6,7 @@ namespace IDSR.Common.Core.ns11.Configuration
     {
         public DateTime?  GrandOpeningDate  { get; set; }
         public string     ServerConnection  { get; set; }
+        public string     SQLiteDbName      { get; set; }
 
         public static DsrConfiguration1 CreateDefault()
             => new DsrConfiguration1

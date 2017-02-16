@@ -8,7 +8,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
     {
         public CdrMovement(IDataRecord r)
         {
-            MovementID        = r.GetDecimal ( 0);// numeric(18, 0) NOT NULL IDENTITY(1,1), 
+            MovementID        = r.ToDecimal  ( 0);// numeric(18, 0) NOT NULL IDENTITY(1,1), 
             MovementNo        = r.ToText     ( 1);// varchar(10) NOT NULL, 
             MovementCode      = r.ToText     ( 2);// varchar(5) NOT NULL, 
             ReferenceNo       = r.ToText     ( 3);// varchar(10), 
@@ -25,7 +25,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             Status            = r.ToChar_    (14);// varchar(1), 
             PostedBy          = r.ToText     (15);// varchar(10), 
             PostedDate        = r.ToDate_    (16);// smalldatetime, 
-            Terms             = r.GetInt32   (17);// int NOT NULL DEFAULT ((0)), 
+            Terms             = r.ToInt      (17);// int NOT NULL DEFAULT ((0)), 
             TransactionDate   = r.ToDate_    (18);// smalldatetime, 
             FieldStyleCode1   = r.ToText     (19);// varchar(20), 
             NetTotal          = r.ToDouble_  (20);// float, 
@@ -42,7 +42,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             FrBranchCode      = r.ToText     (31);// varchar(4) DEFAULT (''), 
             sourcemovementno  = r.ToText     (32);// varchar(10) DEFAULT (''), 
             countered         = r.GetInt16   (33);// smallint NOT NULL DEFAULT ((0)), 
-            Transmitted       = r.GetInt32   (34);// int NOT NULL DEFAULT ((0)), 
+            Transmitted       = r.ToInt      (34);// int NOT NULL DEFAULT ((0)), 
             WithPayable       = r.GetBoolean (35);// bit NOT NULL DEFAULT ((0)), 
             WithReceivable    = r.GetBoolean (36);// bit NOT NULL DEFAULT ((0)), 
             OtherExpenses     = r.GetDouble  (37);// float DEFAULT ((0)), 
