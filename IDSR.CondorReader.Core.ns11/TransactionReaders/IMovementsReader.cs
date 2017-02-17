@@ -7,6 +7,7 @@ namespace IDSR.CondorReader.Core.ns11.TransactionReaders
 {
     public interface IMovementsReader
     {
-        Task<List<CdrMovementLine>> GetOpenReturns(IEnumerable<string> vendorCodes, CancellationToken cancelTokn);
+        Task<List<CdrMovementLine>>  GetOpenReturns   (IEnumerable<string> vendorCodes, CancellationToken cancelTokn);
+        Task<List<CdrMovementLine>>  GetPostedReturns (IEnumerable<string> vendorCodes, CancellationToken cancelTokn);
     }
 }

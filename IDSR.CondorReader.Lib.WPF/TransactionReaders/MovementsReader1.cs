@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
@@ -20,27 +18,14 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        const string OPEN_RETURNS_PARENT_QUERY =
-            @"SELECT * 
-                FROM Movements
-               WHERE MovementCode = 'RSsa'
-                 AND StatusDescription = 'OPEN'
-                 AND VendorCode IN ({0})";
-
-        const string OPEN_RETURNS_LINES_QUERY =
-            @"SELECT ln.* 
-                FROM MovementLine ln
-           LEFT JOIN Movements p
-                  ON p.MovementID = ln.MovementID
-               WHERE p.MovementCode = 'RSsa'
-                 AND p.StatusDescription = 'OPEN'
-                 AND p.VendorCode IN ({0})";
-
-
-
         public Task<List<CdrMovementLine>> GetOpenReturns(IEnumerable<string> vendorCodes, CancellationToken cancelTokn)
-            => RunJobs(QueryParent(AddParamsToSubQuerySQL(OPEN_RETURNS_PARENT_QUERY, vendorCodes), cancelTokn),
-                       QueryLines (AddParamsToSubQuerySQL(OPEN_RETURNS_LINES_QUERY , vendorCodes), cancelTokn));
+            => RunJobs(QueryParent("RSsa", vendorCodes, "OPEN", cancelTokn),
+                       QueryLines ("RSsa", vendorCodes, "OPEN", cancelTokn));
+
+
+        public Task<List<CdrMovementLine>> GetPostedReturns(IEnumerable<string> vendorCodes, CancellationToken cancelTokn)
+            => RunJobs(QueryParent("RSsa", vendorCodes, "POSTED", cancelTokn),
+                       QueryLines ("RSsa", vendorCodes, "POSTED", cancelTokn));
 
 
         private static async Task<List<CdrMovementLine>> RunJobs(Task<Dictionary<decimal, CdrMovement>> parntJob, Task<List<CdrMovementLine>> linesJob)
@@ -63,8 +48,12 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        private async Task<Dictionary<decimal, CdrMovement>> QueryParent(string qry, CancellationToken cancelTokn)
+        private async Task<Dictionary<decimal, CdrMovement>> QueryParent(string mvtCode, IEnumerable<string> vendorCodes, string statusDesc, CancellationToken cancelTokn)
         {
+            var qry = MovementsSQL.ParentQuery.WHERE_MvtCodeClause(mvtCode)
+                                              .AppendStatusClause(statusDesc)
+                                              .AppendVendorClause(vendorCodes);
+
             var dict = new Dictionary<decimal, CdrMovement>();
             using (var results = await ConnectAndReadAsync(qry, cancelTokn))
             {
@@ -78,8 +67,12 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        private async Task<List<CdrMovementLine>> QueryLines(string qry, CancellationToken cancelTkn)
+        private async Task<List<CdrMovementLine>> QueryLines(string mvtCode, IEnumerable<string> vendorCodes, string statusDesc, CancellationToken cancelTkn)
         {
+            var qry = MovementsSQL.LinesQuery.WHERE_MvtCodeClause(mvtCode)
+                                             .AppendStatusClause(statusDesc)
+                                             .AppendVendorClause(vendorCodes);
+
             var list = new List<CdrMovementLine>();
 
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))
@@ -88,6 +81,36 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                     list.Add(new CdrMovementLine(rec));
             }
             return list;
+        }
+    }
+
+
+    internal static class MovementsSQL
+    {
+
+        internal const string ParentQuery =
+            @"SELECT * 
+                FROM Movements p";
+
+        internal const string LinesQuery =
+            @"SELECT ln.* 
+                FROM MovementLine ln
+           LEFT JOIN Movements p
+                  ON p.MovementID = ln.MovementID";
+
+
+        internal static string WHERE_MvtCodeClause(this string sqlQuery, string mvtCode)
+            => $"{sqlQuery} WHERE p.MovementCode = '{mvtCode}'";
+
+
+        internal static string AppendStatusClause(this string sqlQuery, string statusDesc)
+            => $"{sqlQuery} AND p.StatusDescription = '{statusDesc}'";
+
+
+        internal static string AppendVendorClause(this string sqlQuery, IEnumerable<string> vendorCodes)
+        {
+            var joind = string.Join(",", vendorCodes.Select(x => $"'{x}'"));
+            return $"{sqlQuery} AND p.VendorCode IN ({joind})";
         }
     }
 }

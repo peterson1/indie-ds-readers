@@ -34,7 +34,9 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
 
         private DbConnection CreateConnection()
         {
-            if (!_cfg.SQLiteDbName.IsBlank())
+            if (_cfg.SQLiteDbName.IsBlank())
+                UseServer    = true;
+            else
             {
                 UseServer    = false;
                 DatabaseName = _cfg.SQLiteDbName;
@@ -83,12 +85,5 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
 
         protected static string AddParamsToDateRangeSQL(string sqlQuery, DateTime startDate, DateTime endDate)
             => string.Format(sqlQuery, Param(startDate.Date), Param(endDate.Date.AddDays(1)));
-
-
-        protected static string AddParamsToSubQuerySQL(string sqlQuery, IEnumerable<string> itemsList)
-        {
-            var joind = string.Join(",", itemsList.Select(x => $"'{x}'"));
-            return string.Format(sqlQuery, joind);
-        }
     }
 }
