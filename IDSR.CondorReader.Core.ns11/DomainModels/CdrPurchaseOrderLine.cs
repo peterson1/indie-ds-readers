@@ -45,7 +45,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public CdrPurchaseOrderLine(IDataRecord r)
         {
             PurchaseOrderID   = r.ToDecimal  ( 0);//[PurchaseOrderID]	numeric NOT NULL,
-            LineID            = r.GetDecimal ( 1);//[LineID]	integer NOT NULL,
+            LineID            = r.ToDecimal  ( 1);//[LineID]	integer NOT NULL,
             ProductID         = r.ToInt_     ( 2);//[ProductID]	integer,
             VendorProductCode = r.GetString  ( 3);//[VendorProductCode]	varchar(20) NOT NULL COLLATE NOCASE,
             Description       = r.ToText     ( 4);//[Description]	varchar(100) COLLATE NOCASE,
