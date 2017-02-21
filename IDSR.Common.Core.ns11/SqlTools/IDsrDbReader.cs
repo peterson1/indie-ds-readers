@@ -12,5 +12,7 @@ namespace IDSR.Common.Core.ns11.SqlTools
 
         Task<List<T>>  GetMonthly   (int year, int month, CancellationToken cancelTkn);
         Task<List<T>>  GetDateRange (DateTime startDate, DateTime endDate, CancellationToken cancelTkn);
+
+        Task<List<T>>  GetByIDs     (IEnumerable<int> idsList, CancellationToken cancelTkn);
     }
 }

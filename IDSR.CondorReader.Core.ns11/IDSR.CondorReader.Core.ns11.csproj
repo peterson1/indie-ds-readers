@@ -43,8 +43,8 @@
     <Compile Include="DomainModels\CdrMovementLine.cs" />
     <Compile Include="DomainModels\FinishedSale.cs" />
     <Compile Include="DomainModels\CdrProduct.cs" />
-    <Compile Include="DomainModels\PurchaseOrder.cs" />
-    <Compile Include="DomainModels\PurchaseOrderLine.cs" />
+    <Compile Include="DomainModels\CdrPurchaseOrder.cs" />
+    <Compile Include="DomainModels\CdrPurchaseOrderLine.cs" />
     <Compile Include="DomainModels\CdrReceiving.cs" />
     <Compile Include="DomainModels\CdrReceivingLine.cs" />
     <Compile Include="DomainModels\Transaction.cs" />
@@ -58,7 +58,10 @@
     <Compile Include="ReportRows\MonthlySalesTerminalRow.cs" />
     <Compile Include="ReportRows\MonthlySalesTransactionRow.cs" />
     <Compile Include="ReportRows\YearEndInventoryRow.cs" />
+    <Compile Include="SqlQueries\MovementsSQL.cs" />
+    <Compile Include="SqlQueries\PurchaseOrdersSQL.cs" />
     <Compile Include="TransactionReaders\IMovementsReader.cs" />
+    <Compile Include="TransactionReaders\IPurchaseOrdersReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IDSR.Common.Core.ns11\IDSR.Common.Core.ns11.csproj">

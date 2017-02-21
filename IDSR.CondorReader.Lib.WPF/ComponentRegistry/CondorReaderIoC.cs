@@ -49,9 +49,10 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
             b.Multi<LocalDbFinder>();
             b.Multi<IFileSystemAccesor, FileSystemAccesor1>();
             b.Multi<IDsrDbReader<FinishedSale>, FinishedSalesReader1>();
-            b.Multi<IDsrDbReader<PurchaseOrderLine>, PurchaseOrdersReader1>();
+            b.Multi<IDsrDbReader<CdrPurchaseOrderLine>, PurchaseOrdersReader1>();
             b.Multi<IDsrDbReader<CdrReceivingLine>, ReceivingReader1>();
             b.Multi<IMovementsReader, MovementsReader1>();
+            b.Multi<IPurchaseOrdersReader, PurchaseOrdersReader2>();
         }
     }
 }

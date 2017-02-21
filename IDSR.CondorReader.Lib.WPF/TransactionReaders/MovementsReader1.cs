@@ -8,6 +8,7 @@ using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
+using static IDSR.CondorReader.Core.ns11.SqlQueries.MovementsSQL;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
@@ -50,9 +51,9 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
         private async Task<Dictionary<decimal, CdrMovement>> QueryParent(string mvtCode, IEnumerable<string> vendorCodes, string statusDesc, CancellationToken cancelTokn)
         {
-            var qry = MovementsSQL.ParentQuery.WHERE_MvtCodeClause(mvtCode)
-                                              .AppendStatusClause(statusDesc)
-                                              .AppendVendorClause(vendorCodes);
+            var qry = ParentQuery.WHERE_MovementCode_IS(mvtCode)
+                                 .AND_StatusDescription_IS(statusDesc)
+                                 .AND_VendorCode_IN(vendorCodes);
 
             var dict = new Dictionary<decimal, CdrMovement>();
             using (var results = await ConnectAndReadAsync(qry, cancelTokn))
@@ -69,9 +70,9 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
         private async Task<List<CdrMovementLine>> QueryLines(string mvtCode, IEnumerable<string> vendorCodes, string statusDesc, CancellationToken cancelTkn)
         {
-            var qry = MovementsSQL.LinesQuery.WHERE_MvtCodeClause(mvtCode)
-                                             .AppendStatusClause(statusDesc)
-                                             .AppendVendorClause(vendorCodes);
+            var qry = LinesQuery.WHERE_MovementCode_IS(mvtCode)
+                                .AND_StatusDescription_IS(statusDesc)
+                                .AND_VendorCode_IN(vendorCodes);
 
             var list = new List<CdrMovementLine>();
 
@@ -81,36 +82,6 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                     list.Add(new CdrMovementLine(rec));
             }
             return list;
-        }
-    }
-
-
-    internal static class MovementsSQL
-    {
-
-        internal const string ParentQuery =
-            @"SELECT * 
-                FROM Movements p";
-
-        internal const string LinesQuery =
-            @"SELECT ln.* 
-                FROM MovementLine ln
-           LEFT JOIN Movements p
-                  ON p.MovementID = ln.MovementID";
-
-
-        internal static string WHERE_MvtCodeClause(this string sqlQuery, string mvtCode)
-            => $"{sqlQuery} WHERE p.MovementCode = '{mvtCode}'";
-
-
-        internal static string AppendStatusClause(this string sqlQuery, string statusDesc)
-            => $"{sqlQuery} AND p.StatusDescription = '{statusDesc}'";
-
-
-        internal static string AppendVendorClause(this string sqlQuery, IEnumerable<string> vendorCodes)
-        {
-            var joind = string.Join(",", vendorCodes.Select(x => $"'{x}'"));
-            return $"{sqlQuery} AND p.VendorCode IN ({joind})";
         }
     }
 }

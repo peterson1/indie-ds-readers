@@ -1,14 +1,13 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
 {
-    public class PurchaseOrderLine
+    public class CdrPurchaseOrderLine
     {
-        public long      OrderId            { get; }
-        public long      LineID             { get; }
-        public long?     ProductID          { get; }
+        public decimal   PurchaseOrderID    { get; }
+        public decimal   LineID             { get; }
+        public int?      ProductID          { get; }
         public string    VendorProductCode  { get; }
         public string    Description        { get; }
         public string    UoM                { get; }
@@ -38,14 +37,16 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public decimal?  EWT                { get; }
 
 
-        public PurchaseOrder Order { get; set; }
+        public decimal UnitCost_x_Qty => UnitCost * Qty;
+
+        public CdrPurchaseOrder Parent { get; set; }
 
 
-        public PurchaseOrderLine(IDataRecord r)
+        public CdrPurchaseOrderLine(IDataRecord r)
         {
-            OrderId           = Convert.ToInt64(r.GetDecimal(0));//[PurchaseOrderID]	numeric NOT NULL,
-            LineID            = r.GetInt64   ( 1);//[LineID]	integer NOT NULL,
-            ProductID         = r.ToLong_    ( 2);//[ProductID]	integer,
+            PurchaseOrderID   = r.ToDecimal  ( 0);//[PurchaseOrderID]	numeric NOT NULL,
+            LineID            = r.GetDecimal ( 1);//[LineID]	integer NOT NULL,
+            ProductID         = r.ToInt_     ( 2);//[ProductID]	integer,
             VendorProductCode = r.GetString  ( 3);//[VendorProductCode]	varchar(20) NOT NULL COLLATE NOCASE,
             Description       = r.ToText     ( 4);//[Description]	varchar(100) COLLATE NOCASE,
             UoM               = r.ToText     ( 5);//[UOM]	varchar(6) COLLATE NOCASE,

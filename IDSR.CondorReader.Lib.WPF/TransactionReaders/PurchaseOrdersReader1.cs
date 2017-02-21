@@ -7,23 +7,21 @@ using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
-using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
-using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
-    public class PurchaseOrdersReader1 : SqlDbReaderBase, IDsrDbReader<PurchaseOrderLine>
+    public class PurchaseOrdersReader1 : SqlDbReaderBase, IDsrDbReader<CdrPurchaseOrderLine>
     {
         public PurchaseOrdersReader1(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
         }
 
 
-        public async Task<List<PurchaseOrderLine>> GetMonthly(int year, int month, CancellationToken cancelTkn)
+        public async Task<List<CdrPurchaseOrderLine>> GetMonthly(int year, int month, CancellationToken cancelTkn)
         {
-            Dictionary<long, PurchaseOrder> ordrs = null;
-            List<PurchaseOrderLine>         lines = null;
+            Dictionary<decimal, CdrPurchaseOrder> ordrs = null;
+            List<CdrPurchaseOrderLine>         lines = null;
 
             var ordrJob = QueryOrders(year, month, cancelTkn);
             var lineJob = QueryLines (year, month, cancelTkn);
@@ -37,46 +35,53 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             ).ConfigureAwait(false);
 
             foreach (var line in lines)
-                line.Order = ordrs[line.OrderId];
+                line.Parent = ordrs[line.PurchaseOrderID];
 
             return lines;
         }
 
 
-        private async Task<Dictionary<long, PurchaseOrder>> QueryOrders(int year, int month, CancellationToken cancelTkn)
+        private async Task<Dictionary<decimal, CdrPurchaseOrder>> QueryOrders(int year, int month, CancellationToken cancelTkn)
         {
             var qry  = AddParamsToMonthlySQL(ORDER_QUERY, year, month);
-            var dict = new Dictionary<long, PurchaseOrder>();
+            var dict = new Dictionary<decimal, CdrPurchaseOrder>();
 
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
                 {
-                    var ordr = new PurchaseOrder(rec);
-                    dict.Add(ordr.Id, ordr);
+                    var ordr = new CdrPurchaseOrder(rec);
+                    dict.Add(ordr.PurchaseOrderID, ordr);
                 }
             }
             return dict;
         }
 
 
-        private async Task<List<PurchaseOrderLine>> QueryLines(int year, int month, CancellationToken cancelTkn)
+        private async Task<List<CdrPurchaseOrderLine>> QueryLines(int year, int month, CancellationToken cancelTkn)
         {
             var qry  = AddParamsToMonthlySQL(LINE_QUERY, year, month);
-            var list = new List<PurchaseOrderLine>();
+            var list = new List<CdrPurchaseOrderLine>();
 
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
-                    list.Add(new PurchaseOrderLine(rec));
+                    list.Add(new CdrPurchaseOrderLine(rec));
             }
             return list;
         }
 
-        public Task<List<PurchaseOrderLine>> GetDateRange(DateTime startDate, DateTime endDate, CancellationToken cancelTkn)
+        public Task<List<CdrPurchaseOrderLine>> GetDateRange(DateTime startDate, DateTime endDate, CancellationToken cancelTkn)
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<CdrPurchaseOrderLine>> GetByIDs(IEnumerable<int> idsList, CancellationToken cancelTkn)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         const string ORDER_QUERY = @"SELECT * FROM [PurchaseOrder]
                                       WHERE PostedDate >= '{0}' AND PostedDate < '{1}'";

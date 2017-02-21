@@ -103,6 +103,7 @@
     <Compile Include="TransactionReaders\MovementsReader1.cs" />
     <Compile Include="TransactionReaders\PurchaseOrdersReader1.cs" />
     <Compile Include="TransactionReaders\FinishedSalesReader1.cs" />
+    <Compile Include="TransactionReaders\PurchaseOrdersReader2.cs" />
     <Compile Include="TransactionReaders\ReceivingReader1.cs" />
     <Compile Include="Viewer\DataGrids\ReceivingLinesTable1.xaml.cs">
       <DependentUpon>ReceivingLinesTable1.xaml</DependentUpon>

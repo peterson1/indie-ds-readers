@@ -93,5 +93,10 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<FinishedSale>> GetByIDs(IEnumerable<int> idsList, CancellationToken cancelTkn)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -4,10 +4,10 @@ using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
 {
-    public class PurchaseOrder
+    public class CdrPurchaseOrder
     {
-        public long      Id                   { get; }
-        public string    OrderNo              { get; }
+        public decimal   PurchaseOrderID      { get; }
+        public string    PurchaseOrderNo      { get; }
         public string    ReferenceNo          { get; }
         public string    VendorCode           { get; }
         public string    Description          { get; }
@@ -48,10 +48,10 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public decimal   Discount3            { get; }
 
 
-        public PurchaseOrder(IDataRecord r)
+        public CdrPurchaseOrder(IDataRecord r)
         {
-            Id                   = r.GetInt64   ( 0);//[PurchaseOrderID]	integer NOT NULL,
-            OrderNo              = r.GetString  ( 1);//[PurchaseOrderNo]	varchar(10) NOT NULL COLLATE NOCASE,
+            PurchaseOrderID      = r.ToDecimal  ( 0);//[PurchaseOrderID]	integer NOT NULL,
+            PurchaseOrderNo      = r.GetString  ( 1);//[PurchaseOrderNo]	varchar(10) NOT NULL COLLATE NOCASE,
             ReferenceNo          = r.ToText     ( 2);//[ReferenceNo]	varchar(10) COLLATE NOCASE,
             VendorCode           = r.ToText     ( 3);//[VendorCode]	varchar(10) NOT NULL COLLATE NOCASE,
             Description          = r.ToText     ( 4);//[Description]	varchar(40) NOT NULL COLLATE NOCASE,
