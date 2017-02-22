@@ -13,6 +13,7 @@ using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using Repo2.Core.ns11.Exceptions;
 using Repo2.Core.ns11.Extensions.StringExtensions;
+using Repo2.SDK.WPF45.Exceptions;
 
 namespace IDSR.Common.Lib.WPF.SqlDbReaders
 {
@@ -74,7 +75,16 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             var cmd         = conn.CreateCommand();
             cmd.CommandText = sqlQuery;
 
-            await conn.OpenAsync(cancelTkn);
+            try
+            {
+                await conn.OpenAsync(cancelTkn);
+            }
+            catch (Exception ex)
+            {
+                Alerter.ShowError($"<{ex.GetType().Name}>", _cfg.ServerConnection);
+                Alerter.Show(ex, "Error on conn.OpenAsync");
+                return null;
+            }
             return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
         }
 
