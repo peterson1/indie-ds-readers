@@ -26,7 +26,11 @@ namespace IDSR.Common.Lib.WPF.MVVM
         {
             _locDbFindr       = localDbFinder;
             LoadMasterDataCmd = R2Command.Async(LoadMasterData);
-            Databases         = FindDatabases();
+            try
+            {
+                Databases = FindDatabases();
+            }
+            catch  { }
             Database          = Databases?.FirstOrDefault();
         }
 

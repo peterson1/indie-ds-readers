@@ -23,6 +23,8 @@ namespace IDSR.CondorReader.Lib.WPF.Viewer
 
         protected async override Task LoadMasterData(CancellationToken cancelTkn)
         {
+            if (Database == null) return;
+
             if (_productReadr != null)
             {
                 _productReadr.DatabaseName = Database.Name;
