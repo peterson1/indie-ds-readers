@@ -83,7 +83,8 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             catch (Exception ex)
             {
                 var cap  = $"Can't connect to server.  ‹{ex.GetType().Name}›";
-                var resp = MessageBox.Show(ex.Message, cap, MessageBoxButton.YesNo);
+                var msg  = $"{ex.Message}{L.F}Should we try to connect again?";
+                var resp = MessageBox.Show(msg, cap, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (resp == MessageBoxResult.Yes)
                     goto AttemptConnect;
                 else
