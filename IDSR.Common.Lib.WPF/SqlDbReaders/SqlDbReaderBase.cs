@@ -75,15 +75,19 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             var cmd         = conn.CreateCommand();
             cmd.CommandText = sqlQuery;
 
+            AttemptConnect:
             try
             {
                 await conn.OpenAsync(cancelTkn);
             }
             catch (Exception ex)
             {
-                Alerter.ShowError($"<{ex.GetType().Name}>", _cfg.ServerConnection);
-                Alerter.Show(ex, "Error on conn.OpenAsync");
-                return null;
+                var cap  = $"Can't connect to server.  ‹{ex.GetType().Name}›";
+                var resp = MessageBox.Show(ex.Message, cap, MessageBoxButton.YesNo);
+                if (resp == MessageBoxResult.Yes)
+                    goto AttemptConnect;
+                else
+                    return null;
             }
             return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
         }

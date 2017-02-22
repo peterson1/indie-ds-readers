@@ -71,6 +71,8 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             }
             ).ConfigureAwait(false);
 
+            if (parnt == null) return null;
+
             foreach (var line in lines)
                 line.Parent = parnt[line.ReceivingID];
 
@@ -84,6 +86,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))
             {
+                if (results == null) return null;
                 foreach (IDataRecord rec in results)
                 {
                     var parnt = new CdrReceiving(rec);
