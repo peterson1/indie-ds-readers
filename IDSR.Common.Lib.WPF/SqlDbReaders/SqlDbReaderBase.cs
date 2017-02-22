@@ -48,7 +48,14 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
 
 
         private DbConnection GetSqlServerConnection()
-            => new SqlConnection(_cfg.ServerConnection);
+        {
+            var conStr = _cfg.ServerConnection;
+
+            if (conStr.IsBlank())
+                throw Fault.BlankText("SQL Server connection string");
+
+            return new SqlConnection(conStr);
+        }
 
 
         private DbConnection GetSqliteConnection()
