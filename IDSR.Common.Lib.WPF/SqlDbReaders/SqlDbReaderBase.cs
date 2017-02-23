@@ -69,30 +69,59 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             return new SQLiteConnection(conStr);
         }
 
+        //protected async Task<DbDataReader> ConnectAndReadAsync(string sqlQuery, CancellationToken cancelTkn)
+        //{
+        //    var conn        = CreateConnection();
+        //    var cmd         = conn.CreateCommand();
+        //    cmd.CommandText = sqlQuery;
+
+        //    AttemptConnect:
+        //    try
+        //    {
+        //        await conn.OpenAsync(cancelTkn);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var cap  = $"Can't connect to server.  ‹{ex.GetType().Name}›";
+        //        //var msg  = $"{ex.Message}{L.f}{conn.ConnectionString}";
+        //        var msg  = $"{ex.Message}";
+        //            msg += $"{L.F}Should we try to connect again?";
+        //        var resp = MessageBox.Show(msg, cap, MessageBoxButton.YesNo, MessageBoxImage.Question);
+        //        if (resp == MessageBoxResult.Yes)
+        //            goto AttemptConnect;
+        //        else
+        //            return null;
+        //    }
+        //    return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
+        //}
+
         protected async Task<DbDataReader> ConnectAndReadAsync(string sqlQuery, CancellationToken cancelTkn)
         {
             var conn        = CreateConnection();
             var cmd         = conn.CreateCommand();
             cmd.CommandText = sqlQuery;
 
-            AttemptConnect:
+            var job = conn.OpenAsync(cancelTkn);
             try
             {
-                await conn.OpenAsync(cancelTkn);
+                Task.WaitAll(job);
             }
             catch (Exception ex)
             {
-                var cap  = $"Can't connect to server.  ‹{ex.GetType().Name}›";
-                var msg  = $"{ex.Message}{L.f}{conn.ConnectionString}";
-                    msg += $"{L.F}Should we try to connect again?";
-                var resp = MessageBox.Show(msg, cap, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (resp == MessageBoxResult.Yes)
-                    goto AttemptConnect;
-                else
-                    return null;
+                ShowSqlServerError(ex);
+                return null;
+            }
+            if (job.IsFaulted)
+            {
+                ShowSqlServerError(job.Exception);
+                return null;
             }
             return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
         }
+
+
+        private void ShowSqlServerError(Exception ex)
+            => Alerter.ShowError("Can't connect to database", ex.Info());
 
 
         private static string Param(DateTime date) => date.ToString("yyyy-MM-dd");
