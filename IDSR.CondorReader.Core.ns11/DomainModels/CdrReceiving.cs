@@ -116,7 +116,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public string      RemarksReason           { get; }
 
 
-        public string PostedByName { get; set; }
+        public string            PostedByName   { get; set; }
+        public CdrPurchaseOrder  PurchaseOrder  { get; set; }
 
         public List<CdrReceivingLine> Lines { get; set; }
 
