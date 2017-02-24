@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
@@ -112,5 +114,14 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public string      DiscValue3              { get; }
         public string      RequestForPaymentStatus { get; }
         public string      RemarksReason           { get; }
+
+
+        public string PostedByName { get; set; }
+
+        public List<CdrReceivingLine> Lines { get; set; }
+
+        public decimal?  TotalQty         => Lines?.Sum(x => x.qty);
+        public long      ReceivingNum     => long.Parse(ReceivingNo);
+        public long      PurchaseOrderNum => long.Parse(PurchaseOrderNo);
     }
 }

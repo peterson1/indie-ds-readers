@@ -1,0 +1,30 @@
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
+using IDSR.Common.Core.ns11.Configuration;
+using IDSR.Common.Lib.WPF.DiskAccess;
+using IDSR.Common.Lib.WPF.SqlDbReaders;
+using Repo2.Core.ns11.Extensions;
+
+namespace IDSR.CondorReader.Lib.WPF.BaseReaders
+{
+    public abstract class CondorReaderBase1 : SqlDbReaderBase
+    {
+        public CondorReaderBase1(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
+        {
+        }
+
+        protected async Task<Dictionary<int, string>> QueryUsers(CancellationToken cancelTokn)
+        {
+            var qry = "SELECT userid, name FROM MarkUsers";
+            var dict = new Dictionary<int, string>();
+            using (var results = await ConnectAndReadAsync(qry, cancelTokn))
+            {
+                foreach (IDataRecord rec in results)
+                    dict.Add(rec.ToInt(0), rec.ToText(1));
+            }
+            return dict;
+        }
+    }
+}

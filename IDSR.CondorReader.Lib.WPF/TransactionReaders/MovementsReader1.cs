@@ -8,11 +8,12 @@ using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
+using IDSR.CondorReader.Lib.WPF.BaseReaders;
 using static IDSR.CondorReader.Core.ns11.SqlQueries.MovementsSQL;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
-    public class MovementsReader1 : SqlDbReaderBase, IMovementsReader
+    public class MovementsReader1 : CondorReaderBase1, IMovementsReader
     {
         public MovementsReader1(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
@@ -21,29 +22,46 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
         public Task<List<CdrMovementLine>> GetOpenReturns(IEnumerable<string> vendorCodes, CancellationToken cancelTokn)
             => RunJobs(QueryParent("RSsa", vendorCodes, "OPEN", cancelTokn),
-                       QueryLines ("RSsa", vendorCodes, "OPEN", cancelTokn));
+                       QueryLines ("RSsa", vendorCodes, "OPEN", cancelTokn),
+                       QueryUsers(cancelTokn));
 
 
         public Task<List<CdrMovementLine>> GetPostedReturns(IEnumerable<string> vendorCodes, CancellationToken cancelTokn)
             => RunJobs(QueryParent("RSsa", vendorCodes, "POSTED", cancelTokn),
-                       QueryLines ("RSsa", vendorCodes, "POSTED", cancelTokn));
+                       QueryLines ("RSsa", vendorCodes, "POSTED", cancelTokn),
+                       QueryUsers(cancelTokn));
 
 
-        private static async Task<List<CdrMovementLine>> RunJobs(Task<Dictionary<decimal, CdrMovement>> parntJob, Task<List<CdrMovementLine>> linesJob)
+        private static async Task<List<CdrMovementLine>> RunJobs(
+            Task<Dictionary<decimal, CdrMovement>> parntJob, 
+            Task<List<CdrMovementLine>> linesJob,
+            Task<Dictionary<int, string>> usersJob)
         {
             Dictionary<decimal, CdrMovement> parnt = null;
             List<CdrMovementLine>            lines = null;
+            Dictionary<int, string>          users = null;
 
             await Task.Run(async () =>
             {
                 await Task.WhenAll(parntJob, linesJob);
                 parnt = await parntJob;
                 lines = await linesJob;
+                users = await usersJob;
             }
             ).ConfigureAwait(false);
 
             foreach (var line in lines)
-                line.Parent = parnt[line.MovementID];
+            {
+                var p = parnt[line.MovementID];
+                p.PostedByName = users[int.Parse(p.PostedBy)];
+                line.Parent = p;
+            }
+
+            foreach (var grp in lines.GroupBy(x => x.MovementID))
+            {
+                var p = parnt[grp.Key];
+                p.Lines = grp.ToList();
+            }
 
             return lines;
         }

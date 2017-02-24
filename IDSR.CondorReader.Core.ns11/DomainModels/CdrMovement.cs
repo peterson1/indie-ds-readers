@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using Repo2.Core.ns11.Extensions;
 
@@ -95,6 +96,14 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public string     ForexCurrency      { get; }  
         public string     SalesmanID         { get; }  
         public string     RECEIVEDBY         { get; }  
-        public bool       Paid               { get; }  
+        public bool       Paid               { get; }
+
+        public string PostedByName { get; set; }
+
+        public List<CdrMovementLine> Lines { get; set; }
+
+        public long MovementNum => long.Parse(MovementNo);
+
+        //public decimal? TotalQty => Lines?.Sum(x => x.qty);
     }
 }
