@@ -10,7 +10,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
     {
         public CdrReceiving(IDataRecord r)
         {
-            Id                      = r.ToLong    ( 0);//[ReceivingID]	integer NOT NULL,
+            ReceivingID             = r.ToLong    ( 0);//[ReceivingID]	integer NOT NULL,
             ReceivingNo             = r.GetString ( 1);//[ReceivingNo]	varchar(10) NOT NULL COLLATE NOCASE,
             PurchaseOrderID         = r.ToDecimal_( 2);//[PurchaseOrderID]	numeric,
             PurchaseOrderNo         = r.ToText    ( 3);//[PurchaseOrderNo]	varchar(10) COLLATE NOCASE,
@@ -63,7 +63,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             RemarksReason           = r.GetString (50);//[RemarksReason]	varchar(100) NOT NULL COLLATE NOCASE DEFAULT ''
         }
 
-        public long        Id                      { get; }
+        public long        ReceivingID             { get; }
         public string      ReceivingNo             { get; }
         public decimal?    PurchaseOrderID         { get; }
         public string      PurchaseOrderNo         { get; }

@@ -23,7 +23,7 @@ namespace IDSR.CondorReader.Core.ns11.ReportRows
         private List<MonthlyPurchasesReceivingRow> GroupByReceiving(IEnumerable<CdrReceivingLine> lines)
             => lines.GroupBy (x => x.ReceivingID)
                     .Select  (x => new MonthlyPurchasesReceivingRow(x))
-                    .OrderBy (x => x.Receiving.Id)
+                    .OrderBy (x => x.Receiving.ReceivingID)
                     .ToList  ();
     }
 }

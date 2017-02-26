@@ -109,7 +109,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                 foreach (IDataRecord rec in results)
                 {
                     var parnt = new CdrReceiving(rec);
-                    dict.Add(parnt.Id, parnt);
+                    dict.Add(parnt.ReceivingID, parnt);
                 }
             }
             return dict;
