@@ -83,16 +83,13 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             if (parnt == null) return null;
 
             foreach (var line in lines)
-            {
-                var p = parnt[line.ReceivingID];
-                p.PostedByName = users[int.Parse(p.PostedBy)];
-                line.Parent = p;
-            }
+                line.Parent = parnt[line.ReceivingID];
 
             foreach (var grp in lines.GroupBy(x => x.ReceivingID))
             {
                 var p = parnt[grp.Key];
                 p.Lines = grp.ToList();
+                p.PostedByName = users[int.Parse(p.PostedBy)];
             }
 
             return lines;
