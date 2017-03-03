@@ -37,9 +37,11 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public decimal?  EWT                { get; }
 
 
+        public CdrPurchaseOrder  Parent      { get; set; }
+        public decimal           LandedCost  { get; set; }
+
         public decimal UnitCost_x_Qty => UnitCost * Qty;
 
-        public CdrPurchaseOrder Parent { get; set; }
 
 
         public CdrPurchaseOrderLine(IDataRecord r)

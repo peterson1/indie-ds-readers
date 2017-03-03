@@ -21,24 +21,29 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         public Task<List<CdrPurchaseOrderLine>> GetByIDs(IEnumerable<int> idsList, CancellationToken cancelTkn)
             => RunJobs(QueryParent(idsList, cancelTkn),
                        QueryLines (idsList, cancelTkn),
-                       QueryUsers (         cancelTkn));
+                       QueryUsers (         cancelTkn),
+                       QueryLandedCost     (cancelTkn));
 
 
         private static async Task<List<CdrPurchaseOrderLine>> RunJobs(
             Task<Dictionary<decimal, CdrPurchaseOrder>> parntJob, 
             Task<List<CdrPurchaseOrderLine>> linesJob,
-            Task<Dictionary<int, string>> usersJob)
+            Task<Dictionary<int, string>> usersJob,
+            Task<Dictionary<int, decimal>> landedsJob
+            )
         {
-            Dictionary<decimal, CdrPurchaseOrder> parnt = null;
-            List<CdrPurchaseOrderLine> lines = null;
-            Dictionary<int, string> users = null;
+            Dictionary<decimal, CdrPurchaseOrder> parnt    = null;
+            List<CdrPurchaseOrderLine>            lines    = null;
+            Dictionary<int, string>               users    = null;
+            Dictionary<int, decimal>              landeds  = null;
 
             await Task.Run(async () =>
             {
                 await Task.WhenAll(parntJob, linesJob, usersJob);
-                parnt = await parntJob;
-                lines = await linesJob;
-                users = await usersJob;
+                parnt   = await parntJob;
+                lines   = await linesJob;
+                users   = await usersJob;
+                landeds = await landedsJob;
             }
             ).ConfigureAwait(false);
 
@@ -46,6 +51,10 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             {
                 var p = parnt[line.PurchaseOrderID];
                 p.PostedByName = users[int.Parse(p.PostedBy)];
+
+                if (line.ProductID.HasValue)
+                    line.LandedCost = landeds[line.ProductID.Value];
+
                 line.Parent = p;
             }
 

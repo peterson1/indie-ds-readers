@@ -26,5 +26,17 @@ namespace IDSR.CondorReader.Lib.WPF.BaseReaders
             }
             return dict;
         }
+
+        protected async Task<Dictionary<int, decimal>> QueryLandedCost(CancellationToken cancelTokn)
+        {
+            var qry = "SELECT ProductID, ComputedAverageCost FROM Products";
+            var dict = new Dictionary<int, decimal>();
+            using (var results = await ConnectAndReadAsync(qry, cancelTokn))
+            {
+                foreach (IDataRecord rec in results)
+                    dict.Add(rec.ToInt(0), rec.ToDecimal(1));
+            }
+            return dict;
+        }
     }
 }
