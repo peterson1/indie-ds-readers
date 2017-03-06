@@ -3,7 +3,7 @@ using IDSR.CondorReader.Core.ns11.DomainModels;
 
 namespace IDSR.CondorReader.Core.ns11.MasterDataReaders
 {
-    public class VendorCache : SortedDictionary<string, Vendor>
+    public class VendorCache : SortedDictionary<string, _deprecated_Vendor>
     {
     }
 }

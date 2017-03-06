@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="DomainModels\CdrMovement.cs" />
     <Compile Include="DomainModels\CdrMovementLine.cs" />
+    <Compile Include="DomainModels\CdrVendor.cs" />
     <Compile Include="DomainModels\FinishedSale.cs" />
     <Compile Include="DomainModels\CdrProduct.cs" />
     <Compile Include="DomainModels\CdrPurchaseOrder.cs" />
@@ -48,7 +49,7 @@
     <Compile Include="DomainModels\CdrReceiving.cs" />
     <Compile Include="DomainModels\CdrReceivingLine.cs" />
     <Compile Include="DomainModels\Transaction.cs" />
-    <Compile Include="DomainModels\Vendor.cs" />
+    <Compile Include="DomainModels\_deprecated_Vendor.cs" />
     <Compile Include="MasterDataReaders\ProductCache.cs" />
     <Compile Include="MasterDataReaders\VendorCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

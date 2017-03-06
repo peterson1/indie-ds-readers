@@ -2,7 +2,7 @@
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
 {
-    public class Vendor
+    public class _deprecated_Vendor
     {
         public string    Code                  { get; set; }
         public string    Description           { get; set; }

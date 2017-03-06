@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SQLite;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Core.ns11.SqlTools;
 using IDSR.Common.Lib.WPF.DiskAccess;
@@ -64,7 +61,7 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             if (DatabaseName.IsBlank())
                 throw Fault.BlankText("Database name");
 
-            var path = _findr.FindDatabaseFile(DatabaseName);
+            var path   = _findr.FindDatabaseFile(DatabaseName);
             var conStr = ConnectionString.SQLite3(path);
             return new SQLiteConnection(conStr);
         }

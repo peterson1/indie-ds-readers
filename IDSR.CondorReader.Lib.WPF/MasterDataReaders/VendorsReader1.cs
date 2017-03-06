@@ -37,8 +37,8 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         const string SQL_QUERY = "SELECT * FROM Vendor";
 
 
-        private Vendor ToVendor(IDataRecord r)
-            => new Vendor
+        private _deprecated_Vendor ToVendor(IDataRecord r)
+            => new _deprecated_Vendor
             {
                 Code                 = r.ToText(      0),//[vendorcode]	varchar(10) NOT NULL COLLATE NOCASE,
                 Description          = r.ToText(      1),//[description]	varchar(40) NOT NULL COLLATE NOCASE,
