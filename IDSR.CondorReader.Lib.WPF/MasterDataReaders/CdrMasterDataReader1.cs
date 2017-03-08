@@ -15,6 +15,7 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         {
         }
 
+
         public async Task<List<CdrVendor>> GetVendors()
         {
             var qry = "SELECT * FROM Vendor";
@@ -23,6 +24,19 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
             {
                 foreach (IDataRecord rec in results)
                     list.Add(new CdrVendor(rec));
+            }
+            return list;
+        }
+
+
+        public async Task<List<CdrProduct>> GetProducts()
+        {
+            var qry = "SELECT * FROM Products";
+            var list = new List<CdrProduct>();
+            using (var results = await ConnectAndReadAsync(qry, new CancellationToken()))
+            {
+                foreach (IDataRecord rec in results)
+                    list.Add(new CdrProduct(rec));
             }
             return list;
         }

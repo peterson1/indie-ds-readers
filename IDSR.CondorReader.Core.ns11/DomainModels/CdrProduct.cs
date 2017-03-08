@@ -43,7 +43,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             MaxSAStock              = rec.ToDecimal_ (32);// [MaxSAStock]	numeric DEFAULT 0,
             MinSRStock              = rec.ToDecimal_ (33);// [MinSRStock]	numeric DEFAULT 0,
             MaxSRStock              = rec.ToDecimal_ (34);// [MaxSRStock]	numeric DEFAULT 0,
-            LastDateModified        = rec.ToDate_    (35);// [LastDateModified]	datetime DEFAULT (CURRENT_TIMESTAMP),
+            LastDateModified        = rec.ToDate     (35);// [LastDateModified]	datetime DEFAULT (CURRENT_TIMESTAMP),
             OrderCycle              = rec.ToDecimal_ (36);// [OrderCycle]	numeric DEFAULT 0,
             ToDateFinishedSales     = rec.ToDecimal_ (37);// [todatefinishedsales]	numeric DEFAULT 0,
             ShareWithBranch         = rec.GetBoolean (38);// [ShareWithBranch]	bit NOT NULL DEFAULT 1,
@@ -100,7 +100,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public decimal?    MaxSAStock               { get; }
         public decimal?    MinSRStock               { get; }
         public decimal?    MaxSRStock               { get; }
-        public DateTime?   LastDateModified         { get; }
+        public DateTime    LastDateModified         { get; }
         public decimal?    OrderCycle               { get; }
         public decimal?    ToDateFinishedSales      { get; }
         public bool        ShareWithBranch          { get; }
