@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -97,6 +98,21 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                 foreach (IDataRecord rec in results)
                     list.Add(new CdrPurchaseOrderLine(rec));
             }
+            return list;
+        }
+
+
+
+        public async Task<List<CdrPurchaseOrder>> GetAllParents(CancellationToken cancelTkn)
+        {
+            var list = new List<CdrPurchaseOrder>();
+
+            using (var results = await ConnectAndReadAsync(ParentQuery, cancelTkn))
+            {
+                foreach (IDataRecord rec in results)
+                    list.Add(new CdrPurchaseOrder(rec));
+            }
+
             return list;
         }
     }
