@@ -9,6 +9,7 @@ using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
+using Repo2.Core.ns11.Extensions;
 using static IDSR.CondorReader.Core.ns11.SqlQueries.PurchaseOrdersSQL;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
@@ -106,11 +107,20 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         public async Task<List<CdrPurchaseOrder>> GetAllParents(CancellationToken cancelTkn)
         {
             var list = new List<CdrPurchaseOrder>();
+            var usrs = await QueryUsers(cancelTkn);
 
             using (var results = await ConnectAndReadAsync(ParentQuery, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
-                    list.Add(new CdrPurchaseOrder(rec));
+                {
+                    var po = new CdrPurchaseOrder(rec);
+
+                    int usrID;
+                    if (int.TryParse(po.PostedBy, out usrID))
+                        po.PostedByName = usrs.GetOrDefault(usrID, "‹deleted-user›");
+
+                    list.Add(po);
+                }
             }
 
             return list;
