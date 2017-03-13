@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -21,10 +20,10 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
         public Task<List<CdrPurchaseOrderLine>> GetByIDs(IEnumerable<int> idsList, CancellationToken cancelTkn)
-            => RunJobs(QueryParent(idsList, cancelTkn),
-                       QueryLines (idsList, cancelTkn),
-                       QueryUsers (         cancelTkn),
-                       QueryLandedCost     (cancelTkn));
+            => RunJobs(QueryFilteredParents (idsList, cancelTkn),
+                       QueryFilteredLines   (idsList, cancelTkn),
+                       QueryUsers           (         cancelTkn),
+                       QueryLandedCost      (         cancelTkn));
 
 
         private static async Task<List<CdrPurchaseOrderLine>> RunJobs(
@@ -70,7 +69,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        private async Task<Dictionary<decimal, CdrPurchaseOrder>> QueryParent(IEnumerable<int> idsList, CancellationToken cancelTokn)
+        private async Task<Dictionary<decimal, CdrPurchaseOrder>> QueryFilteredParents(IEnumerable<int> idsList, CancellationToken cancelTokn)
         {
             var qry = ParentQuery.WHERE_PurchaseOrderID_IN(idsList);
 
@@ -88,7 +87,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
 
 
-        private async Task<List<CdrPurchaseOrderLine>> QueryLines(IEnumerable<int> idsList, CancellationToken cancelTkn)
+        private async Task<List<CdrPurchaseOrderLine>> QueryFilteredLines(IEnumerable<int> idsList, CancellationToken cancelTkn)
         {
             var qry = LinesQuery.WHERE_PurchaseOrderID_IN(idsList);
 
@@ -122,7 +121,19 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                     list.Add(po);
                 }
             }
+            return list;
+        }
 
+
+        public async Task<List<CdrPurchaseOrderLine>> GetAllLines(CancellationToken cancelTkn)
+        {
+            var list = new List<CdrPurchaseOrderLine>();
+
+            using (var results = await ConnectAndReadAsync(LinesQuery, cancelTkn))
+            {
+                foreach (IDataRecord rec in results)
+                    list.Add(new CdrPurchaseOrderLine(rec));
+            }
             return list;
         }
     }

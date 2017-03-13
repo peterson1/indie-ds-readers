@@ -51,5 +51,9 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
 
         public Task<List<CdrPurchaseOrder>> GetPurchaseOrders()
             => _poReadr.GetAllParents(new CancellationToken());
+
+
+        public Task<List<CdrPurchaseOrderLine>> GetPurchaseOrderLines()
+            => _poReadr.GetAllLines(new CancellationToken());
     }
 }
