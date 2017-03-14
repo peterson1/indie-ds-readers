@@ -127,6 +127,27 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
         public async Task<List<CdrPurchaseOrderLine>> GetAllLines(CancellationToken cancelTkn)
         {
+            var parentsJob  = GetAllParents(cancelTkn);
+            var linesJob    = QueryAllLines(cancelTkn);
+            var productsJob = GetProductsDict(cancelTkn);
+
+            await Task.WhenAll(parentsJob, linesJob, productsJob);
+
+            var lines    = await linesJob;
+            var parents  = await parentsJob;
+            var products = await productsJob;
+
+            foreach (var line in lines)
+            {
+                line.Parent  = parents.SingleOrDefault(x => x.PurchaseOrderID == line.PurchaseOrderID);
+                line.Product = products.GetOrDefault(line.ProductID ?? 0);
+            }
+            return lines;
+        }
+
+
+        private async Task<List<CdrPurchaseOrderLine>> QueryAllLines(CancellationToken cancelTkn)
+        {
             var list = new List<CdrPurchaseOrderLine>();
 
             using (var results = await ConnectAndReadAsync(LinesQuery, cancelTkn))
@@ -135,6 +156,23 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                     list.Add(new CdrPurchaseOrderLine(rec));
             }
             return list;
+        }
+
+
+        private async Task<Dictionary<int, CdrProduct>> GetProductsDict(CancellationToken cancelTkn)
+        {
+            var dict   = new Dictionary<int, CdrProduct>();
+            var sqlQry = "SELECT * FROM Products";
+
+            using (var results = await ConnectAndReadAsync(sqlQry, cancelTkn))
+            {
+                foreach (IDataRecord rec in results)
+                {
+                    var prod = new CdrProduct(rec);
+                    dict.Add(prod.ProductID, prod);
+                }
+            }
+            return dict;
         }
     }
 }
