@@ -61,8 +61,10 @@
     <Compile Include="ReportRows\YearEndInventoryRow.cs" />
     <Compile Include="SqlQueries\MovementsSQL.cs" />
     <Compile Include="SqlQueries\PurchaseOrdersSQL.cs" />
+    <Compile Include="SqlQueries\ReceivingsSQL.cs" />
     <Compile Include="TransactionReaders\IMovementsReader.cs" />
     <Compile Include="TransactionReaders\IPurchaseOrdersReader.cs" />
+    <Compile Include="TransactionReaders\IReceivingsReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IDSR.Common.Core.ns11\IDSR.Common.Core.ns11.csproj">
