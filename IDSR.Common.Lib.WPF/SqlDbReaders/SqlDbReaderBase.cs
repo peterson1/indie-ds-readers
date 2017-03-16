@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -115,6 +116,21 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             }
             return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
         }
+
+
+
+        protected async Task<List<T>> QueryList<T>(string sqlQuery, Func<IDataRecord, T> dataRecParser, CancellationToken cancelTkn)
+        {
+            var list = new List<T>();
+
+            using (var results = await ConnectAndReadAsync(sqlQuery, cancelTkn))
+            {
+                foreach (IDataRecord rec in results)
+                    list.Add(dataRecParser(rec));
+            }
+            return list;
+        }
+
 
 
         private void ShowSqlServerError(Exception ex)

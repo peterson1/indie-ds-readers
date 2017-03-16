@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
@@ -23,27 +22,30 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         public async Task<List<CdrReceiving>> GetAllParents(CancellationToken cancelTkn)
         {
             var usrs = await QueryUsers(cancelTkn);
-            var list = new List<CdrReceiving>();
-
-            using (var results = await ConnectAndReadAsync(ParentQuery, cancelTkn))
+            var list = await QueryList<CdrReceiving>(ParentQuery, r => new CdrReceiving(r), cancelTkn);
+            foreach (var rcv in list)
             {
-                foreach (IDataRecord rec in results)
-                {
-                    var re = new CdrReceiving(rec);
-
-                    int usrID;
-                    if (int.TryParse(re.PostedBy, out usrID))
-                        re.PostedByName = usrs.GetOrDefault(usrID, "‹deleted-user›");
-
-                    list.Add(re);
-                }
+                int usrID;
+                if (int.TryParse(rcv.PostedBy, out usrID))
+                    rcv.PostedByName = usrs.GetOrDefault(usrID, "‹deleted-user›");
             }
             return list;
         }
 
-        public Task<List<CdrReceivingLine>> GetAllLines(CancellationToken cancelTkn)
+
+        public async Task<List<CdrReceivingLine>> GetAllLines(CancellationToken cancelTkn)
         {
-            throw new NotImplementedException();
+            var parentsJob = GetAllParents(cancelTkn);
+            var linesJob   = QueryList<CdrReceivingLine>(LinesQuery, x => new CdrReceivingLine(x), cancelTkn);
+            await Task.WhenAll(parentsJob, linesJob);
+
+            var parents = (await parentsJob).ToDictionary(x => x.ReceivingID);
+            var lines   = await linesJob;
+
+            foreach (var line in lines)
+                line.Parent = parents.GetOrDefault(line.ReceivingID);
+
+            return lines;
         }
     }
 }

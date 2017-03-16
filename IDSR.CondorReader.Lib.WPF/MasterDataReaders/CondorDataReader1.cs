@@ -26,11 +26,11 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         }
 
 
-        public async Task<List<CdrVendor>> GetVendors()
+        public async Task<List<CdrVendor>> GetVendors(CancellationToken cancelTkn)
         {
             var qry = "SELECT * FROM Vendor";
             var list = new List<CdrVendor>();
-            using (var results = await ConnectAndReadAsync(qry, new CancellationToken()))
+            using (var results = await ConnectAndReadAsync(qry, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
                     list.Add(new CdrVendor(rec));
@@ -39,11 +39,11 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         }
 
 
-        public async Task<List<CdrProduct>> GetProducts()
+        public async Task<List<CdrProduct>> GetProducts(CancellationToken cancelTkn)
         {
             var qry = "SELECT * FROM Products";
             var list = new List<CdrProduct>();
-            using (var results = await ConnectAndReadAsync(qry, new CancellationToken()))
+            using (var results = await ConnectAndReadAsync(qry, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
                     list.Add(new CdrProduct(rec));
@@ -52,17 +52,17 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         }
 
 
-        public Task<List<CdrPurchaseOrder>> GetPurchaseOrders()
-            => _poReadr.GetAllParents(new CancellationToken());
+        public Task<List<CdrPurchaseOrder>> GetPurchaseOrders(CancellationToken cancelTkn)
+            => _poReadr.GetAllParents(cancelTkn);
 
-        public Task<List<CdrPurchaseOrderLine>> GetPurchaseOrderLines()
-            => _poReadr.GetAllLines(new CancellationToken());
+        public Task<List<CdrPurchaseOrderLine>> GetPurchaseOrderLines(CancellationToken cancelTkn)
+            => _poReadr.GetAllLines(cancelTkn);
 
 
-        public Task<List<CdrReceiving>> GetReceivings()
-            => _rcvReadr.GetAllParents(new CancellationToken());
+        public Task<List<CdrReceiving>> GetReceivings(CancellationToken cancelTkn)
+            => _rcvReadr.GetAllParents(cancelTkn);
 
-        public Task<List<CdrReceivingLine>> GetReceivingLines()
-            => _rcvReadr.GetAllLines(new CancellationToken());
+        public Task<List<CdrReceivingLine>> GetReceivingLines(CancellationToken cancelTkn)
+            => _rcvReadr.GetAllLines(cancelTkn);
     }
 }
