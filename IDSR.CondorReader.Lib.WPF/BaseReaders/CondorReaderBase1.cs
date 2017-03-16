@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
+using IDSR.CondorReader.Core.ns11.DomainModels;
 using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Lib.WPF.BaseReaders
@@ -38,5 +40,14 @@ namespace IDSR.CondorReader.Lib.WPF.BaseReaders
             }
             return dict;
         }
+
+
+        protected async Task<Dictionary<int, CdrProduct>> GetProductsDict(CancellationToken cancelTkn)
+        {
+            var list = await QueryList<CdrProduct>("SELECT * FROM Products", 
+                                        r => new CdrProduct(r), cancelTkn);
+            return list.ToDictionary(x => x.ProductID);
+        }
+
     }
 }

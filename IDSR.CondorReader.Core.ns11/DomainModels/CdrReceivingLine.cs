@@ -96,6 +96,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public string     RemarksReason      { get; }
 
 
-        public CdrReceiving Parent { get; set; }
+        public CdrReceiving Parent   { get; set; }
+        public CdrProduct   Product  { get; set; }
     }
 }

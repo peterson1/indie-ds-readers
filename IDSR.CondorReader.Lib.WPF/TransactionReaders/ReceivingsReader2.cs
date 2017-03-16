@@ -35,16 +35,22 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
         public async Task<List<CdrReceivingLine>> GetAllLines(CancellationToken cancelTkn)
         {
-            var parentsJob = GetAllParents(cancelTkn);
-            var linesJob   = QueryList<CdrReceivingLine>(LinesQuery, x => new CdrReceivingLine(x), cancelTkn);
+            var parentsJob  = GetAllParents   (cancelTkn);
+            var productsJob = GetProductsDict (cancelTkn);
+            var linesJob    = QueryList<CdrReceivingLine>(LinesQuery, x => new CdrReceivingLine(x), cancelTkn);
             await Task.WhenAll(parentsJob, linesJob);
 
-            var parents = (await parentsJob).ToDictionary(x => x.ReceivingID);
-            var lines   = await linesJob;
+            var parents  = (await parentsJob).ToDictionary(x => x.ReceivingID);
+            var products = await productsJob;
+            var lines    = await linesJob;
 
             foreach (var line in lines)
+            {
                 line.Parent = parents.GetOrDefault(line.ReceivingID);
 
+                if (line.ProductID.HasValue)
+                    line.Product = products.GetOrDefault((int)line.ProductID.Value);
+            }
             return lines;
         }
     }

@@ -159,20 +159,20 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        private async Task<Dictionary<int, CdrProduct>> GetProductsDict(CancellationToken cancelTkn)
-        {
-            var dict   = new Dictionary<int, CdrProduct>();
-            var sqlQry = "SELECT * FROM Products";
+        //private async Task<Dictionary<int, CdrProduct>> GetProductsDict(CancellationToken cancelTkn)
+        //{
+        //    var dict   = new Dictionary<int, CdrProduct>();
+        //    var sqlQry = "SELECT * FROM Products";
 
-            using (var results = await ConnectAndReadAsync(sqlQry, cancelTkn))
-            {
-                foreach (IDataRecord rec in results)
-                {
-                    var prod = new CdrProduct(rec);
-                    dict.Add(prod.ProductID, prod);
-                }
-            }
-            return dict;
-        }
+        //    using (var results = await ConnectAndReadAsync(sqlQry, cancelTkn))
+        //    {
+        //        foreach (IDataRecord rec in results)
+        //        {
+        //            var prod = new CdrProduct(rec);
+        //            dict.Add(prod.ProductID, prod);
+        //        }
+        //    }
+        //    return dict;
+        //}
     }
 }
