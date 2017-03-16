@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CondorReader", "CondorReader", "{DA7B7EE8-CB71-42AA-B31A-AD63E379F73B}"
+	ProjectSection(SolutionItems) = preProject
+		schema.txt = schema.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDSR.CondorReader.Core.ns11", "IDSR.CondorReader.Core.ns11\IDSR.CondorReader.Core.ns11.csproj", "{53C22B4F-F219-45F3-BD78-F2735308FA8B}"
 EndProject
