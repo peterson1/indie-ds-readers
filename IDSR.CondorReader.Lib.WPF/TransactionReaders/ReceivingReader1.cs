@@ -11,6 +11,7 @@ using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
+using Repo2.Core.ns11.Extensions.StringExtensions;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
@@ -89,7 +90,9 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             {
                 var p = parnt[grp.Key];
                 p.Lines = grp.ToList();
-                p.PostedByName = users[int.Parse(p.PostedBy)];
+
+                if (!p.PostedBy.IsBlank())
+                    p.PostedByName = users[int.Parse(p.PostedBy)];
             }
 
             return lines;
