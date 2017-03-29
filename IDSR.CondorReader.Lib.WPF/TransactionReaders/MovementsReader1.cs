@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using IDSR.Common.Core.ns11.Configuration;
 using IDSR.Common.Lib.WPF.DiskAccess;
-using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
+using Repo2.Core.ns11.Extensions;
 using static IDSR.CondorReader.Core.ns11.SqlQueries.MovementsSQL;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
@@ -100,6 +100,48 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                     list.Add(new CdrMovementLine(rec));
             }
             return list;
+        }
+
+
+        public async Task<List<CdrMovement>> GetBadOrders(CancellationToken cancelTkn)
+        {
+            var qry = ParentQuery.WHERE_MovementCode_IS("RSsa")
+                                 .AND_StatusDescription_IS("POSTED");
+
+            var usrs = await QueryUsers(cancelTkn);
+            var list = await QueryList<CdrMovement>(qry, r => new CdrMovement(r), cancelTkn);
+            foreach (var rcv in list)
+            {
+                int usrID;
+                if (int.TryParse(rcv.PostedBy, out usrID))
+                    rcv.PostedByName = usrs.GetOrDefault(usrID, "‹deleted-user›");
+            }
+            return list;
+        }
+
+
+        public async Task<List<CdrMovementLine>> GetBadOrderLines(CancellationToken cancelTkn)
+        {
+            var qry = LinesQuery.WHERE_MovementCode_IS("RSsa")
+                                .AND_StatusDescription_IS("POSTED");
+
+            var parentsJob  = GetBadOrders    (cancelTkn);
+            var productsJob = GetProductsDict (cancelTkn);
+            var linesJob    = QueryList<CdrMovementLine>(qry, x => new CdrMovementLine(x), cancelTkn);
+            await Task.WhenAll(parentsJob, linesJob);
+
+            var parents  = (await parentsJob).ToDictionary(x => x.MovementID);
+            var products = await productsJob;
+            var lines    = await linesJob;
+
+            foreach (var line in lines)
+            {
+                line.Parent = parents.GetOrDefault(line.MovementID);
+
+                if (line.ProductID.HasValue)
+                    line.Product = products.GetOrDefault((int)line.ProductID.Value);
+            }
+            return lines;
         }
     }
 }

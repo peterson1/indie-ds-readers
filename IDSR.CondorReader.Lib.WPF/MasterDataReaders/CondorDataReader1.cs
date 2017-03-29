@@ -14,15 +14,18 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
     {
         private IPurchaseOrdersReader _poReadr;
         private IReceivingsReader     _rcvReadr;
+        private IMovementsReader      _mvtReadr;
 
         public CondorDataReader1(LocalDbFinder localDbFinder, 
                                  DsrConfiguration1 dsrConfiguration1,
                                  IPurchaseOrdersReader purchaseOrdersReader,
-                                 IReceivingsReader receivingsReader) 
+                                 IReceivingsReader receivingsReader,
+                                 IMovementsReader movementsReader) 
             : base(localDbFinder, dsrConfiguration1)
         {
             _poReadr  = purchaseOrdersReader;
             _rcvReadr = receivingsReader;
+            _mvtReadr = movementsReader;
         }
 
 
@@ -64,5 +67,12 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
 
         public Task<List<CdrReceivingLine>> GetReceivingLines(CancellationToken cancelTkn)
             => _rcvReadr.GetAllLines(cancelTkn);
+
+
+        public Task<List<CdrMovement>> GetBadOrders(CancellationToken cancelTkn)
+            => _mvtReadr.GetBadOrders(cancelTkn);
+
+        public Task<List<CdrMovementLine>> GetBadOrderLines(CancellationToken cancelTkn)
+            => _mvtReadr.GetBadOrderLines(cancelTkn);
     }
 }

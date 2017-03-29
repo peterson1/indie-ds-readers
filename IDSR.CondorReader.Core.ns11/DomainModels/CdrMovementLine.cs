@@ -85,6 +85,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public string      SerialNo        { get; }// varchar(200), 
         public string      Remarks         { get; }// varchar(200) NOT NULL DEFAULT ('')
 
-        public CdrMovement Parent { get; set; }
+        public CdrMovement  Parent   { get; set; }
+        public CdrProduct   Product  { get; set; }
     }
 }

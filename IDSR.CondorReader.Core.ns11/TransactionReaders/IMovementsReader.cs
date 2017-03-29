@@ -9,5 +9,7 @@ namespace IDSR.CondorReader.Core.ns11.TransactionReaders
     {
         Task<List<CdrMovementLine>>  GetOpenReturns   (IEnumerable<string> vendorCodes, CancellationToken cancelTokn);
         Task<List<CdrMovementLine>>  GetPostedReturns (IEnumerable<string> vendorCodes, CancellationToken cancelTokn);
+        Task<List<CdrMovement>>      GetBadOrders     (CancellationToken cancelTokn);
+        Task<List<CdrMovementLine>>  GetBadOrderLines (CancellationToken cancelTokn);
     }
 }
