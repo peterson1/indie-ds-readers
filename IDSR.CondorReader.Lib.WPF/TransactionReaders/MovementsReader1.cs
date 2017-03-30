@@ -103,18 +103,24 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        public async Task<List<CdrMovement>> GetBadOrders(CancellationToken cancelTkn)
+        public async Task<List<CdrMovement>> GetBadOrders(CancellationToken cancelTkn, bool withLines)
         {
             var qry = ParentQuery.WHERE_MovementCode_IS("RSsa")
                                  .AND_StatusDescription_IS("POSTED");
 
+            List<CdrMovementLine> lines = null;
+            if (withLines) lines = await GetBadOrderLines(cancelTkn);
+
             var usrs = await QueryUsers(cancelTkn);
             var list = await QueryList<CdrMovement>(qry, r => new CdrMovement(r), cancelTkn);
-            foreach (var rcv in list)
+            foreach (var mvt in list)
             {
                 int usrID;
-                if (int.TryParse(rcv.PostedBy, out usrID))
-                    rcv.PostedByName = usrs.GetOrDefault(usrID, "‹deleted-user›");
+                if (int.TryParse(mvt.PostedBy, out usrID))
+                    mvt.PostedByName = usrs.GetOrDefault(usrID, "‹deleted-user›");
+
+                if (withLines)
+                    mvt.Lines = lines.Where(x => x.MovementID == mvt.MovementID).ToList();
             }
             return list;
         }
@@ -125,7 +131,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             var qry = LinesQuery.WHERE_MovementCode_IS("RSsa")
                                 .AND_StatusDescription_IS("POSTED");
 
-            var parentsJob  = GetBadOrders    (cancelTkn);
+            var parentsJob  = GetBadOrders    (cancelTkn, false);
             var productsJob = GetProductsDict (cancelTkn);
             var linesJob    = QueryList<CdrMovementLine>(qry, x => new CdrMovementLine(x), cancelTkn);
             await Task.WhenAll(parentsJob, linesJob);
