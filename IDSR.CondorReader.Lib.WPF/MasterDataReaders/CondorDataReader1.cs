@@ -69,8 +69,8 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
             => _rcvReadr.GetAllLines(cancelTkn);
 
 
-        public Task<List<CdrMovement>> GetBadOrders(CancellationToken cancelTkn)
-            => _mvtReadr.GetBadOrders(cancelTkn);
+        public Task<List<CdrMovement>> GetBadOrders(CancellationToken cancelTkn, bool withLines = false)
+            => _mvtReadr.GetBadOrders(cancelTkn, withLines);
 
         public Task<List<CdrMovementLine>> GetBadOrderLines(CancellationToken cancelTkn)
             => _mvtReadr.GetBadOrderLines(cancelTkn);
