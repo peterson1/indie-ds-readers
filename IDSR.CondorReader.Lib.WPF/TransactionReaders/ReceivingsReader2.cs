@@ -19,8 +19,11 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         }
 
 
-        public async Task<List<CdrReceiving>> GetAllParents(CancellationToken cancelTkn)
+        public async Task<List<CdrReceiving>> GetAllParents(CancellationToken cancelTkn, bool withLines)
         {
+            List<CdrReceivingLine> lines = null;
+            if (withLines) lines = await GetAllLines(cancelTkn);
+
             var usrs = await QueryUsers(cancelTkn);
             var list = await QueryList<CdrReceiving>(ParentQuery, r => new CdrReceiving(r), cancelTkn);
             foreach (var rcv in list)
@@ -28,6 +31,9 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                 int usrID;
                 if (int.TryParse(rcv.PostedBy, out usrID))
                     rcv.PostedByName = usrs.GetOrDefault(usrID, "‹deleted-user›");
+
+                if (withLines)
+                    rcv.Lines = lines.Where(x => x.ReceivingID == rcv.ReceivingID).ToList();
             }
             return list;
         }
@@ -35,7 +41,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
         public async Task<List<CdrReceivingLine>> GetAllLines(CancellationToken cancelTkn)
         {
-            var parentsJob  = GetAllParents   (cancelTkn);
+            var parentsJob  = GetAllParents   (cancelTkn, false);
             var productsJob = GetProductsDict (cancelTkn);
             var linesJob    = QueryList<CdrReceivingLine>(LinesQuery, x => new CdrReceivingLine(x), cancelTkn);
             await Task.WhenAll(parentsJob, linesJob);

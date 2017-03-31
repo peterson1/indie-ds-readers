@@ -62,8 +62,8 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
             => _poReadr.GetAllLines(cancelTkn);
 
 
-        public Task<List<CdrReceiving>> GetReceivings(CancellationToken cancelTkn)
-            => _rcvReadr.GetAllParents(cancelTkn);
+        public Task<List<CdrReceiving>> GetReceivings(CancellationToken cancelTkn, bool withLines = false)
+            => _rcvReadr.GetAllParents(cancelTkn, withLines);
 
         public Task<List<CdrReceivingLine>> GetReceivingLines(CancellationToken cancelTkn)
             => _rcvReadr.GetAllLines(cancelTkn);
