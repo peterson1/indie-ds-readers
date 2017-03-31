@@ -8,7 +8,7 @@ namespace IDSR.CondorReader.Core.ns11.TransactionReaders
     public interface IPurchaseOrdersReader
     {
         Task<List<CdrPurchaseOrderLine>>  GetByIDs       (IEnumerable<int> idsList, CancellationToken cancelTkn);
-        Task<List<CdrPurchaseOrder>>      GetAllParents  (CancellationToken cancelTkn);
+        Task<List<CdrPurchaseOrder>>      GetAllParents  (CancellationToken cancelTkn, bool withLines);
         Task<List<CdrPurchaseOrderLine>>  GetAllLines    (CancellationToken cancelTkn);
     }
 }
