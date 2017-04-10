@@ -99,21 +99,29 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             var cmd         = conn.CreateCommand();
             cmd.CommandText = sqlQuery;
 
-            var job = conn.OpenAsync(cancelTkn);
-            try
-            {
-                Task.WaitAll(job);
-            }
-            catch (Exception ex)
-            {
-                ShowSqlServerError(ex);
-                return null;
-            }
-            if (job.IsFaulted)
-            {
-                ShowSqlServerError(job.Exception);
-                return null;
-            }
+            //if (AlertOnErrors)
+            //{
+            //    var job = conn.OpenAsync(cancelTkn);
+            //    try
+            //    {
+            //        Task.WaitAll(job);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ShowSqlServerError(ex);
+            //        return null;
+            //    }
+            //    if (job.IsFaulted)
+            //    {
+            //        ShowSqlServerError(job.Exception);
+            //        return null;
+            //    }
+            //}
+            //else
+            //{
+                await conn.OpenAsync(cancelTkn);
+            //}
+
             return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
         }
 
