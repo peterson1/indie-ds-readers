@@ -15,7 +15,6 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         private IPurchaseOrdersReader _poReadr;
         private IReceivingsReader     _rcvReadr;
         private IMovementsReader      _mvtReadr;
-        private bool                  _alertOnErrors;
 
         public CondorDataReader1(LocalDbFinder localDbFinder, 
                                  DsrConfiguration1 dsrConfiguration1,
