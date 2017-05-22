@@ -7,6 +7,7 @@ using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
+using System;
 
 namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
 {
@@ -29,27 +30,31 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         }
 
 
-        public async Task<List<CdrVendor>> GetVendors(CancellationToken cancelTkn)
+        public Task<List<CdrVendor>> GetVendors(CancellationToken cancelTkn = new CancellationToken())
+            => GetAllRecords<CdrVendor>("Vendor", cancelTkn);
+
+
+        public Task<List<CdrProduct>> GetProducts(CancellationToken cancelTkn = new CancellationToken())
+            => GetAllRecords<CdrProduct>("Products", cancelTkn);
+
+
+        public Task<List<CdrCustomer>> GetCustomers(CancellationToken cancelTkn = new CancellationToken())
+            => GetAllRecords<CdrCustomer>("Customer", cancelTkn);
+
+
+        private async Task<List<T>> GetAllRecords <T>(string tableName, CancellationToken cancelTkn)
+            where T : class
         {
-            var qry = "SELECT * FROM Vendor";
-            var list = new List<CdrVendor>();
+            var qry = $"SELECT * FROM {tableName}";
+            var list = new List<T>();
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
-                    list.Add(new CdrVendor(rec));
-            }
-            return list;
-        }
-
-
-        public async Task<List<CdrProduct>> GetProducts(CancellationToken cancelTkn)
-        {
-            var qry = "SELECT * FROM Products";
-            var list = new List<CdrProduct>();
-            using (var results = await ConnectAndReadAsync(qry, cancelTkn))
-            {
-                foreach (IDataRecord rec in results)
-                    list.Add(new CdrProduct(rec));
+                {
+                    //list.Add(new CdrProduct(rec));
+                    var obj = Activator.CreateInstance(typeof(T), rec);
+                    list.Add(obj as T);
+                }
             }
             return list;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Repo2.Core.ns11.Extensions;
+using IDSR.CondorReader.Core.ns11.Converters;
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
 {
@@ -63,6 +64,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             TimeBased               = rec.GetBoolean (52);// [TimeBased]	bit NOT NULL DEFAULT 0,
             Combo                   = rec.GetBoolean (53);// [Combo]	bit NOT NULL DEFAULT 0,
             ComputedAverageCost     = rec.GetDecimal (54);// [ComputedAverageCost]	numeric NOT NULL DEFAULT 0
+
+            ParsedBarCode           = ProductCode.ToBarCode(Description);
         }
 
         public int         ProductID                { get; }
@@ -120,6 +123,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public bool        TimeBased                { get; }
         public bool        Combo                    { get; }
         public decimal     ComputedAverageCost      { get; }
+        public ulong       ParsedBarCode            { get; }
 
         public bool IsVatable => pVatable == true;
     }

@@ -1,4 +1,5 @@
-﻿using Repo2.Core.ns11.Extensions;
+﻿using IDSR.CondorReader.Core.ns11.Converters;
+using Repo2.Core.ns11.Extensions;
 using System;
 using System.Data;
 
@@ -8,43 +9,45 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
     {
         public CdrCustomer(IDataRecord r)
         {
-            customercode     = r.GetString ( 0);// varchar(20) NOT NULL COLLATE NOCASE DEFAULT '',
-            description      = r.GetString ( 1);// varchar(50) NOT NULL COLLATE NOCASE DEFAULT '',
-            address          = r.GetString ( 2);// varchar(100) COLLATE NOCASE DEFAULT '',
-            city             = r.GetString ( 3);// varchar(50) COLLATE NOCASE DEFAULT '',
-            zipcode          = r.GetString ( 4);// varchar(6) COLLATE NOCASE DEFAULT '',
-            country          = r.GetString ( 5);// varchar(20) COLLATE NOCASE DEFAULT '',
-            fax              = r.GetString ( 6);// varchar(20) COLLATE NOCASE DEFAULT '',
-            email            = r.GetString ( 7);// varchar(50) COLLATE NOCASE DEFAULT '',
-            phone            = r.GetString ( 8);// varchar(20) COLLATE NOCASE DEFAULT '',
+            customercode     = r.ToText    ( 0);// varchar(20) NOT NULL COLLATE NOCASE DEFAULT '',
+            description      = r.ToText    ( 1);// varchar(50) NOT NULL COLLATE NOCASE DEFAULT '',
+            address          = r.ToText    ( 2);// varchar(100) COLLATE NOCASE DEFAULT '',
+            city             = r.ToText    ( 3);// varchar(50) COLLATE NOCASE DEFAULT '',
+            zipcode          = r.ToText    ( 4);// varchar(6) COLLATE NOCASE DEFAULT '',
+            country          = r.ToText    ( 5);// varchar(20) COLLATE NOCASE DEFAULT '',
+            fax              = r.ToText    ( 6);// varchar(20) COLLATE NOCASE DEFAULT '',
+            email            = r.ToText    ( 7);// varchar(50) COLLATE NOCASE DEFAULT '',
+            phone            = r.ToText    ( 8);// varchar(20) COLLATE NOCASE DEFAULT '',
             creditlimit      = r.ToDecimal ( 9);// numeric NOT NULL DEFAULT 0,
             creditbalance    = r.ToDecimal (10);// numeric NOT NULL DEFAULT 0,
             discount         = r.ToDecimal (11);// numeric NOT NULL DEFAULT 0,
             allowance        = r.GetBoolean(12);// bit NOT NULL DEFAULT 0,
-            pricemodecode    = r.GetString (13);// varchar(2) COLLATE NOCASE DEFAULT '',
-            remarks          = r.GetString (14);// varchar(50) COLLATE NOCASE DEFAULT '',
+            pricemodecode    = r.ToText    (13);// varchar(2) COLLATE NOCASE DEFAULT '',
+            remarks          = r.ToText    (14);// varchar(50) COLLATE NOCASE DEFAULT '',
             currentpoints    = r.ToDecimal (15);// numeric NOT NULL DEFAULT 0,
             LastDateModified = r.ToDate    (16);// datetime DEFAULT (CURRENT_TIMESTAMP),
-            drdescription    = r.GetString (17);// varchar(40) COLLATE NOCASE DEFAULT '',
-            draddress        = r.GetString (18);// varchar(50) COLLATE NOCASE DEFAULT '',
-            drcity           = r.GetString (19);// varchar(20) COLLATE NOCASE DEFAULT '',
-            drzipcode        = r.GetString (20);// varchar(6) COLLATE NOCASE DEFAULT '',
-            drcountry        = r.GetString (21);// varchar(20) COLLATE NOCASE DEFAULT '',
-            SalesmanCode     = r.GetString (22);// varchar(20) COLLATE NOCASE DEFAULT '',
-            Category         = r.GetString (23);// varchar(30) COLLATE NOCASE DEFAULT '',
+            drdescription    = r.ToText    (17);// varchar(40) COLLATE NOCASE DEFAULT '',
+            draddress        = r.ToText    (18);// varchar(50) COLLATE NOCASE DEFAULT '',
+            drcity           = r.ToText    (19);// varchar(20) COLLATE NOCASE DEFAULT '',
+            drzipcode        = r.ToText    (20);// varchar(6) COLLATE NOCASE DEFAULT '',
+            drcountry        = r.ToText    (21);// varchar(20) COLLATE NOCASE DEFAULT '',
+            SalesmanCode     = r.ToText    (22);// varchar(20) COLLATE NOCASE DEFAULT '',
+            Category         = r.ToText    (23);// varchar(30) COLLATE NOCASE DEFAULT '',
             Status           = r.ToInt     (24);// integer DEFAULT 1,
-            Branch           = r.GetString (25);// varchar(10) COLLATE NOCASE DEFAULT '',
+            Branch           = r.ToText    (25);// varchar(10) COLLATE NOCASE DEFAULT '',
             ExpirationDate   = r.ToDate    (26);// datetime DEFAULT (CURRENT_TIMESTAMP),
             MemberSince      = r.ToDate    (27);// datetime DEFAULT (CURRENT_TIMESTAMP),
-            ContactPerson    = r.GetString (28);// varchar(40) COLLATE NOCASE DEFAULT '',
+            ContactPerson    = r.ToText    (28);// varchar(40) COLLATE NOCASE DEFAULT '',
             Terms            = r.ToInt     (29);// integer NOT NULL DEFAULT 0,
             Birthday         = r.ToDate    (30);// datetime DEFAULT (CURRENT_TIMESTAMP),
-            Mobile           = r.GetString (31);// varchar(20) COLLATE NOCASE DEFAULT '',
-            Business         = r.GetString (32);// varchar(10) COLLATE NOCASE DEFAULT '',
-            BusinessEmail    = r.GetString (33);// varchar(50) NOT NULL COLLATE NOCASE DEFAULT '',
+            Mobile           = r.ToText    (31);// varchar(20) COLLATE NOCASE DEFAULT '',
+            Business         = r.ToText    (32);// varchar(10) COLLATE NOCASE DEFAULT '',
+            BusinessEmail    = r.ToText    (33);// varchar(50) NOT NULL COLLATE NOCASE DEFAULT '',
             Age              = r.ToInt     (34);// integer NOT NULL DEFAULT 0,
-            Gender           = r.GetString (35);// char(1) NOT NULL COLLATE NOCASE DEFAULT '',
-            Biometric        = r.GetString (36);// blob(5000)
+            Gender           = r.ToText    (35);// char(1) NOT NULL COLLATE NOCASE DEFAULT '',
+            Biometric        = r.ToText    (36);// blob(5000)
+
+            ParsedBarCode    = customercode.ToBarCode(description);
         }
 
         public string    customercode     { get; }// varchar(20) NOT NULL COLLATE NOCASE DEFAULT '',
@@ -84,6 +87,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public int       Age              { get; }// integer NOT NULL DEFAULT 0,
         public string    Gender           { get; }// char(1) NOT NULL COLLATE NOCASE DEFAULT '',
         public string    Biometric        { get; }// blob(5000)
+        public ulong     ParsedBarCode    { get; }
     }
 
     /*
