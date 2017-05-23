@@ -54,6 +54,7 @@ namespace IDSR.CondorReader.Lib.WPF.ComponentRegistry
             b.Multi<IMovementsReader, MovementsReader1>();
             b.Multi<IPurchaseOrdersReader, PurchaseOrdersReader2>();
             b.Multi<IReceivingsReader, ReceivingsReader2>();
+            b.Multi<SalesTransactionReader>();
             b.Multi<CondorDataReader1>();
         }
     }

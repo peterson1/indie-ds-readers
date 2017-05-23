@@ -3,6 +3,7 @@ using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
+using IDSR.CondorReader.Lib.WPF.TransactionReaders;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,13 +22,18 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
                                  DsrConfiguration1 dsrConfiguration1,
                                  IPurchaseOrdersReader purchaseOrdersReader,
                                  IReceivingsReader receivingsReader,
-                                 IMovementsReader movementsReader) 
+                                 IMovementsReader movementsReader,
+                                 SalesTransactionReader salesTransactionReader) 
             : base(localDbFinder, dsrConfiguration1)
         {
-            _poReadr  = purchaseOrdersReader;
-            _rcvReadr = receivingsReader;
-            _mvtReadr = movementsReader;
+            _poReadr          = purchaseOrdersReader;
+            _rcvReadr         = receivingsReader;
+            _mvtReadr         = movementsReader;
+            SalesTransactions = salesTransactionReader;
         }
+
+
+        public SalesTransactionReader SalesTransactions { get; }
 
 
         public Task<List<CdrVendor>> GetVendors(CancellationToken cancelTkn = new CancellationToken())

@@ -43,6 +43,10 @@
     <Compile Include="DomainModels\CdrCustomer.cs" />
     <Compile Include="DomainModels\CdrMovement.cs" />
     <Compile Include="DomainModels\CdrMovementLine.cs" />
+    <Compile Include="DomainModels\CdrSalesTransaction.cs" />
+    <Compile Include="DomainModels\CdrTransactionHeader.cs" />
+    <Compile Include="DomainModels\CdrTransactionLine.cs" />
+    <Compile Include="DomainModels\CdrTransactionPayment.cs" />
     <Compile Include="DomainModels\CdrVendor.cs" />
     <Compile Include="DomainModels\FinishedSale.cs" />
     <Compile Include="DomainModels\CdrProduct.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="SqlQueries\MovementsSQL.cs" />
     <Compile Include="SqlQueries\PurchaseOrdersSQL.cs" />
     <Compile Include="SqlQueries\ReceivingsSQL.cs" />
+    <Compile Include="SqlQueries\SalesTransactionSQL.cs" />
     <Compile Include="TransactionReaders\IMovementsReader.cs" />
     <Compile Include="TransactionReaders\IPurchaseOrdersReader.cs" />
     <Compile Include="TransactionReaders\IReceivingsReader.cs" />
