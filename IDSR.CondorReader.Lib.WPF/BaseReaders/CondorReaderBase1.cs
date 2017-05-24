@@ -8,6 +8,7 @@ using IDSR.Common.Lib.WPF.DiskAccess;
 using IDSR.Common.Lib.WPF.SqlDbReaders;
 using IDSR.CondorReader.Core.ns11.DomainModels;
 using Repo2.Core.ns11.Extensions;
+using System;
 
 namespace IDSR.CondorReader.Lib.WPF.BaseReaders
 {
@@ -16,6 +17,7 @@ namespace IDSR.CondorReader.Lib.WPF.BaseReaders
         public CondorReaderBase1(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
         }
+
 
         protected async Task<Dictionary<int, string>> QueryUsers(CancellationToken cancelTokn)
         {
@@ -28,6 +30,7 @@ namespace IDSR.CondorReader.Lib.WPF.BaseReaders
             }
             return dict;
         }
+
 
         protected async Task<Dictionary<int, decimal>> QueryLandedCost(CancellationToken cancelTokn)
         {
@@ -49,5 +52,21 @@ namespace IDSR.CondorReader.Lib.WPF.BaseReaders
             return list.ToDictionary(x => x.ProductID);
         }
 
+
+        protected async Task<List<T>> GetAllRecords<T>(string tableName, CancellationToken cancelTkn)
+            where T : class
+        {
+            var qry = $"SELECT * FROM {tableName}";
+            var list = new List<T>();
+            using (var results = await ConnectAndReadAsync(qry, cancelTkn))
+            {
+                foreach (IDataRecord rec in results)
+                {
+                    var obj = Activator.CreateInstance(typeof(T), rec);
+                    list.Add(obj as T);
+                }
+            }
+            return list;
+        }
     }
 }

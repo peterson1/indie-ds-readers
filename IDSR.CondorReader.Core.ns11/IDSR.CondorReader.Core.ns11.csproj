@@ -43,11 +43,14 @@
     <Compile Include="DomainModels\CdrCustomer.cs" />
     <Compile Include="DomainModels\CdrMovement.cs" />
     <Compile Include="DomainModels\CdrMovementLine.cs" />
+    <Compile Include="DomainModels\CdrPOS_Products.cs" />
+    <Compile Include="DomainModels\CdrProductMeta.cs" />
     <Compile Include="DomainModels\CdrSalesTransaction.cs" />
     <Compile Include="DomainModels\CdrTransactionHeader.cs" />
     <Compile Include="DomainModels\CdrTransactionLine.cs" />
     <Compile Include="DomainModels\CdrTransactionPayment.cs" />
     <Compile Include="DomainModels\CdrVendor.cs" />
+    <Compile Include="DomainModels\CdrVENDOR_Products.cs" />
     <Compile Include="DomainModels\FinishedSale.cs" />
     <Compile Include="DomainModels\CdrProduct.cs" />
     <Compile Include="DomainModels\CdrPurchaseOrder.cs" />
