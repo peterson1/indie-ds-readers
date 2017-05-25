@@ -1,4 +1,5 @@
-﻿using Repo2.Core.ns11.Extensions;
+﻿using IDSR.CondorReader.Core.ns11.Converters;
+using Repo2.Core.ns11.Extensions;
 using System;
 using System.Data;
 
@@ -29,6 +30,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             totalcost         = r.ToDecimal (18);// decimal  numeric NOT NULL DEFAULT 0,
             tradediscount     = r.ToText    (19);// string   varchar(20) COLLATE NOCASE,
             LastDateModified  = r.ToDate    (20);// DateTime datetime DEFAULT (CURRENT_TIMESTAMP)
+
+            ParsedBarCode     = VendorProductCode.ToBarCode(Description);
         }
 
         public int        ProductID          { get; }// integer NOT NULL,
@@ -52,6 +55,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public decimal    totalcost          { get; }// numeric NOT NULL DEFAULT 0,
         public string     tradediscount      { get; }// varchar(20) COLLATE NOCASE,
         public DateTime   LastDateModified   { get; }// datetime DEFAULT (CURRENT_TIMESTAMP)
+
+        public ulong      ParsedBarCode      { get; }
     }
 }
 /*

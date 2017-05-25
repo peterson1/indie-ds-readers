@@ -1,4 +1,5 @@
-﻿using Repo2.Core.ns11.Extensions;
+﻿using IDSR.CondorReader.Core.ns11.Converters;
+using Repo2.Core.ns11.Extensions;
 using System;
 using System.Data;
 
@@ -74,6 +75,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             MARGIN1               = r.ToDecimal (63);// decimal   numeric NOT NULL DEFAULT 0,
             MARGIN2               = r.ToDecimal (64);// decimal   numeric NOT NULL DEFAULT 0,
             MARGIN3               = r.ToDecimal (65);// decimal   numeric NOT NULL DEFAULT 0
+
+            ParsedBarCode         = Barcode.ToBarCode(Description);
         }
 
         public int?       ProductID             { get; }// integer,
@@ -142,6 +145,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public decimal    MARGIN1               { get; }// numeric NOT NULL DEFAULT 0,
         public decimal    MARGIN2               { get; }// numeric NOT NULL DEFAULT 0,
         public decimal    MARGIN3               { get; }// numeric NOT NULL DEFAULT 0
+
+        public ulong      ParsedBarCode         { get; }
     }
 }
 /*
