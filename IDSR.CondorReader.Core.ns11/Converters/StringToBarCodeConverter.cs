@@ -19,14 +19,18 @@ namespace IDSR.CondorReader.Core.ns11.Converters
 
             var trimmed = strCode.Trim();
 
-            if (ulong.TryParse(trimmed, out ulong barCode))
-                return barCode;
+            if (!ulong.TryParse(trimmed, out ulong barCode))
+                throw new BarcodeParseException(strCode, recordLabel);
+
+            if (barCode < 100000)
+                throw new BarcodeParseException(strCode, recordLabel);
+
+            return barCode;
 
             //throw new InvalidCastException("BarCode Parse Error" + L.F +
             //    $"Failed to process “{recordLabel}”" + L.F +
             //    $"Invalid barcode “{strCode}”.");
 
-            throw new BarcodeParseException(strCode, recordLabel);
         }
     }
 
