@@ -10,10 +10,10 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public CdrVENDOR_Products(IDataRecord r)
         {
             ProductID         = r.ToInt     ( 0);// int      integer NOT NULL,
-            Description       = r.ToText    ( 1);// string   varchar(100) NOT NULL COLLATE NOCASE,
+            Description       = r.ToText    ( 1).Trim();// string   varchar(100) NOT NULL COLLATE NOCASE,
             VendorProductCode = r.ToText    ( 2);// string   varchar(20) NOT NULL COLLATE NOCASE,
             VendorCode        = r.ToText    ( 3);// string   varchar(10) NOT NULL COLLATE NOCASE,
-            uom               = r.ToText    ( 4);// string   varchar(6) NOT NULL COLLATE NOCASE DEFAULT 'PC',
+            uom               = r.ToText    ( 4).NullIfBlank();// string   varchar(6) NOT NULL COLLATE NOCASE DEFAULT 'PC',
             qty               = r.ToDecimal ( 5);// decimal  numeric NOT NULL DEFAULT 1,
             cost              = r.ToDecimal ( 6);// decimal  numeric NOT NULL DEFAULT 0,
             averagecost       = r.ToDecimal ( 7);// decimal  numeric NOT NULL DEFAULT 0,

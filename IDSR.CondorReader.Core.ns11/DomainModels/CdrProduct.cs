@@ -66,6 +66,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             ComputedAverageCost     = rec.GetDecimal (54);// [ComputedAverageCost]	numeric NOT NULL DEFAULT 0
 
             ParsedBarCode           = ProductCode.ToBarCode(Description);
+            WrappedProductId        = $"«{ProductID}»";
         }
 
         public int         ProductID                { get; }
@@ -123,7 +124,9 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public bool        TimeBased                { get; }
         public bool        Combo                    { get; }
         public decimal     ComputedAverageCost      { get; }
+
         public ulong       ParsedBarCode            { get; }
+        public string      WrappedProductId         { get; }
 
         public bool IsVatable => pVatable == true;
     }

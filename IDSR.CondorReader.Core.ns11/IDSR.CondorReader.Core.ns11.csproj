@@ -39,6 +39,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BlankStringExtensions.cs" />
     <Compile Include="Converters\StringToBarCodeConverter.cs" />
     <Compile Include="DomainModels\CdrCustomer.cs" />
     <Compile Include="DomainModels\CdrMovement.cs" />
