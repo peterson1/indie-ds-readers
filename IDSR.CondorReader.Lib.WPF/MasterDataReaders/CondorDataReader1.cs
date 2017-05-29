@@ -4,9 +4,7 @@ using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
 using IDSR.CondorReader.Lib.WPF.TransactionReaders;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,6 +47,10 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
 
         public Task<List<CdrCustomer>> GetCustomers(CancellationToken cancelTkn = new CancellationToken())
             => GetAllRecords<CdrCustomer>("Customer", cancelTkn);
+
+
+        public Task<List<CdrTenderType>> GetTenderTypes(CancellationToken cancelTkn = new CancellationToken())
+            => GetAllRecords<CdrTenderType>("TenderTypes", cancelTkn);
 
 
         public Task<List<CdrPurchaseOrder>> GetPurchaseOrders(CancellationToken cancelTkn, bool withLines = false)

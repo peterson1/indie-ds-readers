@@ -47,6 +47,7 @@
     <Compile Include="DomainModels\CdrPOS_Products.cs" />
     <Compile Include="DomainModels\CdrProductMeta.cs" />
     <Compile Include="DomainModels\CdrSalesTransaction.cs" />
+    <Compile Include="DomainModels\CdrTenderType.cs" />
     <Compile Include="DomainModels\CdrTransactionHeader.cs" />
     <Compile Include="DomainModels\CdrTransactionLine.cs" />
     <Compile Include="DomainModels\CdrTransactionPayment.cs" />
