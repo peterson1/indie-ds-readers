@@ -83,7 +83,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             DateTimeEnd            = r.ToDate_   (71);// DateTime? datetime,
             ServiceCharge          = r.ToDecimal (72);// decimal   numeric NOT NULL DEFAULT 0
 
-            ParsedBarCode          = Barcode.ToBarCode(Description);
+            ParsedBarCode          = Barcode.ToBarCode_();
         }
 
         public long        LineID                 { get; }// integer NOT NULL,
@@ -160,7 +160,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public DateTime?   DateTimeEnd            { get; }// datetime,
         public decimal     ServiceCharge          { get; }// numeric NOT NULL DEFAULT 0
 
-        public ulong       ParsedBarCode          { get; }
+        public ulong?      ParsedBarCode          { get; }
     }
 }
 

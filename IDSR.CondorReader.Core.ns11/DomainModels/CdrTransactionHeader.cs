@@ -50,7 +50,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             SENIORCITIZENDISCQSR   = r.ToDecimal_(38);//numeric,
             SENIORCITIZENCOUNT     = r.ToDecimal_(39);//numeric
 
-            ParsedCustomerCode     = CustomerCode.ToBarCode_(Description);
+            ParsedCustomerCode     = CustomerCode.ToBarCode_();
         }
 
 

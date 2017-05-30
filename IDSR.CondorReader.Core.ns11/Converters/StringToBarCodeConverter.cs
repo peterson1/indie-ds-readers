@@ -9,7 +9,7 @@ namespace IDSR.CondorReader.Core.ns11.Converters
     {
         public static ulong ToBarCode(this string strCode, string recordLabel)
         {
-            var bc = strCode.ToBarCode_(recordLabel);
+            var bc = strCode.ToBarCode_();
 
             if (!bc.HasValue)
                 throw new BarcodeParseException(strCode, recordLabel);
@@ -29,7 +29,7 @@ namespace IDSR.CondorReader.Core.ns11.Converters
         
 
 
-        public static ulong? ToBarCode_(this string strCode, string recordLabel)
+        public static ulong? ToBarCode_(this string strCode)
         {
             var trimmed = strCode.Trim();
 
