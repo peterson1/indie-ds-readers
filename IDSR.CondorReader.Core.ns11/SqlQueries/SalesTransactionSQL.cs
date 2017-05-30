@@ -24,7 +24,7 @@ namespace IDSR.CondorReader.Core.ns11.SqlQueries
 
 
         public static string PaymentsQuery(DateTime start, DateTime end)
-            => @"SELECT ln.* 
+            => @"SELECT py.* 
                    FROM FinishedPayments py
               LEFT JOIN FinishedTransaction h
                      ON h.TransactionNo = py.TransactionNo
@@ -33,7 +33,7 @@ namespace IDSR.CondorReader.Core.ns11.SqlQueries
 
 
         private static string WHERE_BETWEEN(string fieldName, DateTime start, DateTime end)
-            => $@"WHERE {fieldName} >= {start.Date}
-                    AND {fieldName} <  {end.Date.AddDays(1)}";
+            => $@" WHERE {fieldName} >= '{start.Date:yyyyMMdd}'
+                     AND {fieldName} <  '{end.Date.AddDays(1):yyyyMMdd}'";
     }
 }
