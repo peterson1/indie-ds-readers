@@ -45,6 +45,7 @@
     <Compile Include="DomainModels\CdrMovement.cs" />
     <Compile Include="DomainModels\CdrMovementLine.cs" />
     <Compile Include="DomainModels\CdrPOS_Products.cs" />
+    <Compile Include="DomainModels\CdrPriceChangeHistory.cs" />
     <Compile Include="DomainModels\CdrProductMeta.cs" />
     <Compile Include="DomainModels\CdrSalesTransaction.cs" />
     <Compile Include="DomainModels\CdrTenderType.cs" />

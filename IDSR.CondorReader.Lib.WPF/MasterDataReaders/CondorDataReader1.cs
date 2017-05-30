@@ -53,6 +53,10 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
             => GetAllRecords<CdrTenderType>("TenderTypes", cancelTkn);
 
 
+        public Task<List<CdrPriceChangeHistory>> GetPriceChangeHistory(CancellationToken cancelTkn = new CancellationToken())
+            => GetAllRecords<CdrPriceChangeHistory>("PriceChangeHistory", cancelTkn);
+
+
         public Task<List<CdrPurchaseOrder>> GetPurchaseOrders(CancellationToken cancelTkn, bool withLines = false)
             => _poReadr.GetAllParents(cancelTkn, withLines);
 
