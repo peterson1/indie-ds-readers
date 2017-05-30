@@ -8,6 +8,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using static IDSR.CondorReader.Core.ns11.SqlQueries.SalesTransactionSQL;
+using System.Data;
+using IDSR.CondorReader.Core.ns11.Converters;
+using Repo2.SDK.WPF45.Exceptions;
+using Repo2.Core.ns11.Extensions.StringExtensions;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
@@ -24,7 +28,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                                                 r => new CdrTransactionHeader(r), canclr);
 
             var lines  = await QueryList<CdrTransactionLine>(LinesQuery(start, end), 
-                                                r => new CdrTransactionLine(r), canclr);
+                                                r => ParseTransactionLine(r), canclr);
 
             var pymnts = await QueryList<CdrTransactionPayment>(PaymentsQuery(start, end),
                                                 r => new CdrTransactionPayment(r), canclr);
@@ -39,6 +43,22 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                 txns.Add(txn);
             }
             return txns;
+        }
+
+        private CdrTransactionLine ParseTransactionLine(IDataRecord r)
+        {
+            try
+            {
+                return new CdrTransactionLine(r);
+            }
+            catch (BarcodeParseException ex)
+            {
+                Alerter.ShowError("Barcode Parse Error",
+                            $"Table: “FinishedSales”"
+                    + L.f + $"Record: “{ex.RecordTitle}”"
+                    + L.f + $"Barcode: “{ex.BarcodeText}”");
+                return null;
+            }
         }
     }
 }

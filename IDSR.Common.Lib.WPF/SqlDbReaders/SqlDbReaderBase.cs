@@ -122,7 +122,15 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
                 await conn.OpenAsync(cancelTkn);
             //}
 
-            return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
+            try
+            {
+                return await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection, cancelTkn);
+            }
+            catch (Exception ex)
+            {
+                Alerter.ShowError("Query error", $"{ex.Message}{L.F}{sqlQuery}");
+                return null;
+            }
         }
 
 
@@ -134,7 +142,18 @@ namespace IDSR.Common.Lib.WPF.SqlDbReaders
             using (var results = await ConnectAndReadAsync(sqlQuery, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
-                    list.Add(dataRecParser(rec));
+                {
+                    T parsd = default(T);
+                    try
+                    {
+                        parsd = dataRecParser(rec);
+                    }
+                    catch (Exception ex)
+                    {
+                        Alerter.Show(ex, "Parse error");
+                    }
+                    if (parsd != null) list.Add(parsd);
+                }
             }
             return list;
         }
