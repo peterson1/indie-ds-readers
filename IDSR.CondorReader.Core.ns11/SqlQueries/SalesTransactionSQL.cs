@@ -33,7 +33,7 @@ namespace IDSR.CondorReader.Core.ns11.SqlQueries
 
 
         private static string WHERE_BETWEEN(string fieldName, DateTime start, DateTime end)
-            => $@" WHERE {fieldName} >= '{start.Date:yyyyMMdd}'
-                     AND {fieldName} <  '{end.Date.AddDays(1):yyyyMMdd}'";
+            => $@" WHERE {fieldName} >= '{start.Date:yyyy-MM-dd}'
+                     AND {fieldName} <  '{end.Date.AddDays(1):yyyy-MM-dd}'";
     }
 }
