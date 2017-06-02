@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CondorDataReader1Tests\MonthlySalesTxnFacts.cs" />
     <Compile Include="MonthlyPurchasesTests\MonthlyPurchasesTabVM1Facts.cs" />
     <Compile Include="MonthlySalesTests\MonthlySalesReader1Facts.cs" />
     <Compile Include="MonthlySalesTests\MonthlySalesTabVM1Facts.cs" />
