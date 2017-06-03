@@ -22,7 +22,8 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
                                  IReceivingsReader receivingsReader,
                                  IMovementsReader movementsReader,
                                  SalesTransactionReader salesTransactionReader,
-                                 ProductsMetaReader productsMetaReader) 
+                                 ProductsMetaReader productsMetaReader,
+                                 PriceHistoryReader priceHistoryReader) 
             : base(localDbFinder, dsrConfiguration1)
         {
             _poReadr          = purchaseOrdersReader;
@@ -30,19 +31,21 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
             _mvtReadr         = movementsReader;
             SalesTransactions = salesTransactionReader;
             ProductsMeta      = productsMetaReader;
+            PriceHistory      = priceHistoryReader;
         }
 
 
-        public SalesTransactionReader SalesTransactions { get; }
-        public ProductsMetaReader     ProductsMeta      { get; }
+        public SalesTransactionReader  SalesTransactions  { get; }
+        public ProductsMetaReader      ProductsMeta       { get; }
+        public PriceHistoryReader      PriceHistory       { get; }
 
 
         public Task<List<CdrVendor>> GetVendors(CancellationToken cancelTkn = new CancellationToken())
             => GetAllRecords<CdrVendor>("Vendor", cancelTkn);
 
 
-        public Task<List<CdrProduct>> GetProducts(CancellationToken cancelTkn = new CancellationToken())
-            => GetAllRecords<CdrProduct>("Products", cancelTkn);
+        //public Task<List<CdrProduct>> GetProducts(CancellationToken cancelTkn = new CancellationToken())
+        //    => GetAllRecords<CdrProduct>("Products", cancelTkn);
 
 
         public Task<List<CdrCustomer>> GetCustomers(CancellationToken cancelTkn = new CancellationToken())
@@ -53,8 +56,8 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
             => GetAllRecords<CdrTenderType>("TenderTypes", cancelTkn);
 
 
-        public Task<List<CdrPriceChangeHistory>> GetPriceChangeHistory(CancellationToken cancelTkn = new CancellationToken())
-            => GetAllRecords<CdrPriceChangeHistory>("PriceChangeHistory", cancelTkn);
+        //public Task<List<CdrPriceChangeHistory>> GetPriceChangeHistory(CancellationToken cancelTkn = new CancellationToken())
+        //    => GetAllRecords<CdrPriceChangeHistory>("PriceChangeHistory", cancelTkn);
 
 
         public Task<List<CdrPurchaseOrder>> GetPurchaseOrders(CancellationToken cancelTkn, bool withLines = false)

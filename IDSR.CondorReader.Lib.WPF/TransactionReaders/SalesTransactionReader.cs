@@ -38,8 +38,11 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             {
                 var txn      = new CdrSalesTransaction();
                 txn.Header   = hdr;
-                txn.Lines    = lines.Where(x => x.TransactionNo == hdr.TransactionNo).ToList();
-                txn.Payments = pymnts.Where(x => x.TransactionNo == hdr.TransactionNo).ToList();
+                txn.Lines    = lines.Where(x => x.TransactionNo == hdr.TransactionNo
+                                                && x.TerminalNo == hdr.TerminalNo).ToList();
+
+                txn.Payments = pymnts.Where(x => x.TransactionNo == hdr.TransactionNo
+                                                 && x.TerminalNo == hdr.TerminalNo).ToList();
                 txns.Add(txn);
             }
             return txns;

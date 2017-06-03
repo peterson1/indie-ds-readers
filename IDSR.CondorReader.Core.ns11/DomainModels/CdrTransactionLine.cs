@@ -1,5 +1,6 @@
 ﻿using IDSR.CondorReader.Core.ns11.Converters;
 using Repo2.Core.ns11.Extensions;
+using Repo2.Core.ns11.Extensions.StringExtensions;
 using System;
 using System.Data;
 
@@ -161,6 +162,83 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public decimal     ServiceCharge          { get; }// numeric NOT NULL DEFAULT 0
 
         public ulong?      ParsedBarCode          { get; }
+
+
+        public override string ToString()
+            => $"LineID                \t\t:  {LineID                }{L.f}"
+             + $"TransactionNo         \t\t:  {TransactionNo         }{L.f}"
+             + $"ProductID             \t\t:  {ProductID             }{L.f}"
+             + $"ProductCode           \t\t:  {ProductCode           }{L.f}"
+             + $"Barcode               \t\t:  {Barcode               }{L.f}"
+             + $"Description           \t\t:  {Description           }{L.f}"
+             + $"UOM                   \t\t:  {UOM                   }{L.f}"
+             + $"Qty                   \t\t:  {Qty                   }{L.f}"
+             + $"Packing               \t\t:  {Packing               }{L.f}"
+             + $"TotalQty              \t\t:  {TotalQty              }{L.f}"
+             + $"AverageUnitCost       \t\t:  {AverageUnitCost       }{L.f}"
+             + $"Price                 \t\t:  {Price                 }{L.f}"
+             + $"Discount              \t\t:  {Discount              }{L.f}"
+             + $"Allowance             \t\t:  {Allowance             }{L.f}"
+             + $"AmountDiscounted      \t\t:  {AmountDiscounted      }{L.f}"
+             + $"ChargeDiscount        \t\t:  {ChargeDiscount        }{L.f}"
+             + $"ChargeAllowance       \t\t:  {ChargeAllowance       }{L.f}"
+             + $"ChargeAmountDiscounted\t\t:  {ChargeAmountDiscounted}{L.f}"
+             + $"DiscountedPrice       \t\t:  {DiscountedPrice       }{L.f}"
+             + $"DiscountDescription   \t\t:  {DiscountDescription   }{L.f}"
+             + $"Extended              \t\t:  {Extended              }{L.f}"
+             + $"ExtendedDescription   \t\t:  {ExtendedDescription   }{L.f}"
+             + $"Multiplier            \t\t:  {Multiplier            }{L.f}"
+             + $"PriceModeCode         \t\t:  {PriceModeCode         }{L.f}"
+             + $"Return                \t\t:  {Return                }{L.f}"
+             + $"ReturnDescription     \t\t:  {ReturnDescription     }{L.f}"
+             + $"ReturnRemarks         \t\t:  {ReturnRemarks         }{L.f}"
+             + $"OldTransactionNo      \t\t:  {OldTransactionNo      }{L.f}"
+             + $"OldTransactionDate    \t\t:  {OldTransactionDate    }{L.f}"
+             + $"OldTransactionDiscount\t\t:  {OldTransactionDiscount}{L.f}"
+             + $"OldTerminalNo         \t\t:  {OldTerminalNo         }{L.f}"
+             + $"Shift                 \t\t:  {Shift                 }{L.f}"
+             + $"UserID                \t\t:  {UserID                }{L.f}"
+             + $"TerminalNo            \t\t:  {TerminalNo            }{L.f}"
+             + $"BranchCode            \t\t:  {BranchCode            }{L.f}"
+             + $"LogDate               \t\t:  {LogDate               }{L.f}"
+             + $"DateTime              \t\t:  {DateTime              }{L.f}"
+             + $"Voided                \t\t:  {Voided                }{L.f}"
+             + $"MustReachForFree      \t\t:  {MustReachForFree      }{L.f}"
+             + $"Points                \t\t:  {Points                }{L.f}"
+             + $"PointsPosted          \t\t:  {PointsPosted          }{L.f}"
+             + $"AmountSaved           \t\t:  {AmountSaved           }{L.f}"
+             + $"QtyReturned           \t\t:  {QtyReturned           }{L.f}"
+             + $"PriceOverride         \t\t:  {PriceOverride         }{L.f}"
+             + $"MarkDown              \t\t:  {MarkDown              }{L.f}"
+             + $"SerialNo              \t\t:  {SerialNo              }{L.f}"
+             + $"PROMOPERSONID         \t\t:  {PROMOPERSONID         }{L.f}"
+             + $"SONumber              \t\t:  {SONumber              }{L.f}"
+             + $"TimeScanned           \t\t:  {TimeScanned           }{L.f}"
+             + $"Layaway               \t\t:  {Layaway               }{L.f}"
+             + $"LayawayNumber         \t\t:  {LayawayNumber         }{L.f}"
+             + $"pVatable              \t\t:  {pVatable              }{L.f}"
+             + $"pVatPercent           \t\t:  {pVatPercent           }{L.f}"
+             + $"ChilledCharge         \t\t:  {ChilledCharge         }{L.f}"
+             + $"Remarks               \t\t:  {Remarks               }{L.f}"
+             + $"Senior                \t\t:  {Senior                }{L.f}"
+             + $"discounttype1         \t\t:  {discounttype1         }{L.f}"
+             + $"discounttype2         \t\t:  {discounttype2         }{L.f}"
+             + $"discounttype3         \t\t:  {discounttype3         }{L.f}"
+             + $"discounttype4         \t\t:  {discounttype4         }{L.f}"
+             + $"discounttype5         \t\t:  {discounttype5         }{L.f}"
+             + $"discounttype6         \t\t:  {discounttype6         }{L.f}"
+             + $"discounttype7         \t\t:  {discounttype7         }{L.f}"
+             + $"discounttype8         \t\t:  {discounttype8         }{L.f}"
+             + $"discounttype9         \t\t:  {discounttype9         }{L.f}"
+             + $"discounttype10        \t\t:  {discounttype10        }{L.f}"
+             + $"Diplomat              \t\t:  {Diplomat              }{L.f}"
+             + $"BonusPoints           \t\t:  {BonusPoints           }{L.f}"
+             + $"Tax                   \t\t:  {Tax                   }{L.f}"
+             + $"TaxID                 \t\t:  {TaxID                 }{L.f}"
+             + $"DateTimeStart         \t\t:  {DateTimeStart         }{L.f}"
+             + $"DateTimeEnd           \t\t:  {DateTimeEnd           }{L.f}"
+             + $"ServiceCharge         \t\t:  {ServiceCharge         }{L.f}"
+             + $"ParsedBarCode         \t\t:  {ParsedBarCode         }";
     }
 }
 

@@ -99,6 +99,7 @@
     <Compile Include="BaseReaders\CondorReaderBase1.cs" />
     <Compile Include="ComponentRegistry\CondorReaderIoC.cs" />
     <Compile Include="MasterDataReaders\CondorDataReader1.cs" />
+    <Compile Include="MasterDataReaders\PriceHistoryReader.cs" />
     <Compile Include="MasterDataReaders\ProductsMetaReader.cs" />
     <Compile Include="MasterDataReaders\ProductsReader1.cs" />
     <Compile Include="MasterDataReaders\VendorsReader1.cs" />

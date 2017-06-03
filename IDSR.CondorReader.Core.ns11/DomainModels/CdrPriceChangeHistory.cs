@@ -1,6 +1,7 @@
 ﻿using IDSR.CondorReader.Core.ns11.Converters;
 using Repo2.Core.ns11.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace IDSR.CondorReader.Core.ns11.DomainModels
@@ -37,6 +38,8 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public bool      initialprice  { get; }// bit DEFAULT 0
 
         public ulong     ParsedBarCode { get; }
+
+        public List<CdrPOS_Products> SellingBarcodes { get; set; }
     }
 }
 /*
