@@ -40,6 +40,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public ulong     ParsedBarCode { get; }
 
         public List<CdrPOS_Products> SellingBarcodes { get; set; }
+        //public CdrProduct Product { get; set; }
     }
 }
 /*
