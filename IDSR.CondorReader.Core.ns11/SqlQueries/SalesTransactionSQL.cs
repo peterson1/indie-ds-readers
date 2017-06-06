@@ -19,7 +19,8 @@ namespace IDSR.CondorReader.Core.ns11.SqlQueries
                    FROM FinishedSales ln
               LEFT JOIN FinishedTransaction h
                      ON h.TransactionNo = ln.TransactionNo
-                    AND h.TerminalNo = ln.TerminalNo"
+                    AND h.TerminalNo    = ln.TerminalNo
+                    AND h.DateTime      = ln.DateTime"
                 + WHERE_BETWEEN("h.LogDate", start, end);
 
 
@@ -28,7 +29,8 @@ namespace IDSR.CondorReader.Core.ns11.SqlQueries
                    FROM FinishedPayments py
               LEFT JOIN FinishedTransaction h
                      ON h.TransactionNo = py.TransactionNo
-                    AND h.TerminalNo = py.TerminalNo"
+                    AND h.TerminalNo    = py.TerminalNo
+                    AND h.DateTime      = py.DateTime"
                 + WHERE_BETWEEN("h.LogDate", start, end);
 
 
