@@ -10,6 +10,7 @@ using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
 using Repo2.Core.ns11.Extensions;
 using static IDSR.CondorReader.Core.ns11.SqlQueries.PurchaseOrdersSQL;
+using Repo2.Core.ns11.Exceptions;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
@@ -50,11 +51,22 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 
             foreach (var line in lines)
             {
-                var p = parnt[line.PurchaseOrderID];
-                p.PostedByName = users[int.Parse(p.PostedBy)];
+                //var p = parnt[line.PurchaseOrderID];
+                if (!parnt.TryGetValue(line.PurchaseOrderID, out CdrPurchaseOrder p))
+                    throw Fault.NoMatch<CdrPurchaseOrder>(nameof(line.PurchaseOrderID), line.PurchaseOrderID);
 
-                if (line.ProductID.HasValue)
-                    line.LandedCost = landeds[line.ProductID.Value];
+                //p.PostedByName = users[int.Parse(p.PostedBy)];
+                if (!users.TryGetValue(int.Parse(p.PostedBy), out string usrNme))
+                    throw Fault.NoMatch<string>("username", p.PostedBy);
+                p.PostedByName = usrNme;
+
+                if (line.ProductID.HasValue && line.ProductID != 0)
+                {
+                    //line.LandedCost = landeds[line.ProductID.Value];
+                    if (!landeds.TryGetValue(line.ProductID.Value, out decimal landedCost))
+                        throw Fault.NoMatch<decimal>(nameof(CdrPurchaseOrderLine.ProductID), line.ProductID.Value);
+                    line.LandedCost = landedCost;
+                }
 
                 line.Parent = p;
             }

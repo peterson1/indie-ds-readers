@@ -1,4 +1,5 @@
-﻿using Repo2.Core.ns11.Extensions.StringExtensions;
+﻿using Repo2.Core.ns11.Exceptions;
+using Repo2.Core.ns11.Extensions.StringExtensions;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -12,8 +13,9 @@ namespace IDSR.CondorReader.Core.ns11.Converters
             var bc = strCode.ToBarCode_();
 
             if (!bc.HasValue)
-                throw new BarcodeParseException(strCode, recordLabel);
-
+                //throw new BarcodeParseException(strCode, recordLabel);
+                throw new InvalidCastException($"Failed to parse as barcode: “{strCode}”"
+                                                + $"{L.F}For record: “{recordLabel}”");
             return bc.Value;
 
         //    var trimmed = strCode.Trim();
@@ -34,7 +36,7 @@ namespace IDSR.CondorReader.Core.ns11.Converters
             var trimmed = strCode.Trim();
 
             if (!ulong.TryParse(trimmed, out ulong barCode)) return null;
-            if (barCode < 100000)                            return null;
+            //if (barCode < 100000)                            return null;
 
             return barCode;
         }
