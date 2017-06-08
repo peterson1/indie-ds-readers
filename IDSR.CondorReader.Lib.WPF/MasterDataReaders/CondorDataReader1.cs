@@ -4,7 +4,10 @@ using IDSR.CondorReader.Core.ns11.DomainModels;
 using IDSR.CondorReader.Core.ns11.TransactionReaders;
 using IDSR.CondorReader.Lib.WPF.BaseReaders;
 using IDSR.CondorReader.Lib.WPF.TransactionReaders;
+using Repo2.Core.ns11.Extensions.StringExtensions;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +26,8 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
                                  IMovementsReader movementsReader,
                                  SalesTransactionReader salesTransactionReader,
                                  ProductsMetaReader productsMetaReader,
-                                 PriceHistoryReader priceHistoryReader) 
+                                 PriceHistoryReader priceHistoryReader,
+                                 RemittanceReader remittanceReader) 
             : base(localDbFinder, dsrConfiguration1)
         {
             _poReadr          = purchaseOrdersReader;
@@ -32,12 +36,14 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
             SalesTransactions = salesTransactionReader;
             ProductsMeta      = productsMetaReader;
             PriceHistory      = priceHistoryReader;
+            Remittances       = remittanceReader;
         }
 
 
         public SalesTransactionReader  SalesTransactions  { get; }
         public ProductsMetaReader      ProductsMeta       { get; }
         public PriceHistoryReader      PriceHistory       { get; }
+        public RemittanceReader        Remittances        { get; }
 
 
         public Task<List<CdrVendor>> GetVendors(CancellationToken cancelTkn = new CancellationToken())
@@ -60,6 +66,10 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
         //    => GetAllRecords<CdrPriceChangeHistory>("PriceChangeHistory", cancelTkn);
 
 
+        //public Task<List<CdrRemittance>> GetRemittances(CancellationToken cancelTkn = new CancellationToken())
+        //    => GetAllRecords<CdrRemittance>("Remittance", cancelTkn);
+
+
         public Task<List<CdrPurchaseOrder>> GetPurchaseOrders(CancellationToken cancelTkn, bool withLines = false)
             => _poReadr.GetAllParents(cancelTkn, withLines);
 
@@ -79,5 +89,13 @@ namespace IDSR.CondorReader.Lib.WPF.MasterDataReaders
 
         public Task<List<CdrMovementLine>> GetBadOrderLines(CancellationToken cancelTkn)
             => _mvtReadr.GetBadOrderLines(cancelTkn);
+
+
+        public async Task<uint> GetLastTerminalId (CancellationToken cancelTkn = new CancellationToken())
+        {
+            var qry  = "SELECT DISTINCT terminalno FROM TerminalTotals";
+            var ints = await QueryList<string>(qry, r => r.GetString(0), cancelTkn);
+            return (uint)ints.Select(x => x.ToInt()).Max();
+        }
     }
 }

@@ -13,9 +13,9 @@ namespace IDSR.CondorReader.Core.ns11.Converters
             var bc = strCode.ToBarCode_();
 
             if (!bc.HasValue)
-                //throw new BarcodeParseException(strCode, recordLabel);
-                throw new InvalidCastException($"Failed to parse as barcode: “{strCode}”"
-                                                + $"{L.F}For record: “{recordLabel}”");
+                throw new BarcodeParseException(strCode, recordLabel);
+                //throw new InvalidCastException($"Failed to parse as barcode: “{strCode}”"
+                //                                + $"{L.F}For record: “{recordLabel}”");
             return bc.Value;
 
         //    var trimmed = strCode.Trim();

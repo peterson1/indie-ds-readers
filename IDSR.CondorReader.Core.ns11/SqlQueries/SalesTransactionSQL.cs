@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IDSR.CondorReader.Core.ns11.SqlQueries
 {
@@ -37,5 +33,13 @@ namespace IDSR.CondorReader.Core.ns11.SqlQueries
         private static string WHERE_BETWEEN(string fieldName, DateTime start, DateTime end)
             => $@" WHERE {fieldName} >= '{start.Date:yyyy-MM-dd}'
                      AND {fieldName} <  '{end.Date.AddDays(1):yyyy-MM-dd}'";
+
+
+        public static string AND_Terminal(this string query, uint terminalId)
+            => $"{query} AND h.TerminalNo = '{terminalId:000}'";
+
+
+        public static string AND_Cashier(this string query, int cdrUserId)
+            => $"{query} AND h.UserID = {cdrUserId}";
     }
 }
