@@ -6,6 +6,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
     {
         public CdrTransactionHeader         Header    { get; set; }
         public List<CdrTransactionLine>     Lines     { get; set; }
+        public List<CdrTransactionLine>     Returns   { get; set; }
         public List<CdrTransactionPayment>  Payments  { get; set; }
     }
 }
