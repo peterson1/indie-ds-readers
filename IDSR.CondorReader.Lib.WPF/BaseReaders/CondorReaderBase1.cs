@@ -76,8 +76,12 @@ namespace IDSR.CondorReader.Lib.WPF.BaseReaders
                     }
                     catch (TargetInvocationException targEx)
                     {
-                        var ex = targEx.InnerException as BarcodeParseException;
-                        errors.Add($"{ex.BarcodeText}\t\t{ex.RecordTitle}");
+                        var barcodeErr = targEx.InnerException as BarcodeParseException;
+                        if (barcodeErr != null)
+                        {
+                            if (!BarcodesToIgnore.Contains(barcodeErr.BarcodeText))
+                                errors.Add($"{barcodeErr.BarcodeText}\t\t{barcodeErr.RecordTitle}");
+                        }
                     }
                 }
             }
