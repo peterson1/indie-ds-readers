@@ -92,17 +92,21 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
                 var txn    = new CdrSalesTransaction();
                 txn.Header = hdr;
                 txn.Lines  = lines.Where(x => x.TransactionNo == hdr.TransactionNo
-                                              && x.TerminalNo == hdr.TerminalNo
-                                              && x.Return     == false
-                                              ).ToList();
+                                           && x.TerminalNo    == hdr.TerminalNo
+                                           && x.DateTime      == hdr.DateTime
+                                           && x.Return        == false
+                                           ).ToList();
 
                 txn.Returns = lines.Where(x => x.TransactionNo == hdr.TransactionNo
                                             && x.TerminalNo    == hdr.TerminalNo
+                                            && x.DateTime      == hdr.DateTime
                                             && x.Return        == true
                                             ).ToList();
 
                 txn.Payments = pymnts.Where(x => x.TransactionNo == hdr.TransactionNo
-                                                 && x.TerminalNo == hdr.TerminalNo).ToList();
+                                              && x.TerminalNo    == hdr.TerminalNo
+                                              && x.DateTime      == hdr.DateTime
+                                              ).ToList();
                 txns.Add(txn);
             }
             return txns;
@@ -112,7 +116,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
         {
             try
             {
-                return new CdrTransactionLine(r);
+                return new CdrTransactionLine(r, UseServer);
             }
             catch (BarcodeParseException ex)
             {
