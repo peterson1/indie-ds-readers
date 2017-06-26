@@ -43,7 +43,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             ChargeAllowance        = r.GetDecimal (16);// decimal   numeric DEFAULT 0,
             ChargeAmountDiscounted = r.GetDecimal (17);// decimal   numeric DEFAULT 0,
             DiscountedPrice        = r.GetDecimal (18);// decimal   numeric DEFAULT 0,
-            DiscountDescription    = r.GetString  (19);// string    varchar(40) COLLATE NOCASE DEFAULT '',
+            DiscountDescription    = r.IsDBNull(19) ? null : r.GetString  (19);// string    varchar(40) COLLATE NOCASE DEFAULT '',
             Extended               = r.GetDecimal (20);// decimal   numeric DEFAULT 0,
             ExtendedDescription    = r.GetString  (21);// string    varchar(20) COLLATE NOCASE DEFAULT '',
             Multiplier             = r.GetDouble  (22);// decimal   float DEFAULT 1,
@@ -69,16 +69,16 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
             QtyReturned            = r.GetDecimal (42);// decimal   numeric NOT NULL DEFAULT 0,
             PriceOverride          = r.GetBoolean (43);// bool      bit NOT NULL DEFAULT 0,
             MarkDown               = r.GetBoolean (44);// bool      bit NOT NULL DEFAULT 0,
-            SerialNo               = r.GetString  (45);// string    varchar(40) COLLATE NOCASE DEFAULT '',
+            SerialNo               = r.IsDBNull(45) ? null : r.GetString  (45);// string    varchar(40) COLLATE NOCASE DEFAULT '',
             PROMOPERSONID          = r.GetDecimal (46);// decimal   numeric DEFAULT 0,
-            SONumber               = r.GetString  (47);// string    varchar(10) COLLATE NOCASE DEFAULT '',
+            SONumber               = r.IsDBNull(47) ? null : r.GetString  (47);// string    varchar(10) COLLATE NOCASE DEFAULT '',
             TimeScanned            = r.ToDate_    (48);// DateTime? datetime,
             Layaway                = r.GetBoolean (49);// bool      bit DEFAULT 0,
             LayawayNumber          = (int?)r.ToLong_(50);// int?      integer,
             pVatable               = r.GetInt32   (51);// int       integer DEFAULT 0,
             pVatPercent            = r.GetInt32   (52);// int       integer DEFAULT 0,
             ChilledCharge          = r.GetBoolean (53);// bool      bit DEFAULT 0,
-            Remarks                = r.ToText     (54);// string    varchar(30) COLLATE NOCASE DEFAULT '',
+            Remarks                = r.IsDBNull(54) ? null : r.GetString(54);// string    varchar(30) COLLATE NOCASE DEFAULT '',
             Senior                 = r.GetBoolean (55);// bool      bit NOT NULL DEFAULT 0,
             discounttype1          = r.GetBoolean (56);// bool      bit NOT NULL DEFAULT 0,
             discounttype2          = r.GetBoolean (57);// bool      bit NOT NULL DEFAULT 0,
@@ -100,6 +100,9 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
 
             ParsedBarCode          = Barcode.ToBarCode_();
         }
+
+
+
 
 
         private void FillFromSQLite(IDataRecord r)
