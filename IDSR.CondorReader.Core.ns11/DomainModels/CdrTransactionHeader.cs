@@ -72,7 +72,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         public string      BranchCode              { get; }//varchar(10) NOT NULL COLLATE NOCASE DEFAULT '',
         public DateTime    LogDate                 { get; }//datetime NOT NULL DEFAULT (CURRENT_TIMESTAMP),
         public DateTime    DateTime                { get; }//datetime DEFAULT (CURRENT_TIMESTAMP),
-        public bool        Voided                  { get; }//bit NOT NULL DEFAULT 0,
+        public bool        Voided                  { get; set; }//bit NOT NULL DEFAULT 0,
         public string      VoidRemarks             { get; }//varchar(40) COLLATE NOCASE DEFAULT '',
         public decimal     BaggerID                { get; }//numeric NOT NULL DEFAULT 0,
         public bool        Senior                  { get; }//bit NOT NULL DEFAULT 0,
