@@ -35,7 +35,7 @@ namespace IDSR.CondorReader.Core.ns11.DomainModels
         }
 
         public long     TransactionNo    { get; }// integer DEFAULT 0,
-        public string   TenderCode       { get; }// varchar(3) COLLATE NOCASE DEFAULT '',
+        public string   TenderCode       { get; set; }// varchar(3) COLLATE NOCASE DEFAULT '',
         public string   Description      { get; }// varchar(20) COLLATE NOCASE DEFAULT '',
         public decimal  Amount           { get; }// numeric DEFAULT 0,
         public bool     Cash             { get; }// bit NOT NULL DEFAULT 0,
