@@ -12,6 +12,7 @@ using System.Data;
 using IDSR.CondorReader.Core.ns11.Converters;
 using Repo2.SDK.WPF45.Exceptions;
 using Repo2.Core.ns11.Extensions.StringExtensions;
+using Repo2.Core.ns11.Extensions;
 
 namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
 {
@@ -19,6 +20,20 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
     {
         public SalesTransactionReader(LocalDbFinder localDbFinder, DsrConfiguration1 dsrConfiguration1) : base(localDbFinder, dsrConfiguration1)
         {
+        }
+
+
+        public Task<List<Tuple<string, int, DateTime>>> GetTransactionNumbers(CancellationToken canclr = new CancellationToken())
+        {
+            var qry = @"SELECT TerminalNo, TransactionNo, DateTime 
+                        FROM FinishedTransaction
+                        ORDER BY TerminalNo, TransactionNo, DateTime;";
+
+            return QueryList(qry, r 
+                => new Tuple<string, int, DateTime>(r.GetString   (0), 
+                                        UseServer ? r.GetInt32    (1) : (int)r.GetInt64(1),
+                                                    r.GetDateTime (2)
+                                                    ), canclr);
         }
 
 
