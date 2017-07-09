@@ -108,7 +108,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             using (var results = await ConnectAndReadAsync(qry, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
-                    list.Add(new CdrPurchaseOrderLine(rec));
+                    list.Add(new CdrPurchaseOrderLine(rec, UseServer));
             }
             return list;
         }
@@ -171,7 +171,7 @@ namespace IDSR.CondorReader.Lib.WPF.TransactionReaders
             using (var results = await ConnectAndReadAsync(LinesQuery, cancelTkn))
             {
                 foreach (IDataRecord rec in results)
-                    list.Add(new CdrPurchaseOrderLine(rec));
+                    list.Add(new CdrPurchaseOrderLine(rec, UseServer));
             }
             return list;
         }
